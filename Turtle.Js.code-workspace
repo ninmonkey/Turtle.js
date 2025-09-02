@@ -1,0 +1,37 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "livePreview.autoRefreshPreview": "On Changes to Saved Files",
+        "livePreview.previewDebounceDelay": 20,
+        "[javascript]": {
+            "editor.maxTokenizationLineLength": 2500,
+            // "editor.codeLens": false,
+        },
+        // "javascript.inlayHints.parameterNames
+        // "debug.javascript.autoAttachFilter": "disabled",
+        "javascript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true,
+        "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
+        "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": true,
+        "javascript.format.insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces": true,
+        "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+        "javascript.inlayHints.enumMemberValues.enabled": true,
+        "javascript.inlayHints.functionLikeReturnTypes.enabled": false,
+        "javascript.inlayHints.parameterNames.enabled": "all", // [ all | literals | none ]
+        "javascript.inlayHints.parameterNames.suppressWhenArgumentMatchesName": true,
+        "javascript.inlayHints.parameterTypes.enabled": false,
+        "javascript.inlayHints.propertyDeclarationTypes.enabled": false,
+        "javascript.inlayHints.variableTypes.enabled": true,
+        "javascript.inlayHints.variableTypes.suppressWhenTypeMatchesName": true,
+        "javascript.preferGoToSourceDefinition": true,
+        "javascript.referencesCodeLens.enabled": false,
+        "javascript.referencesCodeLens.showOnAllFunctions": false, // [ always |
+        "javascript.suggest.autoImports": true,
+        "javascript.updateImportsOnFileMove.enabled": "always",
+        "typescript.enablePromptUseWorkspaceTsdk": false,
+        "typescript.format.insertSpaceAfterTypeAssertion": true,
+    },
+}
