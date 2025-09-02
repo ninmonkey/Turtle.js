@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turtle.js</title>
+    <link rel="stylesheet" href="./../css/main-grid.css" type="text/css">
+    <style>
+        :root {
+            /* --bg-primary-1: #2e353d; */
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <section>
+        <nav>
+            <a href="./">Go Back</a>
+        </nav>
+    </section>
+    <section class="parent-context">
+        <turtle-svg id="turtle-1">
+            <span slot="title">Turtle.js</span>
+        </turtle-svg>
+    </section>
+
+
+    <script type="module">
+        console.log( 'enter' )
+        import { InitTurtle, Turtle } from './../../js/turtle.js';
+        import { TurtleSvgElement } from './../../js//custom-element/turtle-svg-element.js';
+        import { ElementFromIdOrValue } from './../../js/utils.js'
+
+        let turt = new Turtle();
+        const tse = new TurtleSvgElement()
+        const dest = document.querySelector( ".parent-context" )
+        dest.appendChild( tse )
+
+        const t_first = document.querySelectorAll( 'turtle-svg' )[ 0 ]
+        t_first.shadowRoot.querySelector( 'svg.svg-root' )
+
+        InitTurtle( {
+            context: t_first.shadowRoot.querySelector( 'svg.svg-root' ),
+            textContext: t_first.shadowRoot.querySelector( '.fps-counter' )
+        } )
+
+        window.bag ??= {}
+        window.Turtle = Turtle
+
+        window.Turtle = Turtle
+        window.TurtleSvgElement = TurtleSvgElement
+        window.turt = turt
+        window.t = turt
+        window.InitTurtle = InitTurtle
+        // window.turtSvg = document.getElementById("turtle-svg")
+        // window.svgPath = window.turtSvg.getElementById("turtle-path")
+        window.bag.tse = tse
+        window.bag.dest = dest
+        console.trace('debug globals: ', { Turtle, TurtleSvgElement, turt, InitTurtle })
+
+    </script>
+</body>
+
+</html>

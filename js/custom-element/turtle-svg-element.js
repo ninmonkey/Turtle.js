@@ -17,15 +17,10 @@ template_turtle_svg.innerHTML = `
         margin: 10px;
         outline: 3px solid green;
     }
-    text#fps-counter {
-        fill: green;
-        stroke: red;
-        font-size: 30px;
-    }
 </style>
 <section class="turtle-svg-wrapper">
     <slot name="title">
-        <span>Nameless</span>
+        <span class='turtle-title'>Turtle.js</span>
     </slot>
     <svg
         width  = '100%'
@@ -40,26 +35,18 @@ template_turtle_svg.innerHTML = `
             stroke-width   = '1%'
             stroke-linecap = 'round'
         ></path>
-        <text
-            id                = 'fps-counter'
-            class             = 'fps-counter'
-            font-size         = '12px'
-            x                 = '50%'
-            y                 = '50%'
-            text-anchor       = 'middle'
-            dominant-baseline = 'middle'
-        ></text>
     </svg>
-    <text class="fps-counter" id='counter' font-size='12px' x='50%' y='50%' text-anchor='middle' dominant-baseline='middle'></text>
+    <span class="fps-counter"></span>
 
 </section>
 `
+
 document.querySelector( 'body' ).appendChild( template_turtle_svg )
 
 export class TurtleSvgElement extends HTMLElement {
     // static observedAttributes = ["color", "size"];
-
     #shadow = null
+
     constructor() {
         super();
         this.#shadow = this.attachShadow( { mode: 'open' } );
