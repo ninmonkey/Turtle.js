@@ -25,10 +25,44 @@
         </nav>
     </section>
     <section class="parent-context grid-small">
-        <turtle-svg id="turtle-1">
-            <span slot="title">Turtle.js</span>
+        <turtle-svg
+            id="turtle-1"
+            popovertarget="tooltip-1"
+            popovertargetaction="toggle"
+        >
+
+           <span slot="title">Turtle.js</span>
         </turtle-svg>
+
     </section>
+
+    <!-- shown when clicking '#button-bar button' -->
+    <!--
+    <div id="submenu-1" popover="auto">
+        <button>Option A</button><br /><button>Option B</button>
+    </div>
+    -->
+
+    <!-- element shown when hovering the "popovertarget" on "#button-bar button"-->
+    <div id="tooltip-1" class="tooltip" popover="hint">Tooltip A</div>
+    <!--
+    Press the buttons to show the auto popovers. Hover or focus the buttons to show the hint popovers. When an auto popover is shown, you can show the hint popovers without hiding it.
+    ex: https://developer.mozilla.org/en-US/docs/Web/API/Popover_API/Using#using_hint_popover_state
+    -->
+
+
+    <div id="tooltip-menu-wrapper" class="">
+      <section id="button-bar">
+        <button
+          popovertarget="submenu-1"
+          popovertargetaction="toggle"
+          id="menu-1">
+          Menu A
+        </button>
+        </button>
+      </section>
+    </div>
+
 
 
     <script type="module">
@@ -60,6 +94,26 @@
             }
         });
 
+        const turtleSvgElems = document.querySelectorAll('turtle-svg')
+        turtleSvgElems.forEach((turtleSvgElem) => {
+            turtleSvgElem.addEventListener("mouseover", () => {
+                tooltips[0].showPopover({ source: turtleSvgElem });
+            });
+
+            turtleSvgElem.addEventListener("mouseout", () => {
+                tooltips[0].hidePopover();
+            });
+
+            turtleSvgElem.addEventListener("focus", () => {
+                tooltips[0].showPopover({ source: turtleSvgElem });
+            });
+
+            turtleSvgElem.addEventListener("blur", () => {
+                tooltips[0].hidePopover();
+            });
+        })
+
+
         // globals
         window.bag ??= {}
         window.Turtle = Turtle
@@ -76,7 +130,37 @@
 
         console.trace('debug globals: ', { Turtle, TurtleSvgElement, turt, InitTurtle })
 
+        // tooltips
+        const tooltips = document.querySelectorAll(".tooltip");
+            const btns = document.querySelectorAll("#button-bar button");
+
+        function Page_AddTooltipEventListenerN(i) {
+            btns[i].addEventListener("mouseover", () => {
+                tooltips[i].showPopover({ source: btns[i] });
+            });
+
+            btns[i].addEventListener("mouseout", () => {
+                tooltips[i].hidePopover();
+            });
+
+            btns[i].addEventListener("focus", () => {
+                tooltips[i].showPopover({ source: btns[i] });
+            });
+
+            btns[i].addEventListener("blur", () => {
+                tooltips[i].hidePopover();
+            });
+        }
+
+        for (let i = 0; i < btns.length; i++) {
+            Page_AddTooltipEventListenerN(i);
+        }
+
+
+
     </script>
+
+
 </body>
 
 </html>

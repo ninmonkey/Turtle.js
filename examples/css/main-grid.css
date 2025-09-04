@@ -1,3 +1,5 @@
+@import url('./popover-tooltip.css ');
+
 :root {
     --bg-primary-1: #1f1f1f;
     --bg-primary-2: #464746;
@@ -80,6 +82,10 @@ nav {
 
     }
 
+}
+
+.hidden {
+    display: none;
 }
 
 .svg-container {
