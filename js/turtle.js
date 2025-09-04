@@ -108,6 +108,7 @@ export class Turtle {
         turtle.updateFpsText()
     }
     updateFpsText () {
+        if ( !state.textContext.textContent ) { return }
         state.textContext.textContent =
             `${ Math.round( state.frameCount / ( ( new Date() - state.time ) / 1000 ) * 100 ) / 100 } fps`
     }
@@ -138,11 +139,16 @@ export function AnimateFrame ( timestamp ) {
     const turtle = state.turtle
 
     // turtle.rotate( Math.random() * 360 ).polygon( 100, 8 )
+
     turtle
-        .rotate( 25 )
-        .forward( 25 )
-        .rotate( 45 )
-        .forward( 25 )
+        .rotate( 90 )
+        .forward( 4 )
+        .rotate( 90 )
+        .forward( 4 )
+        .rotate( 90 )
+        .forward( 4 )
+        .rotate( 90 )
+
     // .polygon( 5, 4 )
     // .polygon( 4, 3 )
     turtle.updateSvg( state.context )

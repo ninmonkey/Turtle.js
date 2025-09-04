@@ -12,10 +12,8 @@ template_turtle_svg.innerHTML = `
     }
     :host {
         display: block;
-        border: 1px dotted black;
         padding: 10px;
         margin: 10px;
-        outline: 3px solid green;
     }
 </style>
 <section class="turtle-svg-wrapper">
@@ -32,7 +30,7 @@ template_turtle_svg.innerHTML = `
             class          = 'svg-path'
             fill           = 'transparent'
             stroke         = 'currentColor'
-            stroke-width   = '1%'
+            stroke-width   = '2%'
             stroke-linecap = 'round'
         ></path>
     </svg>
@@ -58,6 +56,16 @@ export class TurtleSvgElement extends HTMLElement {
         // this.#shadow.appendChild( template );
         // const template = template_commitMessage.content.cloneNode( true );
         // this.#shadow.appendChild( template );
+    }
+
+    GetNamedElements () {
+        const elems = {
+            root: this.#shadow,
+            svgWrapper: this.#shadow.querySelector( '.turtle-svg-wrapper' ),
+            path: this.#shadow.querySelector( '#turtle-path' ),
+            fpsCounter: this.#shadow.querySelector( '.fps-counter' ),
+        }
+        return elems
     }
 }
 customElements.define( 'turtle-svg', TurtleSvgElement );

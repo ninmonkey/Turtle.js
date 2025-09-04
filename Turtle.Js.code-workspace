@@ -34,4 +34,28 @@
         "typescript.enablePromptUseWorkspaceTsdk": false,
         "typescript.format.insertSpaceAfterTypeAssertion": true,
     },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            // {
+            //     "name": "Attach to Chrome",
+            //     "port": 9222,
+            //     "request": "attach",
+            //     "type": "chrome",
+            //     "webRoot": "${workspaceFolder}"
+            // },
+             {
+                "type": "chrome",
+                "name": "Turtle.js ⁞ 🐛 Attach to External Preview",
+                "request": "launch",
+                "url": "http://127.0.0.1:3000/examples/html/grid-example.html",
+                "presentation": {
+                    "hidden": false,
+                    "group": "0",
+                    "order": 0
+                }
+            }
+
+        ]
+    },
 }
