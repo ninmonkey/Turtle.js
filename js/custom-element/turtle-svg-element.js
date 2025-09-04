@@ -58,10 +58,11 @@ export class TurtleSvgElement extends HTMLElement {
         // this.#shadow.appendChild( template );
     }
 
-    GetNamedElements () {
+    getNamedElements () {
         const elems = {
             root: this.#shadow,
             svgWrapper: this.#shadow.querySelector( '.turtle-svg-wrapper' ),
+            svg: this.#shadow.querySelector( 'svg' ),
             path: this.#shadow.querySelector( '#turtle-path' ),
             fpsCounter: this.#shadow.querySelector( '.fps-counter' ),
         }
