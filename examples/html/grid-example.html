@@ -18,10 +18,13 @@
 <body>
     <section>
         <nav>
-            <a href="./">Go Back</a>
+            <ul>
+                <li><a href="./">Go Back</a></li>
+                <li><a href="#" id="cmd-btn-toggle-grid-large">Large / Small</a></li>
+            </ul>
         </nav>
     </section>
-    <section class="parent-context">
+    <section class="parent-context grid-small">
         <turtle-svg id="turtle-1">
             <span slot="title">Turtle.js</span>
         </turtle-svg>
@@ -29,7 +32,6 @@
 
 
     <script type="module">
-        console.log( 'enter' )
         import { InitTurtle, Turtle } from './../../js/turtle.js';
         import { TurtleSvgElement } from './../../js/custom-element/turtle-svg-element.js';
         import { ElementFromIdOrValue } from './../../js/utils.js'
@@ -47,6 +49,18 @@
             textContext: t_first.shadowRoot.querySelector( '.fps-counter' )
         } )
 
+        const toggleGridSizeButton = document.getElementById("cmd-btn-toggle-grid-large");
+        toggleGridSizeButton.addEventListener("click", () => {
+            const target = document.querySelector('section.parent-context')
+            if( target.classList.contains("grid-large") ) {
+                target.classList.replace("grid-large", 'grid-small')
+            } else {
+                target.classList.remove("grid-small")
+                target.classList.add("grid-large")
+            }
+        });
+
+        // globals
         window.bag ??= {}
         window.Turtle = Turtle
 
@@ -59,6 +73,7 @@
         // window.svgPath = window.turtSvg.getElementById("turtle-path")
         window.bag.tse = tse
         window.bag.dest = dest
+
         console.trace('debug globals: ', { Turtle, TurtleSvgElement, turt, InitTurtle })
 
     </script>
