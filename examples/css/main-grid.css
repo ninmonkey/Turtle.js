@@ -157,3 +157,7 @@ section.parent-context {
 turtle-svg {
     box-shadow: var(--shadow-elevation-medium);
 }
+
+.tooltip {
+    font-size: 0.8rem;
+}

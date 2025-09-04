@@ -83,11 +83,34 @@
             }
         });
 
+
+        // tooltips
+        const tooltips = document.querySelectorAll(".tooltip");
+            const btns = document.querySelectorAll("#button-bar button");
+
+
         function RegisterTooltipsForTurtleSvgElements( turtleSvgElements ) {
             turtleSvgElements.forEach((turtleSvgElem) => {
                 turtleSvgElem.addEventListener("mouseover", () => {
+                    const ttip = tooltips[0]
+                    // update tooltip
+                    // const from = document.querySelectorAll('turtle-svg')[0]
+                    // const to = turtleSvgElem
+                    // from.shadowRoot.querySelector('svg').outerHTML
+                    // wrap content in a pre tag to preserve formatting
+                    // const xmlText = turtleSvgElem.shadowRoot.querySelector('svg').outerHTML
+                    const cur = turtleSvgElem.shadowRoot.querySelector('svg')
+                    ttip.innerText =
+                        `Viewbox: ${ cur.getAttribute('viewBox') }
+                        X, Y: ${ cur.getAttribute('x') }, ${ cur.getAttribute('y') }.
+                        Width, Height (attr): ${ cur.getAttribute('width') } x ${ cur.getAttribute('height') }
+                        Val Width, Height (baseVal): ${ cur.width.baseVal.value } x ${ cur.height.baseVal.value }
 
-                    tooltips[0].showPopover({ source: turtleSvgElem });
+                        OuterHTML:
+                            ${ cur.outerHTML }
+                        \n`
+
+                    ttip.showPopover({ source: turtleSvgElem });
                 });
 
                 turtleSvgElem.addEventListener("mouseout", () => {
@@ -123,10 +146,6 @@
         window.bag.dest = dest
 
         console.trace('debug globals: ', { Turtle, TurtleSvgElement, turt, InitTurtle })
-
-        // tooltips
-        const tooltips = document.querySelectorAll(".tooltip");
-            const btns = document.querySelectorAll("#button-bar button");
 
         function Page_AddTooltipEventListenersForCommandBar(i) {
             // no longer wanted / to remove
