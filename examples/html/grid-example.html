@@ -45,10 +45,7 @@
     -->
 
     <!-- element shown when hovering the "popovertarget" on "#button-bar button"-->
-    <div id="tooltip-1" class="tooltip" popover="hint">
-        <div>dsfds</div>
-        <div>dsfds</div>
-        Tooltip A</div>
+    <div id="tooltip-1" class="tooltip" popover="hint">Tooltip A</div>
     <!--
     Press the buttons to show the auto popovers. Hover or focus the buttons to show the hint popovers. When an auto popover is shown, you can show the hint popovers without hiding it.
     ex: https://developer.mozilla.org/en-US/docs/Web/API/Popover_API/Using#using_hint_popover_state
@@ -92,37 +89,34 @@
         function RegisterTooltipsForTurtleSvgElements( turtleSvgElements ) {
             turtleSvgElements.forEach((turtleSvgElem) => {
                 turtleSvgElem.addEventListener("mouseover", () => {
-                    const ttip = tooltips[0]
-                    // update tooltip
-                    // const from = document.querySelectorAll('turtle-svg')[0]
-                    // const to = turtleSvgElem
-                    // from.shadowRoot.querySelector('svg').outerHTML
-                    // wrap content in a pre tag to preserve formatting
-                    // const xmlText = turtleSvgElem.shadowRoot.querySelector('svg').outerHTML
+                    const cur_tip = tooltips[0]
                     const cur = turtleSvgElem.shadowRoot.querySelector('svg')
-                    ttip.innerText =
+                    cur_tip.innerText =
                         `Viewbox: ${ cur.getAttribute('viewBox') }
                         X, Y: ${ cur.getAttribute('x') }, ${ cur.getAttribute('y') }.
-                        Width, Height (attr): ${ cur.getAttribute('width') } x ${ cur.getAttribute('height') }
+                        Width, Height (attr):d ${ cur.getAttribute('width') } x ${ cur.getAttribute('height') }
                         Val Width, Height (baseVal): ${ cur.width.baseVal.value } x ${ cur.height.baseVal.value }
 
                         OuterHTML:
                             ${ cur.outerHTML }
                         \n`
 
-                    ttip.showPopover({ source: turtleSvgElem });
+                    cur_tip.showPopover({ source: turtleSvgElem });
                 });
 
                 turtleSvgElem.addEventListener("mouseout", () => {
-                    tooltips[0].hidePopover();
+                    const cur_tip = tooltips[0]
+                    cur_tip.hidePopover();
                 });
 
                 turtleSvgElem.addEventListener("focus", () => {
-                    tooltips[0].showPopover({ source: turtleSvgElem });
+                    const cur_tip = tooltips[0]
+                    cur_tip.showPopover({ source: turtleSvgElem });
                 });
 
                 turtleSvgElem.addEventListener("blur", () => {
-                    tooltips[0].hidePopover();
+                    const cur_tip = tooltips[0]
+                    cur_tip.hidePopover();
                 });
             })
         }
