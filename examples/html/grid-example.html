@@ -47,7 +47,7 @@
     <script type="module">
         import { Turtle } from './../../js/turtle.js';
         import { TurtleSvgElement } from './../../js/custom-element/turtle-svg-element.js';
-        import { ElementFromIdOrValue } from './../../js/utils.js'
+        import { elementFromIdOrValue } from './../../js/utils.js'
         import { GetAllElements } from './../../js/debug_utils.js'
 
 
@@ -69,6 +69,10 @@
             const TurtleElem = new TurtleSvgElement()
             dest.appendChild( TurtleElem )
         }
+
+        /* example chaining
+            dbg_all().turtleSvg[0].Turtle.rotate(20).forward(10).updateSvg().rotate(20).forward(34)
+        */
 
         /* page specific handlers for `grid-example.html` */
         const toggleGridSizeButton = document.getElementById( "cmd-btn-toggle-grid-large" );

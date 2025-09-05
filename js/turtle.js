@@ -135,6 +135,14 @@ export class Turtle {
         return this
     }
 
+    waitForMs( milliseconds ) {
+        /**
+         * @description Wait for a number of milliseconds (sync?) to continue chaining calls or thenable?
+         */
+        throw "NotImplementedError"
+        return this
+    }
+
     updateSvg ( context ) {
         /**
          * @description Apply animations, Write to <svg> and calc fps
