@@ -53,7 +53,22 @@ export class TurtleSvgElement extends HTMLElement {
         this.#shadow.appendChild( template );
 
         this.#turtle = new Turtle()
-        this.#turtle.forward( 4 ).rotate( 45 ).forward( 4 ).rotate( 20 ).forward( 2 )
+        this.#turtle
+            .forward( 4 )
+            .rotate( Math.random() * 30 )
+            .forward( 4 ).rotate( 20 )
+            .rotate( Math.random() * 30 )
+            .forward( 2 )
+
+        let curTurtle = this.#turtle
+
+        for ( let i = 0; i < 20; i++ ) {
+            this.#turtle.rotate( ( Math.random() * 90 ) - 45 )
+            curTurtle.forward( Math.random() * 7 - 2 )
+        }
+        curTurtle.resize()
+
+
         this.#turtle.updateSvg( this.#shadow.querySelector( 'svg' ) )
         // render  ?
     }

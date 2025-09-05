@@ -1,4 +1,4 @@
-import { ElementFromIdOrValue } from './utils.js'
+// import { ElementFromIdOrValue } from './utils.js'
 
 export class Turtle {
     heading = 0.0
@@ -102,7 +102,7 @@ export class Turtle {
         if ( context === null ) { console.error( "Turtle context is null" ) }
 
         const path = svg.getElementById( "turtle-path" )
-        const turtle = state.turtle;
+        const turtle = this
 
         svg.setAttribute( "viewBox", `0 0 ${ turtle.width } ${ turtle.height }` );
         path.setAttribute( "d", turtle.path() );

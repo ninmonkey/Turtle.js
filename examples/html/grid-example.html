@@ -58,7 +58,26 @@
         window.t2 = tse
         window.t3 = dest
 
-        t1.rotate(30).forward(4).rotate(66).forward(7)
+        console.warn('tooltip hooks disabled')
+        // t1.rotate(30).forward(4).rotate(66).forward(7)
+
+        for( let i=0; i<7; i++ ) {
+            const TurtleElem = new TurtleSvgElement()
+            dest.appendChild( TurtleElem )
+        }
+
+        /* page specific handlers for `grid-example.html` */
+        const toggleGridSizeButton = document.getElementById( "cmd-btn-toggle-grid-large" );
+        toggleGridSizeButton.addEventListener( "click", () => {
+            const target = document.querySelector( 'section.parent-context' )
+            if ( target.classList.contains( "grid-large" ) ) {
+                target.classList.replace( "grid-large", 'grid-small' )
+            } else {
+                target.classList.remove( "grid-small" )
+                target.classList.add( "grid-large" )
+            }
+        } );
+
 
 
         if ( false ) {
