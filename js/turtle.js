@@ -1,15 +1,5 @@
 import { ElementFromIdOrValue } from './utils.js'
 
-const state = {
-    context: null,
-    frameCount: 0,
-    start: new Date(),
-    textContext: null,
-    time: new Date(),
-    turtle: null,
-    // now: null, //new Date()
-}
-
 export class Turtle {
     heading = 0.0
     steps = []
@@ -20,6 +10,12 @@ export class Turtle {
     height = 0.0
     min = { x: 0.0, y: 0.0 }
     max = { x: 0.0, y: 0.0 }
+
+    #context = null // SVG element context
+
+    #fpsFrameCount = 0
+    #fpsPrevTime = new Date()
+
     constructor() {
         this.heading = 0.0;
         this.steps = [];
@@ -97,66 +93,24 @@ export class Turtle {
     }
 
     updateSvg ( context ) {
+        /**
+         * @description Apply animations, Write to <svg> and calc fps
+         */
+        // animate frame, update svg, and calc fps
         // note: warning: polygon already writes to element
-        const svg = context ?? state.context
+        const svg = context ?? this.#context
+        if ( context === null ) { console.error( "Turtle context is null" ) }
+
         const path = svg.getElementById( "turtle-path" )
         const turtle = state.turtle;
 
         svg.setAttribute( "viewBox", `0 0 ${ turtle.width } ${ turtle.height }` );
         path.setAttribute( "d", turtle.path() );
 
-        turtle.updateFpsText()
+        const curTime = new Date()
+        const deltaTime = curTime - this.#fpsPrevTime
+        this.#fpsFrameCount++
+        this.#fpsPrevTime = curTime
+        // this.#fpsPrevTime = new Date()
     }
-    updateFpsText () {
-        if ( !state.textContext.textContent ) { return }
-        state.textContext.textContent =
-            `${ Math.round( state.frameCount / ( ( new Date() - state.time ) / 1000 ) * 100 ) / 100 } fps`
-    }
-}
-
-export function InitTurtle ( options ) {
-    state.context = ElementFromIdOrValue( options?.context );
-    state.textContext = ElementFromIdOrValue( options?.textContext );
-    state.start = null
-    state.turtle = new Turtle()
-    state.turtle.rotate( Math.random() * 360 ).polygon( 100, 8 )
-
-    window.ts = state
-    requestAnimationFrame( AnimateFrame )
-}
-export function AnimateFrame ( timestamp ) {
-    const element = state.context;
-    if ( element === null ) { throw new Error( "No context found!" ) }
-    if ( state.start === null ) {
-        state.start = timestamp;
-    }
-    const elapsed = timestamp - state.start
-    // state.now = timestamp
-    state.turtle = new Turtle()
-
-    const path = document.getElementById( "turtle-path" )
-    const svg = state.context
-    const turtle = state.turtle
-
-    // turtle.rotate( Math.random() * 360 ).polygon( 100, 8 )
-
-    turtle
-        .rotate( 90 )
-        .forward( 4 )
-        .rotate( 90 )
-        .forward( 4 )
-        .rotate( 90 )
-        .forward( 4 )
-        .rotate( 90 )
-
-    // .polygon( 5, 4 )
-    // .polygon( 4, 3 )
-    turtle.updateSvg( state.context )
-
-    // svg.setAttribute( "viewBox", `0 0 ${ turtle.width } ${ turtle.height }` )
-    // path.setAttribute( "d", turtle.path() )
-
-    state.frameCount++
-
-    requestAnimationFrame( AnimateFrame )
 }

@@ -1,4 +1,4 @@
-import { AnimateFrame, InitTurtle, Turtle } from '../turtle.js'
+import { Turtle } from '../turtle.js'
 import { ElementFromIdOrValue } from '../utils.js'
 
 const template_id = 'template-turtle-svg'
@@ -19,7 +19,7 @@ template_turtle_svg.innerHTML = `
 <section class="turtle-svg-wrapper">
     <slot name="title">
         <span class='turtle-title'>Turtle.js</span>
-    </slot>
+    </slot>t1.rotate(30).forward(4).rotate(66).forward(7)
     <svg
         width  = '100%'
         height = '100%'
@@ -44,12 +44,18 @@ document.querySelector( 'body' ).appendChild( template_turtle_svg )
 export class TurtleSvgElement extends HTMLElement {
     // static observedAttributes = ["color", "size"];
     #shadow = null
+    #turtle = null
 
     constructor() {
         super();
         this.#shadow = this.attachShadow( { mode: 'open' } );
         const template = document.getElementById( template_id ).content.cloneNode( true );
         this.#shadow.appendChild( template );
+
+        this.#turtle = new Turtle()
+        this.#turtle.forward( 4 ).rotate( 45 ).forward( 4 ).rotate( 20 ).forward( 2 )
+        this.#turtle.updateSvg( this.#shadow.querySelector( 'svg' ) )
+        // render  ?
     }
     connectedCallback () {
         // template.
@@ -60,6 +66,7 @@ export class TurtleSvgElement extends HTMLElement {
 
     getNamedElements () {
         const elems = {
+            turtle: this.#turtle,
             root: this.#shadow,
             svgWrapper: this.#shadow.querySelector( '.turtle-svg-wrapper' ),
             svg: this.#shadow.querySelector( 'svg' ),
@@ -67,6 +74,13 @@ export class TurtleSvgElement extends HTMLElement {
             fpsCounter: this.#shadow.querySelector( '.fps-counter' ),
         }
         return elems
+    }
+
+    get Turtle () {
+        /**
+         * @description returns `Turtle` instance
+         */
+        return this.#turtle
     }
 }
 customElements.define( 'turtle-svg', TurtleSvgElement );

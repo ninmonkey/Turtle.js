@@ -10,8 +10,6 @@
         :root {
             /* --bg-primary-1: #2e353d; */
         }
-
-
     </style>
 </head>
 
@@ -25,14 +23,9 @@
         </nav>
     </section>
     <section class="parent-context grid-small">
-        <turtle-svg
-            id="turtle-1"
-            popovertarget="tooltip-1"
-            popovertargetaction="toggle"
+        <turtle-svg id="turtle-1" popovertarget="tooltip-1" popovertargetaction="toggle">
 
-        >
-
-           <span slot="title">Turtle.js</span>
+            <span slot="title">Turtle.js</span>
         </turtle-svg>
 
     </section>
@@ -52,7 +45,7 @@
     -->
 
     <script type="module">
-        import { InitTurtle, Turtle } from './../../js/turtle.js';
+        import { Turtle } from './../../js/turtle.js';
         import { TurtleSvgElement } from './../../js/custom-element/turtle-svg-element.js';
         import { ElementFromIdOrValue } from './../../js/utils.js'
 
@@ -61,107 +54,117 @@
         const dest = document.querySelector( ".parent-context" )
         dest.appendChild( tse )
 
-        const t_first = document.querySelectorAll( 'turtle-svg' )[ 0 ]
-        t_first.shadowRoot.querySelector( 'svg.svg-root' )
+        window.t1 = turt
+        window.t2 = tse
+        window.t3 = dest
 
-        InitTurtle( {
-            context: t_first.shadowRoot.querySelector( 'svg.svg-root' ),
-            textContext: t_first.shadowRoot.querySelector( '.fps-counter' )
-        } )
-
-        const toggleGridSizeButton = document.getElementById("cmd-btn-toggle-grid-large");
-        toggleGridSizeButton.addEventListener("click", () => {
-            const target = document.querySelector('section.parent-context')
-            if( target.classList.contains("grid-large") ) {
-                target.classList.replace("grid-large", 'grid-small')
-            } else {
-                target.classList.remove("grid-small")
-                target.classList.add("grid-large")
-            }
-        });
+        t1.rotate(30).forward(4).rotate(66).forward(7)
 
 
-        // tooltips
-        const tooltips = document.querySelectorAll(".tooltip");
-            const btns = document.querySelectorAll("#button-bar button");
+        if ( false ) {
+
+            const t_first = document.querySelectorAll( 'turtle-svg' )[ 0 ]
+            t_first.shadowRoot.querySelector( 'svg.svg-root' )
+
+            InitTurtle( {
+                context: t_first.shadowRoot.querySelector( 'svg.svg-root' ),
+                textContext: t_first.shadowRoot.querySelector( '.fps-counter' )
+            } )
+
+            const toggleGridSizeButton = document.getElementById( "cmd-btn-toggle-grid-large" );
+            toggleGridSizeButton.addEventListener( "click", () => {
+                const target = document.querySelector( 'section.parent-context' )
+                if ( target.classList.contains( "grid-large" ) ) {
+                    target.classList.replace( "grid-large", 'grid-small' )
+                } else {
+                    target.classList.remove( "grid-small" )
+                    target.classList.add( "grid-large" )
+                }
+            } );
 
 
-        function RegisterTooltipsForTurtleSvgElements( turtleSvgElements ) {
-            turtleSvgElements.forEach((turtleSvgElem) => {
-                turtleSvgElem.addEventListener("mouseover", () => {
-                    const cur_tip = tooltips[0]
-                    const cur = turtleSvgElem.shadowRoot.querySelector('svg')
-                    cur_tip.innerText =
-                        `Viewbox: ${ cur.getAttribute('viewBox') }
-                        X, Y: ${ cur.getAttribute('x') }, ${ cur.getAttribute('y') }.
-                        Width, Height (attr):d ${ cur.getAttribute('width') } x ${ cur.getAttribute('height') }
+            // tooltips
+            const tooltips = document.querySelectorAll( ".tooltip" );
+            const btns = document.querySelectorAll( "#button-bar button" );
+
+
+            function RegisterTooltipsForTurtleSvgElements ( turtleSvgElements ) {
+                turtleSvgElements.forEach( ( turtleSvgElem ) => {
+                    turtleSvgElem.addEventListener( "mouseover", () => {
+                        const cur_tip = tooltips[ 0 ]
+                        const cur = turtleSvgElem.shadowRoot.querySelector( 'svg' )
+                        cur_tip.innerText =
+                            `Viewbox: ${ cur.getAttribute( 'viewBox' ) }
+                        X, Y: ${ cur.getAttribute( 'x' ) }, ${ cur.getAttribute( 'y' ) }.
+                        Width, Height (attr):d ${ cur.getAttribute( 'width' ) } x ${ cur.getAttribute( 'height' ) }
                         Val Width, Height (baseVal): ${ cur.width.baseVal.value } x ${ cur.height.baseVal.value }
 
                         OuterHTML:
                             ${ cur.outerHTML }
                         \n`
 
-                    cur_tip.showPopover({ source: turtleSvgElem });
-                });
+                        cur_tip.showPopover( { source: turtleSvgElem } );
+                    } );
 
-                turtleSvgElem.addEventListener("mouseout", () => {
-                    const cur_tip = tooltips[0]
-                    cur_tip.hidePopover();
-                });
+                    turtleSvgElem.addEventListener( "mouseout", () => {
+                        const cur_tip = tooltips[ 0 ]
+                        cur_tip.hidePopover();
+                    } );
 
-                turtleSvgElem.addEventListener("focus", () => {
-                    const cur_tip = tooltips[0]
-                    cur_tip.showPopover({ source: turtleSvgElem });
-                });
+                    turtleSvgElem.addEventListener( "focus", () => {
+                        const cur_tip = tooltips[ 0 ]
+                        cur_tip.showPopover( { source: turtleSvgElem } );
+                    } );
 
-                turtleSvgElem.addEventListener("blur", () => {
-                    const cur_tip = tooltips[0]
-                    cur_tip.hidePopover();
-                });
-            })
-        }
+                    turtleSvgElem.addEventListener( "blur", () => {
+                        const cur_tip = tooltips[ 0 ]
+                        cur_tip.hidePopover();
+                    } );
+                } )
+            }
 
-        const turtleSvgElements = document.querySelectorAll('turtle-svg')
-        RegisterTooltipsForTurtleSvgElements( turtleSvgElements )
+            const turtleSvgElements = document.querySelectorAll( 'turtle-svg' )
+            RegisterTooltipsForTurtleSvgElements( turtleSvgElements )
 
 
-        // globals
-        window.bag ??= {}
-        window.Turtle = Turtle
+            // globals
+            window.bag ??= {}
+            window.Turtle = Turtle
 
-        window.Turtle = Turtle
-        window.TurtleSvgElement = TurtleSvgElement
-        window.turt = turt
-        window.t = turt
-        window.InitTurtle = InitTurtle
-        // window.turtSvg = document.getElementById("turtle-svg")
-        // window.svgPath = window.turtSvg.getElementById("turtle-path")
-        window.bag.tse = tse
-        window.bag.dest = dest
+            window.Turtle = Turtle
+            window.TurtleSvgElement = TurtleSvgElement
+            window.turt = turt
+            window.t = turt
+            window.InitTurtle = InitTurtle
+            // window.turtSvg = document.getElementById("turtle-svg")
+            // window.svgPath = window.turtSvg.getElementById("turtle-path")
+            window.bag.tse = tse
+            window.bag.dest = dest
 
-        console.trace('debug globals: ', { Turtle, TurtleSvgElement, turt, InitTurtle })
+            console.trace( 'debug globals: ', { Turtle, TurtleSvgElement, turt, InitTurtle } )
 
-        function Page_AddTooltipEventListenersForCommandBar(i) {
-            // no longer wanted / to remove
-            btns[i].addEventListener("mouseover", () => {
-                tooltips[i].showPopover({ source: btns[i] });
-            });
+            function Page_AddTooltipEventListenersForCommandBar ( i ) {
+                // no longer wanted / to remove
+                btns[ i ].addEventListener( "mouseover", () => {
+                    tooltips[ i ].showPopover( { source: btns[ i ] } );
+                } );
 
-            btns[i].addEventListener("mouseout", () => {
-                tooltips[i].hidePopover();
-            });
+                btns[ i ].addEventListener( "mouseout", () => {
+                    tooltips[ i ].hidePopover();
+                } );
 
-            btns[i].addEventListener("focus", () => {
-                tooltips[i].showPopover({ source: btns[i] });
-            });
+                btns[ i ].addEventListener( "focus", () => {
+                    tooltips[ i ].showPopover( { source: btns[ i ] } );
+                } );
 
-            btns[i].addEventListener("blur", () => {
-                tooltips[i].hidePopover();
-            });
-        }
+                btns[ i ].addEventListener( "blur", () => {
+                    tooltips[ i ].hidePopover();
+                } );
+            }
 
-        for (let i = 0; i < btns.length; i++) {
-            Page_AddTooltipEventListenersForCommandBar(i);
+            for ( let i = 0; i < btns.length; i++ ) {
+                Page_AddTooltipEventListenersForCommandBar( i );
+            }
         }
 
 
