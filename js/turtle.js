@@ -15,8 +15,19 @@ export class Turtle {
 
     #fpsFrameCount = 0
     #fpsPrevTime = new Date()
+    #fpsFirstFrameTime = null
 
-    constructor() {
+    constructor( config = {} ) {
+        /**
+         * @description Create Turtle instance
+         * @param {Object} config settings
+         * @param {SVGElement} config.context SVG element to write to
+         */
+
+        const defaults = {
+            context: null,
+        }
+        const settings = { ...defaults, ...config }
         this.heading = 0.0;
         this.steps = [];
         this.penDown = true;
@@ -26,14 +37,23 @@ export class Turtle {
         this.height = 0.0;
         this.min = { x: 0.0, y: 0.0 };
         this.max = { x: 0.0, y: 0.0 };
+        this.#context = settings?.context
     }
 
     rotate ( angle ) {
+        /**
+         * @description Rotate heading by angle in degrees
+         * @returns {Turtle} instance for chaining
+         * */
         this.heading += Number( angle );
         return this;
     }
 
     step ( dx, dy ) {
+        /**
+         * @description Move by dx, dy while drawing (if pen is down, else without)
+         * @returns {Turtle} instance for chaining
+         */
         if ( this.penDown ) {
             this.steps.push( ` l${ dx } ${ dy } ` );
         } else {
@@ -46,25 +66,41 @@ export class Turtle {
     }
 
     forward ( distance ) {
+        /**
+         * @description Move forward by distance in current heading with drawing (pen down)
+         * @returns {Turtle} instance for chaining
+         * */
         return this.step(
             distance * Math.cos( ( this.heading * Math.PI ) / 180 ),
             distance * Math.sin( ( this.heading * Math.PI ) / 180 )
-        );
+        )
     }
 
     goto ( x, y ) {
+        /**
+         * @description Move to x,y with drawing (pen down)
+         * @returns {Turtle} instance for chaining
+         * */
         return this.step( x - this.x, y - this.y );
     }
 
     teleport ( x, y ) {
-        var penState = this.penDown; // gasp, verify it's not meant ot be module scope
+        /**
+         * @description Move to x,y without drawing (pen up)
+         * @returns {Turtle} instance for chaining
+         */
+        const penStartState = this.penDown
         this.penDown = false;
         this.step( x - this.x, y - this.y );
-        this.penDown = penState;
+        this.penDown = penStartState;
         return this;
     }
 
     resize () {
+        /**
+         * @description Recalculate bounding box
+         * @returns {Turtle} instance for chaining
+         */
         if ( this.x > this.max.x ) {
             this.max.x = this.x;
         }
@@ -87,19 +123,25 @@ export class Turtle {
     }
 
     polygon ( size, sides = 6 ) {
+        /**
+         * @description Draw a polygon with N sides
+         * @param {number} size Length of each side
+         * @param {number} sides Number of sides, default 6 (hexagon)
+         * @returns {Turtle} instance for chaining
+         */
         for ( let side = 0; side < sides; side++ ) {
             this.forward( size ).rotate( 360 / sides );
         }
+        return this
     }
 
     updateSvg ( context ) {
         /**
          * @description Apply animations, Write to <svg> and calc fps
+         * @returns {Turtle} instance for chaining
          */
-        // animate frame, update svg, and calc fps
-        // note: warning: polygon already writes to element
         const svg = context ?? this.#context
-        if ( context === null ) { console.error( "Turtle context is null" ) }
+        if ( svg === null ) { console.error( "Turtle context is null" ) }
 
         const path = svg.getElementById( "turtle-path" )
         const turtle = this
@@ -111,6 +153,7 @@ export class Turtle {
         const deltaTime = curTime - this.#fpsPrevTime
         this.#fpsFrameCount++
         this.#fpsPrevTime = curTime
-        // this.#fpsPrevTime = new Date()
+        this.#fpsFirstFrameTime ??= curTime
+        return this
     }
 }

@@ -48,6 +48,9 @@
         import { Turtle } from './../../js/turtle.js';
         import { TurtleSvgElement } from './../../js/custom-element/turtle-svg-element.js';
         import { ElementFromIdOrValue } from './../../js/utils.js'
+        import { GetAllElements } from './../../js/debug_utils.js'
+
+
 
         let turt = new Turtle();
         const tse = new TurtleSvgElement()
@@ -57,6 +60,7 @@
         window.t1 = turt
         window.t2 = tse
         window.t3 = dest
+        window.dbg_all = GetAllElements
 
         console.warn('tooltip hooks disabled')
         // t1.rotate(30).forward(4).rotate(66).forward(7)

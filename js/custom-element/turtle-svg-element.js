@@ -45,14 +45,16 @@ export class TurtleSvgElement extends HTMLElement {
     // static observedAttributes = ["color", "size"];
     #shadow = null
     #turtle = null
+    #svgContext = null
 
     constructor() {
         super();
         this.#shadow = this.attachShadow( { mode: 'open' } );
         const template = document.getElementById( template_id ).content.cloneNode( true );
         this.#shadow.appendChild( template );
+        this.#svgContext = this.#shadow.querySelector( 'svg' )
 
-        this.#turtle = new Turtle()
+        this.#turtle = new Turtle( { context: this.#svgContext } )
         this.#turtle
             .forward( 4 )
             .rotate( Math.random() * 30 )
@@ -62,14 +64,16 @@ export class TurtleSvgElement extends HTMLElement {
 
         let curTurtle = this.#turtle
 
+
         for ( let i = 0; i < 20; i++ ) {
             this.#turtle.rotate( ( Math.random() * 90 ) - 45 )
             curTurtle.forward( Math.random() * 7 - 2 )
         }
         curTurtle.resize()
 
+        this.updateSvg()
 
-        this.#turtle.updateSvg( this.#shadow.querySelector( 'svg' ) )
+
         // render  ?
     }
     connectedCallback () {
@@ -89,6 +93,14 @@ export class TurtleSvgElement extends HTMLElement {
             fpsCounter: this.#shadow.querySelector( '.fps-counter' ),
         }
         return elems
+    }
+
+    updateSvg () {
+        /**
+         * @description Update svg DOM in sync with the turtle
+         */
+        this.#turtle.updateSvg()
+        // this.#turtle.updateSvg( this.#svgContext )
     }
 
     get Turtle () {
