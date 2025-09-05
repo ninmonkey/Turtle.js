@@ -6,6 +6,8 @@ export function GetAllElements ( rootElement = document ) {
     const info = {
         svg: rootElement.querySelectorAll( 'svg' ),
         turtleSvg: rootElement.querySelectorAll( 'turtle-svg' ),
+        parentContext: rootElement.querySelectorAll( '.parent-context' ),
+        hidden: rootElement.querySelectorAll( '.hidden' ),
     }
     return info
 }

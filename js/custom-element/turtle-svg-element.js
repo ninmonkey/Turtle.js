@@ -55,7 +55,9 @@ export class TurtleSvgElement extends HTMLElement {
         this.#shadow.appendChild( template );
         this.#svgContext = this.#shadow.querySelector( 'svg' )
         this.clear()
-        this.dataset.title = 'Turt.js'
+
+        this.Title = this.dataset.title ?? 'default'
+
 
         this.#turtle.polygon( 4, randomInt(3, 10 ) )
         this.#turtle.resize()

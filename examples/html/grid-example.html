@@ -24,10 +24,8 @@
     </section>
     <section class="parent-context grid-small">
         <turtle-svg id="turtle-1" popovertarget="tooltip-1" popovertargetaction="toggle">
-
-            <span slot="title">Turtle.js</span>
+            <span slot="title">First</span>
         </turtle-svg>
-
     </section>
 
     <!-- shown when clicking '#button-bar button' -->
@@ -50,25 +48,59 @@
         import { elementFromIdOrValue } from './../../js/utils.js'
         import { GetAllElements } from './../../js/debug_utils.js'
 
-
-
-        let turt = new Turtle();
-        const tse = new TurtleSvgElement()
+        // let turt = new Turtle();
+        // const tse = new TurtleSvgElement()
         const dest = document.querySelector( ".parent-context" )
-        dest.appendChild( tse )
+        // dest.appendChild( tse )
 
-        window.t1 = turt
-        window.t2 = tse
-        window.t3 = dest
+        // window.t1 = turt
+        // window.t3 = dest
         window.dbg_all = GetAllElements
 
         console.warn('tooltip hooks disabled')
         // t1.rotate(30).forward(4).rotate(66).forward(7)
 
-        for( let i=0; i<7; i++ ) {
-            const TurtleElem = new TurtleSvgElement()
-            dest.appendChild( TurtleElem )
-        }
+        // for( let i=0; i<3; i++ ) {
+        //     const TurtleElem = new TurtleSvgElement()
+        //     dest.appendChild( TurtleElem )
+        // }
+
+        const t1 = new TurtleSvgElement()
+        let cur_elem
+        let turt
+
+        cur_elem = t1
+        turt = cur_elem.Turtle
+        // cur_elem.clear()
+        turt.rotate(30).forward(4).rotate(66).forward(7)
+        dest.appendChild( t1 )
+
+        const t2 = new TurtleSvgElement()
+        cur_elem = t2
+        dest.appendChild( t2 )
+
+        turt = cur_elem.Turtle
+        // turt.clear()wq
+        // turt.clear()
+
+        turt
+            .forward(10)
+            .rotate(90)
+            .forward(10)
+            .rotate(90)
+            .forward(10)
+            .rotate(90)
+            .updateSvg()
+            // .updateSvg()
+
+        // cur_elem.dataset.title = 'dsfds'
+        // cur_elem.Title = 'sdfds'
+        // cur_elem.updateSvg()
+
+        // cur_turt.clear()
+        // cur_turt.polygon( 5, 20 )
+        // cur_turt.polygon( 5, 20 ).rotate(30).forward(10).polygon( 3, 10 ).updateSvg()
+
 
         /* example chaining
             dbg_all().turtleSvg[0].Turtle.rotate(20).forward(10).updateSvg().rotate(20).forward(34)
