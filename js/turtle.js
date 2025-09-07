@@ -16,6 +16,7 @@ export class Turtle {
     #fpsFrameCount = 0
     #fpsPrevTime = new Date()
     #fpsFirstFrameTime = null
+    #config = {}
 
     constructor( config = {} ) {
         /**
@@ -26,6 +27,7 @@ export class Turtle {
 
         const defaults = {
             context: null,
+            autoResize: true,
         }
         const settings = { ...defaults, ...config }
         this.heading = 0.0;
@@ -38,6 +40,7 @@ export class Turtle {
         this.min = { x: 0.0, y: 0.0 };
         this.max = { x: 0.0, y: 0.0 };
         this.#context = settings?.context
+        this.#config.autoResize = settings?.autoResize
     }
 
     rotate ( angle ) {
@@ -61,7 +64,7 @@ export class Turtle {
         }
         this.x += dx;
         this.y += dy;
-        this.resize();
+        if( this.#config.autoResize ) { this.resize() }
         return this;
     }
 
@@ -115,6 +118,7 @@ export class Turtle {
         }
         this.width = this.max.x - this.min.x;
         this.height = this.max.y - this.min.y;
+        if( this.#config.autoResize ) { this.updateSvg() }
         return this;
     }
 
@@ -131,6 +135,7 @@ export class Turtle {
          */
         for ( let side = 0; side < sides; side++ ) {
             this.forward( size ).rotate( 360 / sides );
+            if( this.#config.autoResize ) { this.resize() }
         }
         return this
     }

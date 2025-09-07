@@ -6,9 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Turtle.js</title>
     <link rel="stylesheet" href="./../css/main-grid.css" type="text/css">
+    <link href="./../css/prism.css" rel="stylesheet" />
     <style>
         :root {
             /* --bg-primary-1: #2e353d; */
+        }
+        .inline-code-block {
+            display: inline-block;
+            padding: 0.2rem 0.4rem;
+            background-color: var(--section-bg-color);
+            border-radius: 3px;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            color: var(--text-color);
+            max-width: 180ch;
+            margin: min(10vw, 30px) auto;
         }
     </style>
 </head>
@@ -23,9 +35,9 @@
         </nav>
     </section>
     <section class="parent-context grid-small">
-        <turtle-svg id="turtle-1" popovertarget="tooltip-1" popovertargetaction="toggle">
+        <!-- <turtle-svg id="turtle-1" popovertarget="tooltip-1" popovertargetaction="toggle">
             <span slot="title">First</span>
-        </turtle-svg>
+        </turtle-svg> -->
     </section>
 
     <!-- shown when clicking '#button-bar button' -->
@@ -45,7 +57,7 @@
     <script type="module">
         import { Turtle } from './../../js/turtle.js';
         import { TurtleSvgElement } from './../../js/custom-element/turtle-svg-element.js';
-        import { elementFromIdOrValue } from './../../js/utils.js'
+        import { randomInt, elementFromIdOrValue } from './../../js/utils.js'
         import { GetAllElements } from './../../js/debug_utils.js'
 
         // let turt = new Turtle();
@@ -56,50 +68,33 @@
         // window.t1 = turt
         // window.t3 = dest
         window.dbg_all = GetAllElements
-
         console.warn('tooltip hooks disabled')
-        // t1.rotate(30).forward(4).rotate(66).forward(7)
+        // t1.rotate(30).forward(4).nst t1_elem = new TurtleSvgElement()
+
+        const t1_elem = new TurtleSvgElement()
+        const turt1 = t1_elem.Turtle
+        dest.appendChild( t1_elem )
+        t1_elem.Title = 'Rand Polygon 1'
+        turt1
+            .polygon( 10, randomInt(4, 10) )
+            // .updateSvg()
+
+        const t2_elem = new TurtleSvgElement()
+        const turt2 = t2_elem.Turtle
+        dest.appendChild( t2_elem )
+        t2_elem.Title = 'Rand Polygon 2'
+        turt2
+            .polygon( 10, randomInt(4, 10) )
+            .updateSvg()
+
+
+        // rotate(66).forward(7)
 
         // for( let i=0; i<3; i++ ) {
         //     const TurtleElem = new TurtleSvgElement()
         //     dest.appendChild( TurtleElem )
         // }
 
-        const t1 = new TurtleSvgElement()
-        let cur_elem
-        let turt
-
-        cur_elem = t1
-        turt = cur_elem.Turtle
-        // cur_elem.clear()
-        turt.rotate(30).forward(4).rotate(66).forward(7)
-        dest.appendChild( t1 )
-
-        const t2 = new TurtleSvgElement()
-        cur_elem = t2
-        dest.appendChild( t2 )
-
-        turt = cur_elem.Turtle
-        // turt.clear()wq
-        // turt.clear()
-
-        turt
-            .forward(10)
-            .rotate(90)
-            .forward(10)
-            .rotate(90)
-            .forward(10)
-            .rotate(90)
-            .updateSvg()
-            // .updateSvg()
-
-        // cur_elem.dataset.title = 'dsfds'
-        // cur_elem.Title = 'sdfds'
-        // cur_elem.updateSvg()
-
-        // cur_turt.clear()
-        // cur_turt.polygon( 5, 20 )
-        // cur_turt.polygon( 5, 20 ).rotate(30).forward(10).polygon( 3, 10 ).updateSvg()
 
 
         /* example chaining
@@ -119,71 +114,76 @@
         } );
 
 
+        // tooltips
+        const tooltips = document.querySelectorAll( ".tooltip" );
+        const btns = document.querySelectorAll( "#button-bar button" );
+
+
+        function RegisterTooltipsForTurtleSvgElements ( turtleSvgElements ) {
+            turtleSvgElements.forEach( ( turtleSvgElem ) => {
+                turtleSvgElem.addEventListener( "mouseover", () => {
+                    const cur_tip = tooltips[ 0 ]
+                    const cur = turtleSvgElem.shadowRoot.querySelector( 'svg' )
+                    const escaped_xml = cur.outerHTML
+                        .replace( /&/g, '&amp;' )
+                        .replace( /</g, '&lt;' )
+                        .replace( />/g, '&gt;' )
+                        .replace( /"/g, '&quot;' )
+                        .replace( /'/g, '&#039;' );
+                    const rawText = `
+                    <p>
+                    Viewbox: ${ cur.getAttribute( 'viewBox' ) }
+                    <br/>X, Y: ${ cur.getAttribute( 'x' ) }, ${ cur.getAttribute( 'y' ) }.
+                    <br/>Width, Height (attr):d ${ cur.getAttribute( 'width' ) } x ${ cur.getAttribute( 'height' ) }
+                    <br/>Val Width, Height (baseVal): ${ cur.width.baseVal.value } x ${ cur.height.baseVal.value }
+                    </p>
+                    <p>
+                    Svg:</p>
+                    <pre class="inline-code-block">
+                        <code class="language-xml">
+                        ${ escaped_xml }
+                        </code>
+                        </pre>
+                    \n`
+                    cur_tip.innerHTML = rawText
+
+                    window.Prism.highlightAll()
+                    cur_tip.showPopover( { source: turtleSvgElem } );
+                } );
+
+                turtleSvgElem.addEventListener( "mouseout", () => {
+                    const cur_tip = tooltips[ 0 ]
+                    // cur_tip.hidePopover();
+                } );
+
+                turtleSvgElem.addEventListener( "focus", () => {
+                    const cur_tip = tooltips[ 0 ]
+                    cur_tip.showPopover( { source: turtleSvgElem } );
+                } );
+
+                turtleSvgElem.addEventListener( "blur", () => {
+                    const cur_tip = tooltips[ 0 ]
+                    cur_tip.hidePopover();
+                } );
+            } )
+        }
+
+        const turtleSvgElements = document.querySelectorAll( 'turtle-svg' )
+        RegisterTooltipsForTurtleSvgElements( turtleSvgElements )
 
         if ( false ) {
 
-            const t_first = document.querySelectorAll( 'turtle-svg' )[ 0 ]
-            t_first.shadowRoot.querySelector( 'svg.svg-root' )
+            // const t_first = document.querySelectorAll( 'turtle-svg' )[ 0 ]
+            // t_first.shadowRoot.querySelector( 'svg.svg-root' )
 
-            InitTurtle( {
-                context: t_first.shadowRoot.querySelector( 'svg.svg-root' ),
-                textContext: t_first.shadowRoot.querySelector( '.fps-counter' )
-            } )
-
-            const toggleGridSizeButton = document.getElementById( "cmd-btn-toggle-grid-large" );
-            toggleGridSizeButton.addEventListener( "click", () => {
-                const target = document.querySelector( 'section.parent-context' )
-                if ( target.classList.contains( "grid-large" ) ) {
-                    target.classList.replace( "grid-large", 'grid-small' )
-                } else {
-                    target.classList.remove( "grid-small" )
-                    target.classList.add( "grid-large" )
-                }
-            } );
+            // InitTurtle( {
+            //     context: t_first.shadowRoot.querySelector( 'svg.svg-root' ),
+            //     textContext: t_first.shadowRoot.querySelector( '.fps-counter' )
+            // } )
 
 
-            // tooltips
-            const tooltips = document.querySelectorAll( ".tooltip" );
-            const btns = document.querySelectorAll( "#button-bar button" );
 
 
-            function RegisterTooltipsForTurtleSvgElements ( turtleSvgElements ) {
-                turtleSvgElements.forEach( ( turtleSvgElem ) => {
-                    turtleSvgElem.addEventListener( "mouseover", () => {
-                        const cur_tip = tooltips[ 0 ]
-                        const cur = turtleSvgElem.shadowRoot.querySelector( 'svg' )
-                        cur_tip.innerText =
-                            `Viewbox: ${ cur.getAttribute( 'viewBox' ) }
-                        X, Y: ${ cur.getAttribute( 'x' ) }, ${ cur.getAttribute( 'y' ) }.
-                        Width, Height (attr):d ${ cur.getAttribute( 'width' ) } x ${ cur.getAttribute( 'height' ) }
-                        Val Width, Height (baseVal): ${ cur.width.baseVal.value } x ${ cur.height.baseVal.value }
-
-                        OuterHTML:
-                            ${ cur.outerHTML }
-                        \n`
-
-                        cur_tip.showPopover( { source: turtleSvgElem } );
-                    } );
-
-                    turtleSvgElem.addEventListener( "mouseout", () => {
-                        const cur_tip = tooltips[ 0 ]
-                        cur_tip.hidePopover();
-                    } );
-
-                    turtleSvgElem.addEventListener( "focus", () => {
-                        const cur_tip = tooltips[ 0 ]
-                        cur_tip.showPopover( { source: turtleSvgElem } );
-                    } );
-
-                    turtleSvgElem.addEventListener( "blur", () => {
-                        const cur_tip = tooltips[ 0 ]
-                        cur_tip.hidePopover();
-                    } );
-                } )
-            }
-
-            const turtleSvgElements = document.querySelectorAll( 'turtle-svg' )
-            RegisterTooltipsForTurtleSvgElements( turtleSvgElements )
 
 
             // globals
@@ -229,6 +229,7 @@
 
 
     </script>
+    <script src="../../js/prism.js"></script>
 
 
 </body>

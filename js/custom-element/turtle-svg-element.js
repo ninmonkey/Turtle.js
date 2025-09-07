@@ -15,14 +15,21 @@ template_turtle_svg.innerHTML = `
         padding: 10px;
         margin: 10px;
     }
+    .turtle-title, svg {
+        margin: 1rem;
+    }
+    svg {
+        // padding: 1rem;
+    }
 </style>
 <section class="turtle-svg-wrapper">
     <slot name="title">
         <span class='turtle-title'>js</span>
     </slot>
-    <svg
+    <!-- was
         width  = '100%'
-        height = '100%'
+        height = '100%' -->
+    <svg
         class  = 'svg-root'
     >
         <path
@@ -51,23 +58,32 @@ export class TurtleSvgElement extends HTMLElement {
         super();
         console.trace('note: correct behavior move DOM manip outside of ctor')
         this.#shadow = this.attachShadow( { mode: 'open' } );
-        const template = document.getElementById( template_id ).content.cloneNode( true );
-        this.#shadow.appendChild( template );
-        this.#svgContext = this.#shadow.querySelector( 'svg' )
+
+        this.#rebuildDOM()
         this.clear()
 
-        this.Title = this.dataset.title ?? 'default'
+        this.Title = this.dataset.title ?? ''
 
 
-        this.#turtle.polygon( 4, randomInt(3, 10 ) )
-        this.#turtle.resize()
-        this.updateSvg()
+        // this.#turtle.polygon( 4, randomInt(3, 10 ) )
+        // this.#turtle.resize()
+        // this.clear()
+        // this.updateSvg()
     }
     connectedCallback () {
         // template.
         // this.#shadow.appendChild( template );
         // const template = template_commitMessage.content.cloneNode( true );
         // this.#shadow.appendChild( template );
+    }
+
+    #rebuildDOM() {
+        // [re]build DOM
+        const template = document.getElementById( template_id ).content.cloneNode( true );
+        this.#shadow.replaceChildren()
+        this.#shadow.appendChild( template );
+        this.#svgContext = this.#shadow.querySelector( 'svg' )
+
     }
 
     clear() {
