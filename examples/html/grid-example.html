@@ -61,23 +61,28 @@
         import { GetAllElements } from './../../js/debug_utils.js'
 
         const parentElement = document.querySelector( ".parent-context" )
+        let cur
 
-        const t1_elem = new TurtleSvgElement()
-        const turt1 = t1_elem.Turtle
-        parentElement.appendChild( t1_elem )
-        t1_elem.Title = 'Rand Polygon 1'
-        turt1
+        function NewTurtle( title ) {
+            const elem = new TurtleSvgElement()
+            const turt = elem.Turtle
+            parentElement.appendChild( elem )
+            elem.Title = title
+            return turt
+        }
+
+        cur = NewTurtle('Rand Polygon 1')
             .polygon( 10, randomInt(5, 10) )
-            // .updateSvg()
 
-        const t2_elem = new TurtleSvgElement()
-        const turt2 = t2_elem.Turtle
-        parentElement.appendChild( t2_elem )
-        t2_elem.Title = 'Rand Polygon 2'
-        turt2
-            .polygon( 100, randomInt(5, 10) )
-            .resize()
-            .updateSvg()
+        cur = NewTurtle('Rand Polygon 2')
+            .polygon( 50, randomInt(5, 10) )
+
+        cur = NewTurtle('Tri')
+            .polygon( 10, 3 )
+
+
+        cur = NewTurtle('Tri')
+            .polygon( 10, 3 )
 
         /* example chaining
             dbg_all().turtleSvg[0].Turtle.rotate(20).forward(10).updateSvg().rotate(20).forward(34)
@@ -94,13 +99,16 @@
                 target.classList.add( "grid-large" )
             }
         } );
-
-
         // tooltips
         const tooltips = document.querySelectorAll( ".tooltip" );
         const btns = document.querySelectorAll( "#button-bar button" );
 
         function RegisterTooltipsForTurtleSvgElements ( turtleSvgElements ) {
+            /**
+             * @description Register hover tooltip for each TurtleSvgElement in the NodeList
+             * @param {NodeListOf<TurtleSvgElement>} turtleSvgElements
+             */
+
             turtleSvgElements.forEach( ( turtleSvgElem ) => {
                 turtleSvgElem.addEventListener( "mouseover", () => {
                     const cur_tip = tooltips[ 0 ]
