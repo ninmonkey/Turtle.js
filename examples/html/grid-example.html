@@ -67,7 +67,7 @@
         parentElement.appendChild( t1_elem )
         t1_elem.Title = 'Rand Polygon 1'
         turt1
-            .polygon( 10, randomInt(4, 10) )
+            .polygon( 10, randomInt(5, 10) )
             // .updateSvg()
 
         const t2_elem = new TurtleSvgElement()
@@ -75,7 +75,8 @@
         parentElement.appendChild( t2_elem )
         t2_elem.Title = 'Rand Polygon 2'
         turt2
-            .polygon( 10, randomInt(4, 10) )
+            .polygon( 100, randomInt(5, 10) )
+            .resize()
             .updateSvg()
 
         /* example chaining
@@ -107,25 +108,23 @@
                     const formatted_xml = simpleFormatHtmlWhitespace( cur.outerHTML )
                     const escaped_xml =
                         simpleEscapeHtml( formatted_xml )
-                        // formatted_xml
-                        //     // .replace( /\s{2,}/g, '')
-                        //     .replace( /&/g, '&amp;' )
-                        //     .replace( /</g, '&lt;' )
-                        //     .replace( />/g, '&gt;' )
-                        //     .replace( /"/g, '&quot;' )
-                        //     .replace( /'/g, '&#039;' )
-                        //     .replace( /^\s+/, '')
-                        //     .replaceAll( /\n{2,}/g, '\n') // collapse newlines
+
+                    const abbr_viewBox =
+                        cur.getAttribute('viewBox')
+                            .split( /\s/ )
+                            .map( (s) => new Number(s).toFixed(1) )
+                            .join(' ')
+
                     const rawText = `
                     <p>
-                    Viewbox: ${ cur.getAttribute( 'viewBox' ) }
+                    Viewbox: ${ abbr_viewBox }
                     <br/>X, Y: ${ cur.getAttribute( 'x' ) }, ${ cur.getAttribute( 'y' ) }.
                     <br/>Width, Height (attr):d ${ cur.getAttribute( 'width' ) } x ${ cur.getAttribute( 'height' ) }
-                    <br/>Val Width, Height (baseVal): ${ cur.width.baseVal.value } x ${ cur.height.baseVal.value }
+                    <br/>BaseVal: ${ cur.width.baseVal.value.toFixed(1) } x ${ cur.height.baseVal.value.toFixed(1) }
                     </p>
                     <p>Svg:</p><pre class="inline-code-block"><code class="language-xml">${
-  escaped_xml
-}</code></pre>`
+                        escaped_xml
+                    }</code></pre>`
                     cur_tip.innerHTML = rawText
 
                     window.Prism.highlightAll()
