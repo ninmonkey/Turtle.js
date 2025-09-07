@@ -151,6 +151,9 @@ export class Turtle {
     }
 
     stroke( color ) {
+        /**
+         * @description currently sets the top-level global color for the full image
+         */
         this.#stroke = color
         this.updateSvg()
         return this
