@@ -57,7 +57,7 @@
     <script type="module">
         import { Turtle } from './../../js/turtle.js';
         import { TurtleSvgElement } from './../../js/custom-element/turtle-svg-element.js';
-        import { randomInt, elementFromIdOrValue } from './../../js/utils.js'
+        import { randomInt, elementFromIdOrValue, simpleFormatHtmlWhitespace, simpleEscapeHtml } from './../../js/utils.js'
         import { GetAllElements } from './../../js/debug_utils.js'
 
         // let turt = new Turtle();
@@ -119,12 +119,19 @@
         const btns = document.querySelectorAll( "#button-bar button" );
 
 
+
+
+
+
+
         function RegisterTooltipsForTurtleSvgElements ( turtleSvgElements ) {
             turtleSvgElements.forEach( ( turtleSvgElem ) => {
                 turtleSvgElem.addEventListener( "mouseover", () => {
                     const cur_tip = tooltips[ 0 ]
                     const cur = turtleSvgElem.shadowRoot.querySelector( 'svg' )
-                    const escaped_xml = cur.outerHTML
+                    const formatted_xml = simpleFormatHtmlWhitespace( cur.outerHTML )
+                    const escaped_xml = formatted_xml
+                        // .replace( /\s{2,}/g, '')
                         .replace( /&/g, '&amp;' )
                         .replace( /</g, '&lt;' )
                         .replace( />/g, '&gt;' )
@@ -137,14 +144,9 @@
                     <br/>Width, Height (attr):d ${ cur.getAttribute( 'width' ) } x ${ cur.getAttribute( 'height' ) }
                     <br/>Val Width, Height (baseVal): ${ cur.width.baseVal.value } x ${ cur.height.baseVal.value }
                     </p>
-                    <p>
-                    Svg:</p>
-                    <pre class="inline-code-block">
-                        <code class="language-xml">
-                        ${ escaped_xml }
-                        </code>
-                        </pre>
-                    \n`
+                    <p>Svg:</p><pre class="inline-code-block"><code class="language-xml">${
+  escaped_xml
+}</code></pre>`
                     cur_tip.innerHTML = rawText
 
                     window.Prism.highlightAll()
@@ -153,7 +155,7 @@
 
                 turtleSvgElem.addEventListener( "mouseout", () => {
                     const cur_tip = tooltips[ 0 ]
-                    // cur_tip.hidePopover();
+                    cur_tip.hidePopover();
                 } );
 
                 turtleSvgElem.addEventListener( "focus", () => {

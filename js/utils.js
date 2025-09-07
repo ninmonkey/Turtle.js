@@ -28,3 +28,29 @@ export function randomInt ( min, max ) {
     const maxFloored = Math.floor( max );
     return Math.floor( Math.random() * ( maxFloored - minCeiled ) + minCeiled ); // The maximum is exclusive and the minimum is inclusive
 }
+
+export function simpleEscapeHtml ( str ) {
+    /**
+     * @description Simple escape HTML special characters in a string
+     * @param {string} str Input string
+     * @returns {string} Escaped string
+     */
+    return str.replace( /&/g, '&amp;' )
+              .replace( /</g, '&lt;' )
+              .replace( />/g, '&gt;' )
+              .replace( /"/g, '&quot;' )
+              .replace( /'/g, '&#39;' );
+
+}
+
+export function simpleFormatHtmlWhitespace( text ) {
+    /**
+     * @description naive formatting of whitespace to make it more readable as source code
+     */
+            // \\x26lt\\x3bs'
+    return text
+        .replaceAll( /[<]/g, '\n<' )
+        .replaceAll( /\\x26lt\\x3b/g, '\n&lt;' )
+        .replaceAll( /[>]/g, '>\n' )
+        .replaceAll( /["]\s+/g, `"\n  `)
+}
