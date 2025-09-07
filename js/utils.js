@@ -39,8 +39,10 @@ export function simpleEscapeHtml ( str ) {
               .replace( /</g, '&lt;' )
               .replace( />/g, '&gt;' )
               .replace( /"/g, '&quot;' )
-              .replace( /'/g, '&#39;' );
-
+              .replace( /'/g, '&#39;' )
+              .replace( /^[\n\s]+/, '' ) // strip blank prefix
+            //   .replaceAll( /[ ]{2,}/g, ' ')
+            //   .replaceAll( /\n{2,}/g, '\n') // collapse newlines
 }
 
 export function simpleFormatHtmlWhitespace( text ) {
@@ -49,8 +51,13 @@ export function simpleFormatHtmlWhitespace( text ) {
      */
             // \\x26lt\\x3bs'
     return text
+        // .replace( /^[\n\s]+/, '')
         .replaceAll( /[<]/g, '\n<' )
         .replaceAll( /\\x26lt\\x3b/g, '\n&lt;' )
         .replaceAll( /[>]/g, '>\n' )
         .replaceAll( /["]\s+/g, `"\n  `)
+        .replaceAll( /\n{2,}/g, '\n') // collapse newlines
+        // .replaceAll( /\w"\s+/g, '\n'  )
+
+
 }

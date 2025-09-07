@@ -60,20 +60,11 @@
         import { randomInt, elementFromIdOrValue, simpleFormatHtmlWhitespace, simpleEscapeHtml } from './../../js/utils.js'
         import { GetAllElements } from './../../js/debug_utils.js'
 
-        // let turt = new Turtle();
-        // const tse = new TurtleSvgElement()
-        const dest = document.querySelector( ".parent-context" )
-        // dest.appendChild( tse )
-
-        // window.t1 = turt
-        // window.t3 = dest
-        window.dbg_all = GetAllElements
-        console.warn('tooltip hooks disabled')
-        // t1.rotate(30).forward(4).nst t1_elem = new TurtleSvgElement()
+        const parentElement = document.querySelector( ".parent-context" )
 
         const t1_elem = new TurtleSvgElement()
         const turt1 = t1_elem.Turtle
-        dest.appendChild( t1_elem )
+        parentElement.appendChild( t1_elem )
         t1_elem.Title = 'Rand Polygon 1'
         turt1
             .polygon( 10, randomInt(4, 10) )
@@ -81,21 +72,11 @@
 
         const t2_elem = new TurtleSvgElement()
         const turt2 = t2_elem.Turtle
-        dest.appendChild( t2_elem )
+        parentElement.appendChild( t2_elem )
         t2_elem.Title = 'Rand Polygon 2'
         turt2
             .polygon( 10, randomInt(4, 10) )
             .updateSvg()
-
-
-        // rotate(66).forward(7)
-
-        // for( let i=0; i<3; i++ ) {
-        //     const TurtleElem = new TurtleSvgElement()
-        //     dest.appendChild( TurtleElem )
-        // }
-
-
 
         /* example chaining
             dbg_all().turtleSvg[0].Turtle.rotate(20).forward(10).updateSvg().rotate(20).forward(34)
@@ -118,25 +99,23 @@
         const tooltips = document.querySelectorAll( ".tooltip" );
         const btns = document.querySelectorAll( "#button-bar button" );
 
-
-
-
-
-
-
         function RegisterTooltipsForTurtleSvgElements ( turtleSvgElements ) {
             turtleSvgElements.forEach( ( turtleSvgElem ) => {
                 turtleSvgElem.addEventListener( "mouseover", () => {
                     const cur_tip = tooltips[ 0 ]
                     const cur = turtleSvgElem.shadowRoot.querySelector( 'svg' )
                     const formatted_xml = simpleFormatHtmlWhitespace( cur.outerHTML )
-                    const escaped_xml = formatted_xml
-                        // .replace( /\s{2,}/g, '')
-                        .replace( /&/g, '&amp;' )
-                        .replace( /</g, '&lt;' )
-                        .replace( />/g, '&gt;' )
-                        .replace( /"/g, '&quot;' )
-                        .replace( /'/g, '&#039;' );
+                    const escaped_xml =
+                        simpleEscapeHtml( formatted_xml )
+                        // formatted_xml
+                        //     // .replace( /\s{2,}/g, '')
+                        //     .replace( /&/g, '&amp;' )
+                        //     .replace( /</g, '&lt;' )
+                        //     .replace( />/g, '&gt;' )
+                        //     .replace( /"/g, '&quot;' )
+                        //     .replace( /'/g, '&#039;' )
+                        //     .replace( /^\s+/, '')
+                        //     .replaceAll( /\n{2,}/g, '\n') // collapse newlines
                     const rawText = `
                     <p>
                     Viewbox: ${ cur.getAttribute( 'viewBox' ) }
@@ -170,66 +149,20 @@
             } )
         }
 
-        const turtleSvgElements = document.querySelectorAll( 'turtle-svg' )
-        RegisterTooltipsForTurtleSvgElements( turtleSvgElements )
+        const all_turtle_elements = document.querySelectorAll( 'turtle-svg' )
+        RegisterTooltipsForTurtleSvgElements( all_turtle_elements )
 
-        if ( false ) {
+        // globals
+        window.bag ??= {}
+        window.Turtle = Turtle
+        window.TurtleSvgElement = TurtleSvgElement
+        window.bag.root_elem = parentElement
+        window.bag.all_turt_elements = all_turtle_elements
 
-            // const t_first = document.querySelectorAll( 'turtle-svg' )[ 0 ]
-            // t_first.shadowRoot.querySelector( 'svg.svg-root' )
-
-            // InitTurtle( {
-            //     context: t_first.shadowRoot.querySelector( 'svg.svg-root' ),
-            //     textContext: t_first.shadowRoot.querySelector( '.fps-counter' )
-            // } )
-
-
-
-
-
-
-            // globals
-            window.bag ??= {}
-            window.Turtle = Turtle
-
-            window.Turtle = Turtle
-            window.TurtleSvgElement = TurtleSvgElement
-            window.turt = turt
-            window.t = turt
-            window.InitTurtle = InitTurtle
-            // window.turtSvg = document.getElementById("turtle-svg")
-            // window.svgPath = window.turtSvg.getElementById("turtle-path")
-            window.bag.tse = tse
-            window.bag.dest = dest
-
-            console.trace( 'debug globals: ', { Turtle, TurtleSvgElement, turt, InitTurtle } )
-
-            function Page_AddTooltipEventListenersForCommandBar ( i ) {
-                // no longer wanted / to remove
-                btns[ i ].addEventListener( "mouseover", () => {
-                    tooltips[ i ].showPopover( { source: btns[ i ] } );
-                } );
-
-                btns[ i ].addEventListener( "mouseout", () => {
-                    tooltips[ i ].hidePopover();
-                } );
-
-                btns[ i ].addEventListener( "focus", () => {
-                    tooltips[ i ].showPopover( { source: btns[ i ] } );
-                } );
-
-                btns[ i ].addEventListener( "blur", () => {
-                    tooltips[ i ].hidePopover();
-                } );
-            }
-
-            for ( let i = 0; i < btns.length; i++ ) {
-                Page_AddTooltipEventListenersForCommandBar( i );
-            }
-        }
-
-
-
+        // window.t1 = turt
+        // window.t3 = dest
+        window.dbg_all = GetAllElements
+        console.trace( 'debug enabled globals: ', { Turtle, TurtleSvgElement, bag } )
     </script>
     <script src="../../js/prism.js"></script>
 
