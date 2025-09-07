@@ -114,7 +114,6 @@
                             .split( /\s/ )
                             .map( (s) => new Number(s).toFixed(1) )
                             .join(' ')
-
                     const rawText = `
                     <p>
                     Viewbox: ${ abbr_viewBox }
@@ -144,7 +143,16 @@
                 turtleSvgElem.addEventListener( "blur", () => {
                     const cur_tip = tooltips[ 0 ]
                     cur_tip.hidePopover();
-                } );
+                } )
+
+                turtleSvgElem.addEventListener( "click", () => {
+                    const cur_tip = tooltips[ 0 ]
+                    const rawSvgText = turtleSvgElem.getNamedElements().svg.outerHTML
+                    console.info('copied SVG to clipboard', { rawSvgText } )
+                    navigator.clipboard.writeText( rawSvgText )
+                        .catch(err => { console.error('Failed to copy SVG to clipboard:', err );
+                    })
+                } )
             } )
         }
 
@@ -167,5 +175,4 @@
 
 
 </body>
-
 </html>
