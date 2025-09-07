@@ -58,6 +58,35 @@ export function simpleFormatHtmlWhitespace( text ) {
         .replaceAll( /["]\s+/g, `"\n  `)
         .replaceAll( /\n{2,}/g, '\n') // collapse newlines
         // .replaceAll( /\w"\s+/g, '\n'  )
+}
 
+export class ColorGenerator {
+    /**
+     * @description Every call returns the next color in the defined sequence
+     */
+    #hue = 0.0
+    #stepDegrees = 137.508 // approx golden angle
+    #colorList = []
+    mode = 'grayscale'
 
+    ColorGenerator( config = {} ) {
+        /**
+         * @description Create ColorGenerator instance
+         * @param {Object} config Configuration options
+         * @param {number} config.stepDegrees Step in degrees for each color in HSL space
+         */
+        if ( config.stepDegrees ) {
+            this.#stepDegrees = config.stepDegrees;
+        }
+    }
+
+    #next () {
+        const color = `hsl(${this.#hue}, 100%, 50%)`;
+        this.#hue = (this.#hue + this.#stepDegrees) % 360;
+        return color;
+    }
+
+    get Next() {
+        return this.#next();
+    }
 }

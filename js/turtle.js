@@ -11,6 +11,8 @@ export class Turtle {
     min = { x: 0.0, y: 0.0 }
     max = { x: 0.0, y: 0.0 }
 
+    #stroke = 'currentColor'
+
     #context = null // SVG element context
 
     #fpsFrameCount = 0
@@ -148,6 +150,12 @@ export class Turtle {
         return this
     }
 
+    stroke( color ) {
+        this.#stroke = color
+        this.updateSvg()
+        return this
+    }
+
     updateSvg ( context ) {
         /**
          * @description Apply animations, Write to <svg> and calc fps
@@ -161,6 +169,7 @@ export class Turtle {
 
         svg.setAttribute( "viewBox", `0 0 ${ turtle.width } ${ turtle.height }` );
         path.setAttribute( "d", turtle.path() );
+        path.setAttribute( 'stroke', this.#stroke )
 
         const curTime = new Date()
         const deltaTime = curTime - this.#fpsPrevTime
