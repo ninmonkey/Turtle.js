@@ -4,9 +4,13 @@
             "path": "."
         }
     ],
+
     "settings": {
-        "livePreview.autoRefreshPreview": "On Changes to Saved Files",
+        // "livePreview.autoRefreshPreview": "On Changes to Saved Files",
+        "livePreview.autoRefreshPreview": "On All Changes in Editor",
+
         "livePreview.previewDebounceDelay": 20,
+
         "[javascript]": {
             "editor.maxTokenizationLineLength": 2500,
             // "editor.codeLens": false,
