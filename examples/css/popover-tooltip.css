@@ -58,13 +58,19 @@ popover tooltips, and nested menus using button style */
     /* Final state of the exit animation */
     opacity: 0;
     /* transform: scaleX(0) translateX(0); */
-
+    --anim-duration: 0.7s;
 
     transition:
+        opacity var(--anim-duration),
+        transform var(--anim-duration),
+        overlay var(--anim-duration) allow-discrete,
+        display var(--anim-duration) allow-discrete;
+
+    /* transition:
         opacity 0.7s,
         transform 0.7s,
         overlay 0.7s allow-discrete,
-        display 0.7s allow-discrete;
+        display 0.7s allow-discrete; */
     /* Equivalent to
   transition: all 0.7s allow-discrete; */
 }
@@ -73,7 +79,7 @@ popover tooltips, and nested menus using button style */
 to take effect, as the specificity is the same */
 @starting-style {
     [popover]:popover-open {
-        opacity: 0;
+        opacity: 1;
         /* transform: translateX(0.5rem) scaleX(0); */
     }
 }
@@ -122,7 +128,7 @@ to take effect, as the specificity is the same */
 [popover="hint"] {
     inset: unset;
     position: absolute;
-    top: calc(anchor(bottom) + 5px);
+    top: calc(anchor(top) + 100px);
     justify-self: anchor-center;
     margin: 0;
 
