@@ -18,6 +18,7 @@ template_turtle_svg.innerHTML = `
     .turtle-title, svg {
         margin: 1rem;
     }
+    .hidden { display: none; }
     svg {
         // padding: 1rem;
     }
@@ -37,7 +38,7 @@ template_turtle_svg.innerHTML = `
             class          = 'svg-path'
             fill           = 'transparent'
             stroke         = 'currentColor'
-            stroke-width   = '2%'
+            stroke-width   = '1.5%'
             stroke-linecap = 'round'
         ></path>
     </svg>
@@ -58,20 +59,14 @@ export class TurtleSvgElement extends HTMLElement {
         super();
         console.trace('note: correct behavior move DOM manip outside of ctor')
         this.#shadow = this.attachShadow( { mode: 'open' } );
-
         this.#rebuildDOM()
         this.clear()
-
         this.Title = this.dataset.title ?? ''
-
-
-        // this.#turtle.polygon( 4, randomInt(3, 10 ) )
-        // this.#turtle.resize()
-        // this.clear()
-        // this.updateSvg()
     }
     connectedCallback () {
         // template.
+        // this.#rebuildDOM()
+        // this.clear()
         // this.#shadow.appendChild( template );
         // const template = template_commitMessage.content.cloneNode( true );
         // this.#shadow.appendChild( template );
@@ -118,10 +113,15 @@ export class TurtleSvgElement extends HTMLElement {
         // this.#turtle.updateSvg( this.#svgContext )
     }
 
-    set Title( value ) {
+    set Title( text ) {
         // this.#svgContext.querySelector('span.turtle-title').textContent = value
-        this.dataset.title = value
-        this.#shadow.querySelector('span.turtle-title').textContent = value
+        const elem = this.#shadow?.querySelector('span.turtle-title')
+        if( ! elem ) {
+            console.warn({ message: 'tried setting .Title before DOM element exists', obj: this } )
+            return
+        }
+        elem.textContent = text
+        this.dataset.title = text
     }
     get Title() {
         return this.dataset.title ?? ""
