@@ -32,6 +32,20 @@
 
         },
         "xml.completion.autoCloseTags": true,
+        "xmlTools.enableXmlTreeView": true,
+        "xmlTools.xmlFormatterImplementation": "v2",
+
+
+        /* [2025-09-17] sorta works with:
+            (1):  splitAttributesOnFormat: false, splitXmlnsOnFormat: true,
+            (2):  splitAttributesOnFormat: true, splitXmlnsOnFormat: true,
+
+            but sometimes interacts causing extra newlines between attributes when formatting twice
+        */
+        "xmlTools.splitAttributesOnFormat": true, // Put each attribute on a new line when formatting XML. Overrides `xmlTools.splitXmlnsOnFormat` if set to `true`.
+        "xmlTools.splitXmlnsOnFormat": true,
+        "xmlTools.enableXmlTreeViewCursorSync": false,
+
 
         // "livePreview.autoRefreshPreview": "On Changes to Saved Files",
         "livePreview.autoRefreshPreview": "On All Changes in Editor",
