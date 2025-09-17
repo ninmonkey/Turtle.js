@@ -6,6 +6,33 @@
     ],
 
     "settings": {
+        "[xml]":{
+
+            "editor.formatOnSave": false,
+            "editor.formatOnSaveMode": "modificationsIfAvailable",
+            "editor.formatOnPaste": false,
+            "editor.formatOnType": false,
+            "editor.defaultFormatter": "vscode.html-language-features",
+            "editor.defaultFormatter": null,
+            "editor.defaultFormatter": "redhat.vscode-xml",
+            "prettier.embeddedLanguageFormatting": "off",
+            "prettier.embeddedLanguageFormatting": "auto",
+            // "editor.defaultFormatter": "vitaliymaz.vscode-svg-previewer",
+            // "editor.autoClosingBrackets": "languageDefined",
+            "files.trimFinalNewlines": true
+
+        },
+        "[html]": {
+            "editor.suggest.insertMode": "replace",
+            // "editor.defaultFormatter": "redhat.vscode-xml",
+            // "editor.defaultFormatter": "vscode.html-language-features",
+            "prettier.singleAttributePerLine": false,
+            "diffEditor.renderSideBySide": true,
+            "prettier.embeddedLanguageFormatting": "auto",
+
+        },
+        "xml.completion.autoCloseTags": true,
+
         // "livePreview.autoRefreshPreview": "On Changes to Saved Files",
         "livePreview.autoRefreshPreview": "On All Changes in Editor",
 

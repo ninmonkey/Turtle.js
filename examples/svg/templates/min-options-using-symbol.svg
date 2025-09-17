@@ -1,0 +1,129 @@
+<svg
+  xmlns   = "http://www.w3.org/2000/svg"
+  class   = "svg-root"
+  viewBox = "0 0 20 20"
+>
+
+  <!--
+optional top <svg> attrs
+    id               = ".."
+    width            = "100%"
+    height           = "100%"
+    transform-origin = "100% 100%"
+    class            = "svg-path"
+    fill             = "transparent"
+    stroke           = "hsl(137.508, 50%, 60%)"
+    stroke-width     = "1.5%"
+    stroke-linecap   = "round"
+    d                = "..."
+
+-->
+  <style type="text/css">
+      :root {
+        --fg-primary  : hsl(43.508 50% 60%);
+        --bg-none     : transparent;
+        --bg-primary  : hsl( 0 0% 20% );
+        --root-bg     : hsl( 0 0% 12% );
+        --stroke-width: 1.5%;
+      }
+      svg .svg-root {
+        background-color: var(--root-bg);
+      }
+
+      .svg-path, path {
+        fill          : var( --bg-primary, transparent  );
+        stroke        : var( --fg-primary, currentColor );
+        stroke-width  : var( --stroke-width, 1.5% );
+        stroke-linecap: round;
+      }
+      circle {
+          stroke-width: 1.0%;
+      }
+      .alpha-50 {
+          opacity: 0.5;
+          fill   : hsl(3.508 50% 60% / .2);
+          fill   : hsl(3.508 50% 60% / .5);
+          stroke : blue;
+          fill   : lightblue;
+
+      }
+      #my-dot.blue  {
+          stroke: blue;
+      }
+
+      #using-my-dot-1  {
+          opacity: 1.0;
+          stroke : blue;
+          fill   : lightblue;
+          border : 2px solid blue;
+      }
+      .cls-using-my-dot-1  {
+          opacity: 1.0;
+          stroke : blue;
+          fill   : lightblue;
+          border : 2px solid blue;
+      }
+      #my-dot  {
+          opacity: 1.0;
+          stroke : blue;
+          fill   : lightblue;
+          border : 2px solid blue;
+      }
+
+  </style>
+  <symbol
+      id     = "my-dot"
+      width  = "10"
+      height = "10">
+      <circle
+        class = "alpha-50 blue"
+        cx    = "5"
+        cy    = "5"
+        r     = "5">
+      </circle>
+  </symbol>
+  <!-- stroke="blue"
+optional <path> attrs:
+
+    fill           = "transparent"
+    stroke         = "currentColor"
+    stroke-width   = "1.5%"
+    stroke-linecap = "round"
+-->
+  <path
+      id    = "turtle-path"
+      class = "svg-path"
+
+      d     = "
+      m 0 0
+      l10 0 l0 10
+      -10 0
+      z"
+  >
+  </path>
+
+  <use
+      href="#my-dot"
+      id = "using-my-dot-1"
+      class = "cls-using-my-dot-1"
+       x         = "0"
+       y         = "0"
+       width     = "10"
+       height    = "10"
+       transform = "translate(-5, -5)"
+  ></use>
+  <use href="#my-dot"
+       x         = "5"
+       y         = "5"
+       width     = "10"
+       height    = "10"
+       transform = "translate(-5, -5)"
+  ></use>
+  <use href="#my-dot"
+       x         = "10"
+       y         = "10"
+       width     = "10"
+       height    = "10"
+       transform = "translate(-5, -5)"
+  ></use>
+</svg>

@@ -1,0 +1,97 @@
+<svg
+  xmlns   = "http://www.w3.org/2000/svg"
+  class   = "svg-root"
+  viewBox = "0 0 10 10"
+>
+
+<!--
+see: https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/symbol
+
+
+optional top <svg> attrs
+
+    width            = "100%"
+    height           = "100%"
+    transform-origin = "100% 100%"
+    class            = "svg-path"
+    fill             = "transparent"
+    stroke           = "hsl(137.508, 50%, 60%)"
+    stroke-width     = "1.5%"
+    stroke-linecap   = "round"
+    d                = "..."
+
+-->
+    <style type="text/css">
+      :root {
+        --fg-primary: hsl(43.508, 50%, 60%);
+        --fg-primary: rebeccapurple;
+        --bg-none   : transparent;
+        --bg-primary: hsl(0, 0%, 20%);
+        --root-bg   : hsl(0, 0%, 12%);
+        --stroke-width: 1.5%;
+      }
+      svg .svg-root {
+        background-color: var(--root-bg);
+      }
+
+        .svg-path,
+        path {
+            stroke        : var( --fg-primary, currentColor );
+            stroke-width  : var( --stroke-width, 1.5% );
+            stroke-linecap: round;
+            fill: var(--bg-primary, transparent);
+        }
+    </style>
+<!--
+optional <path> attrs:
+
+    fill           = "transparent"
+    stroke         = "currentColor"
+    stroke-width   = "1.5%"
+    stroke-linecap = "round"
+-->
+    <path
+      id    = "root-turtle-path-1"
+      class = "svg-path"
+      d     = "
+      m 0 0
+      l10 0 l0 10
+      -10 0
+      z">
+    </path>
+</svg>
+
+<!--
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="100%"
+     height="100%"
+     transform-origin="100% 100%">
+     -->
+<!-- <symbol id="turtle-symbol"
+          viewBox="0 0 15 15"
+          transform-origin="50% 50%">
+    <path id="root-turtle-path-1"
+          d="m 0 0  l 10 0 l 0 10 l 10 -10"
+          stroke="blue"
+          stroke-width="0.25%"
+          fill="transparent"
+          class="foreground-stroke"
+          transform-origin="50% 50%"> </path>
+  </symbol>
+  <use href="#turtle-symbol"
+       width="70%"
+       height="70%"
+       transform-origin="50% 50%" />
+</svg>
+<svg class="svg-root"
+     viewBox="0 0 1.9992484337189644 1.758812065668918">
+  <path id="root-turtle-path-1"
+        class="svg-path"
+        fill="transparent"
+        stroke="hsl(137.508, 50%, 60%)"
+        stroke-width="1.5%"
+        stroke-linecap="round"
+        d="m 1.4432899320127035e-15 0  l1 0   l-0.4999999999999998 0.8660254037844387   l-0.5000000000000004 -0.8660254037844384   l1.999248433718963 0.05482426718408878
+l-1.0471034249847653 1.7039877984848288   l-0.952145008734199 -1.758812065668914  "></path>
+</svg>
+-->
