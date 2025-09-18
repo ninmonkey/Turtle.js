@@ -120,6 +120,48 @@
             return turt
         }
 
+        function CreateSvgContainerWithTooltip( options = {} ) {
+            // const tmpTurt = NewTurtle( title )
+            const config = {
+                title: 'no title',
+                id: 'svg-container-with-tooltip',
+                ...options
+            }
+
+            const elem_root = document.createElement( 'div' )
+            // elem_root.setAttribute( 'id', config.id )
+
+
+            return elem_root
+
+
+        //     const tmpTurt = new TurtleSvgElement()
+        //     return tmpTurt
+        //     const target = tmpTurt.getNamedElements().svg
+
+        // //     const innerPathTemplate = `
+        // //      <path
+        // //     id             = 'turtle-path-test'
+        // //     class          = 'svg-path'
+        // //     fill           = 'hsl( 200 50% 50% )'
+        // //     stroke         = 'currentColor'
+        // //     stroke-width   = '1.5%'
+        // //     stroke-linecap = 'round'
+        // //     d = "${ options.path.build() }"
+        // // ></path>
+        // //     ```
+        //     const one = newSvgElement( { path: null })
+        //     target.outerHTML = svg.outerHTML
+        //     return tmpTurt
+        //     // tmpTurt.#context.outerHTML = o.outerHTML
+
+            // const elem = newSvgElement({ path: path, title: title })
+            // parentElement.appendChild( elem )
+            // return elem
+
+        }
+
+
         function newSvgElement( options  = {} ) {
             const config = {
                 title: '',
@@ -180,6 +222,7 @@
         let deg = 0
         let path // const newPath = new SvgPathBuilder()
         let curSummary
+        let curSvgSource
 
 
         cur  = null
@@ -189,6 +232,17 @@
             .moveTo( 0, 0 ).lineTo( 0, 10  )
 
         curSummary = NewPathSummary({ title: 'TwoLines', path })
+
+        // const tmpTurt = NewTurtle( 'from TwoLines' )
+        // const tmpTurt = NewSvgContainerWithTooltip( 'from TwoLines',
+            // null )
+
+        console.trace('start: CreateSvgContainerWithTooltip')
+
+        curSvgSource = CreateSvgContainerWithTooltip( {
+            title: 'from TwoLines',
+            path
+        } )
 
         path = new SvgPathBuilder()
         path
