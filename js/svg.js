@@ -1,7 +1,14 @@
 export class SvgPathBuilder {
+    /**
+     * @description Builds path strings for SVG <path> `d` attributes
+     * @link https://svgwg.org/specs/paths/#PathDataGeneralInformation
+     * @LINK https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/d
+     * @link https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorials/SVG_from_scratch/Paths
+     */
     #steps = []
 
     constructor() {
+        // future: toggle can future minify or expand the path data for human readability
         this.clear()
     }
 
@@ -37,4 +44,72 @@ export class SvgPathBuilder {
         this.#steps.push('Z')
         return this
     }
+}
+
+export function CreateSvg_PathElement(d = '', attributes = {} )  { // , children = []) {
+    // const template = `
+    // <path
+    // fill="none"
+    // stroke="pink"
+    // d="M 6,10
+    //        A 6 4 10 0 0 14,10" />
+    // `
+    const attr = {
+        id: 'path-n',
+        class: 'svg-path',
+        fill: 'transparent',
+        stroke: 'currentColor',
+        strokeWidth: '1.5%',
+        strokeLinecap: 'round',
+        d: d,
+        ...attributes
+    }
+    /* disabled attrs
+        id             = "${ attr.id }"
+
+    */
+    const template_path = `
+    <path
+        class          = "${ attr.class }"
+        fill           = "${ attr.fill }"
+        stroke         = "${ attr.stroke }"
+        stroke-width   = "${ attr.strokeWidth }"
+        stroke-linecap = "${ attr.strokeLinecap }"
+        d              = "${ attr.d }"
+    ></path>
+    `
+    //    ex: <path
+    //         id             = 'turtle-path'
+    //         class          = 'svg-path'
+    //         fill           = 'transparent'
+    //         stroke         = 'currentColor'
+    //         stroke-width   = '1.5%'
+    //         stroke-linecap = 'round'
+    //     ></path>
+
+}
+
+export function CreateSvgElement(tag, attributes = {}, children = []) {
+    /**
+     * @description Creates an SVG element with specified attributes and children
+     * @returns {SVGElement} New SVG element
+     */
+    const config = {
+        viewBox: "0 0 200 100"
+    }
+    const rootElem = document.createElementNS('http://www.w3.org/2000/svg', tag);
+
+    Object.entries(attributes).forEach(([key, value]) => {
+        rootElem.setAttributeNS(key, value);
+    });
+
+    children.forEach(child => {
+        if (typeof child === 'string') {
+            rootElem.appendChild(document.createTextNode(child));
+        } else {
+            rootElem.appendChild(child);
+        }
+    });
+
+    return rootElem;
 }
