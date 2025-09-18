@@ -62,9 +62,33 @@
         import { GetAllElements } from './../../js/debug_utils.js'
         import { SvgPathBuilder } from './../../js/svg.js'
 
+        window.bag ??= {}
+
         const parentElement = document.querySelector( ".parent-context" )
         let cur
         const cg = new ColorGenerator( { mode: 'grayscale' } )
+
+        function debug_InspectPathSize(  parent ) {
+            const firstPath =  parent.querySelectorAll('svg path')[0]
+            console.trace('debug_InspectPathSize', { firstPath, parent } )
+
+            const info = { firstPath }
+
+            if( firstPath ) {
+                const owner = firstPath.ownerSVGElement
+
+                info.bbox                     = firstPath.getBBox()
+                info.owner                    = owner
+                info.owner_BBox               = owner.getBBox()
+                info.owner_ClientRects        = owner.getClientRects()
+                info.owner_BoundingClientRect = owner.getBoundingClientRect()
+                info.first_BBox               = firstPath.getBBox()
+                info.first                    = firstPath.getClientRects()
+            }
+            console.log( info )
+            window.bag.lastInspect = info
+            return info
+        }
 
         function NewPathSummary ( { title, path } ) {
             const elem = document.createElement( 'div' )
@@ -72,6 +96,9 @@
                 throw new TypeError( 'path must be an instance of SvgPathBuilder' )
             }
             const renderSvg = newSvgElement({ path: path, title: title })
+            debug_InspectPathSize( renderSvg )
+            window.bag.last_renderSvg = renderSvg
+
 
             elem.classList.add( 'newPath-summary' )
             elem.innerHTML = `
@@ -178,6 +205,12 @@
             .rotate( 90 * Math.PI / 180 )
             .polygon( ( 1 + i++ ), 3 )
 
+
+
+
+
+
+
         /* page specific handlers for `grid-example.html` */
         const toggleGridSizeButton = document.getElementById( "cmd-btn-toggle-grid-large" );
         toggleGridSizeButton.addEventListener( "click", () => {
@@ -259,6 +292,7 @@
 
         // globals
         window.bag ??= {}
+        window.fn ??= {}
         window.Turtle = Turtle
         window.TurtleSvgElement = TurtleSvgElement
         window.bag.root_elem = parentElement
@@ -267,7 +301,14 @@
         // window.t1 = turt
         // window.t3 = dest
         window.dbg_all = GetAllElements
+
+        window.fn.pathSize = debug_InspectPathSize
+
         console.trace( 'debug enabled globals: ', { Turtle, TurtleSvgElement, bag } )
+        console.log('try funcs')
+        let t = document.querySelectorAll('svg')[0]
+        fn.pathSize( t )
+
     </script>
     <script src="../../js/prism.js"></script>
 
