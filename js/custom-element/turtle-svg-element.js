@@ -54,7 +54,7 @@ export class TurtleSvgElement extends HTMLElement {
 
     constructor() {
         super();
-        console.trace('note: correct behavior move DOM manip outside of ctor')
+        console.info('note: correct behavior move DOM manip outside of ctor')
         this.#shadow = this.attachShadow( { mode: 'open' } );
         this.#rebuildDOM()
         this.clear()

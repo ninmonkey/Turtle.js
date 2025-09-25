@@ -172,7 +172,7 @@
             }
 
             /* orig */
-            if( true ) {
+            if( false ) {
                 config.path = path
                 const new_svg = newSvgElement({path: config.path, title: 'quick test'})
                 const parentElement = document.querySelector( ".parent-context" )
@@ -185,17 +185,17 @@
                 if( path instanceof SvgPathBuilder === false ) {
                     throw new TypeError( 'path must be an instance of SvgPathBuilder' )
                 }
-                const renderSvg = newSvgElement({ path: path, title: title })
+                const renderSvg = newSvgElement({ path: config.path, title: 'New: ' +  config.title })
                 debug_InspectPathSize( renderSvg )
                 window.bag.last_renderSvg = renderSvg
 
 
-                elem.classList.add( 'newPath-summary' )
-                elem.innerHTML = `
-                <h3>${title}</h3>
-                <code>
-                ${ path.build() }
-                </code>`
+                // elem.classList.add( 'newPath-summary' )
+                // elem.innerHTML = `
+                // <h3>${title}</h3>
+                // <code>
+                // ${ path.build() }
+                // </code>`
                 // ${ renderSvg }
                 // parentElement.appendChild( elem )
                 parentElement.appendChild( renderSvg )
@@ -304,7 +304,7 @@
             .lineTo( 10, 10  )
             .lineTo( 0, 10  )
 
-        curSummary = NewPathSummary({ title: 'FromOld', path })
+        curSummary = NewPathSummary({ title: 'Old: PathSummary', path })
 
         // const tmpTurt = NewTurtle( 'from TwoLines' )
         // const tmpTurt = NewSvgContainerWithTooltip( 'from TwoLines',
@@ -327,10 +327,10 @@
             .lineTo(10, 0 )
             .lineTo( 20, 10  )
 
-        curSummary = NewPathSummary({ title: 'TwoLines 2', path })
+        curSummary = NewPathSummary({ title: 'Old: NewPathSummary', path })
 
         i = 0; deg =  0;
-        cur = NewTurtle( 'repeat tri' )
+        cur = NewTurtle( 'old tooltip method' )
             .stroke( cg.Next )
             .stroke( cg.Next )
             .polygon( ( 1 + i++ ), 3 )
