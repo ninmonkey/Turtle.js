@@ -244,9 +244,8 @@
         ></path>
     </svg>
         </section>`
-
             svg_container.innerHTML = template
-            console.trace('🚧exit: newSvgElement', { svg_container, config, options })
+            // console.trace('🚧exit: newSvgElement', { svg_container, config, options })
             return svg_container
         }
 
@@ -266,13 +265,6 @@
             .lineTo( 10, 10  )
             .lineTo( 0, 10  )
 
-        // const tmpTurt = NewTurtle( 'from TwoLines' )
-        // const tmpTurt = NewSvgContainerWithTooltip( 'from TwoLines',
-            // null )
-
-        console.trace('start: CreateSvgContainerWithTooltip')
-        // const parentElement = document.querySelector( ".parent-context" )
-
         curSvgSource = CreateSvgContainerWithTooltip( {
             title: 'now A',
             path,
@@ -288,15 +280,19 @@
             parentElement,
         } )
 
-        console.trace('after new created')
+        console.trace('🧪 after creating paths')
 
         path = new SvgPathBuilder()
         path
             .moveTo( 10, 0 ).lineTo( 10, 10 )
-            .moveTo( 0, 0 ).lineTo( 0, 10  )
-            .moveTo( 0, 0 )
-            .lineTo(10, 0 )
-            .lineTo( 20, 10  )
+            .lineTo( 0, 10  )
+
+
+         curSvgSource = CreateSvgContainerWithTooltip( {
+            title: 'now C',
+            path,
+            parentElement,
+        } )
 
         curSummary = NewPathSummary({ title: 'Old: NewPathSummary', path })
 
@@ -338,7 +334,8 @@
             turtleSvgElements.forEach( ( turtleSvgElem ) => {
                 turtleSvgElem.addEventListener( "mouseover", () => {
                     const cur_tip = tooltips[ 0 ]
-                    const cur = turtleSvgElem.shadowRoot.querySelector( 'svg' )
+                    // let cur = turtleSvgElem.shadowRoot.querySelector( 'svg' )
+                    const cur = turtleSvgElem.querySelector('svg')
                     const formatted_xml = simpleFormatHtmlWhitespace( cur.outerHTML )
                     const escaped_xml =
                         simpleEscapeHtml( formatted_xml )
@@ -380,7 +377,8 @@
 
                 turtleSvgElem.addEventListener( "click", () => {
                     const cur_tip = tooltips[ 0 ]
-                    const rawSvgText = turtleSvgElem.getNamedElements().svg.outerHTML
+                    // const rawSvgText = turtleSvgElem.getNamedElements().svg.outerHTML
+                    const rawSvgText = turtleSvgElem.querySelector('svg').outerHTML
                     console.info( 'copied SVG to clipboard', { rawSvgText } )
                     navigator.clipboard.writeText( rawSvgText )
                         .catch( err => {
@@ -390,8 +388,11 @@
             } )
         }
 
-        const all_turtle_elements = document.querySelectorAll( 'turtle-svg' )
-        RegisterTooltipsForTurtleSvgElements( all_turtle_elements )
+        // const all_turtle_elements = document.querySelectorAll( 'turtle-svg' )
+        // RegisterTooltipsForTurtleSvgElements( all_turtle_elements )
+
+        const all_wrappers = document.querySelectorAll('.svg-wrapper')
+        RegisterTooltipsForTurtleSvgElements( all_wrappers )
 
         // globals
         window.bag ??= {}
@@ -399,7 +400,7 @@
         window.Turtle = Turtle
         window.TurtleSvgElement = TurtleSvgElement
         window.bag.root_elem = parentElement
-        window.bag.all_turt_elements = all_turtle_elements
+        window.bag.all_wrappers = all_wrappers
 
         // window.t1 = turt
         // window.t3 = dest
