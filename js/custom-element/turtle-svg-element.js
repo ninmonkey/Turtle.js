@@ -46,9 +46,6 @@ template_turtle_svg.innerHTML = `
 
 </section>
 `
-
-document.querySelector( 'body' ).appendChild( template_turtle_svg )
-
 export class TurtleSvgElement extends HTMLElement {
     // static observedAttributes = ["color", "size"];
     #shadow = null
@@ -74,7 +71,8 @@ export class TurtleSvgElement extends HTMLElement {
 
     #rebuildDOM() {
         // [re]build DOM
-        const template = document.getElementById( template_id ).content.cloneNode( true );
+        // const template = document.getElementById( template_id ).content.cloneNode( true );
+        const template = template_turtle_svg.content.cloneNode( true );
         this.#shadow.replaceChildren()
         this.#shadow.appendChild( template );
         this.#svgContext = this.#shadow.querySelector( 'svg' )
