@@ -1,3 +1,5 @@
+const svgNS = 'http://www.w3.org/2000/svg'
+
 export class SvgPathBuilder {
     /**
      * @description Builds path strings for SVG <path> `d` attributes
@@ -46,7 +48,7 @@ export class SvgPathBuilder {
     }
 }
 
-export function CreateSvg_PathElement(d = '', attributes = {} )  { // , children = []) {
+export function Create_SvgPathElement(d = '', attributes = {} )  { // , children = []) {
     // const template = `
     // <path
     // fill="none"
@@ -54,19 +56,25 @@ export function CreateSvg_PathElement(d = '', attributes = {} )  { // , children
     // d="M 6,10
     //        A 6 4 10 0 0 14,10" />
     // `
+
     const attr = {
-        id: 'path-n',
-        class: 'svg-path',
-        fill: 'transparent',
-        stroke: 'currentColor',
-        strokeWidth: '1.5%',
+        id           : 'path-n',
+        class        : 'svg-path',
+        fill         : 'transparent',
+        stroke       : 'currentColor',
+        strokeWidth  : '1.5%',
         strokeLinecap: 'round',
-        d: d,
+
+        d: 'M 6,10 A 6 4 10 0 0 14,10',
         ...attributes
     }
+    const pathElem = document.createElementNS(svgNS, 'path')
+
+    Object.entries(attr).forEach( ([key, value]) => {
+        pathElem.setAttributeNS(null, key, value)
+    })
     /* disabled attrs
         id             = "${ attr.id }"
-
     */
     const template_path = `
     <path
@@ -78,6 +86,9 @@ export function CreateSvg_PathElement(d = '', attributes = {} )  { // , children
         d              = "${ attr.d }"
     ></path>
     `
+
+    console.info( 'Create_SvgPathElement', { attr, pathElem  } ) // children })
+    return pathElem
     //    ex: <path
     //         id             = 'turtle-path'
     //         class          = 'svg-path'
@@ -89,7 +100,7 @@ export function CreateSvg_PathElement(d = '', attributes = {} )  { // , children
 
 }
 
-export function CreateSvgElement(tag, attributes = {}, children = []) {
+export function Create_SvgElement(tag = 'svg', attributes = {}, children = []) {
     /**
      * @description Creates an SVG element with specified attributes and children
      * @returns {SVGElement} New SVG element
@@ -97,19 +108,21 @@ export function CreateSvgElement(tag, attributes = {}, children = []) {
     const config = {
         viewBox: "0 0 200 100"
     }
-    const rootElem = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    const rootElem = document.createElementNS(svgNS, tag);
 
     Object.entries(attributes).forEach(([key, value]) => {
-        rootElem.setAttributeNS(key, value);
+        rootElem.setAttributeNS( null, key, value);
     });
 
-    children.forEach(child => {
-        if (typeof child === 'string') {
-            rootElem.appendChild(document.createTextNode(child));
-        } else {
-            rootElem.appendChild(child);
-        }
-    });
+    console.info( 'CreateSvgElement', { rootElem, tag, attributes, children })
+
+    // children.forEach(child => {
+    //     if (typeof child === 'string') {
+    //         rootElem.appendChild(document.createTextNode(child));
+    //     } else {
+    //         rootElem.appendChild(child);
+    //     }
+    // });
 
     return rootElem;
 }
