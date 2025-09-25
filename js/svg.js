@@ -23,21 +23,37 @@ export class SvgPathBuilder {
     }
 
     moveTo(x, y) {
+        this.#steps.push(`m ${x} ${y}`)
+        return this
+    }
+    moveToGlobal(x, y) {
         this.#steps.push(`M ${x} ${y}`)
         return this
     }
 
     lineTo(x, y) {
+        this.#steps.push(`l ${x} ${y}`)
+        return this
+    }
+    lineToGlobal(x, y) {
         this.#steps.push(`L ${x} ${y}`)
         return this
     }
 
     quadraticCurveTo(cx, cy, x, y) {
+        this.#steps.push(`q ${cx} ${cy} ${x} ${y}`)
+        return this
+    }
+    quadraticCurveToGlobal(cx, cy, x, y) {
         this.#steps.push(`Q ${cx} ${cy} ${x} ${y}`)
         return this
     }
 
     cubicCurveTo(cx1, cy1, cx2, cy2, x, y) {
+        this.#steps.push(`c ${cx1} ${cy1} ${cx2} ${cy2} ${x} ${y}`)
+        return this
+    }
+    cubicCurveToGlobal(cx1, cy1, cx2, cy2, x, y) {
         this.#steps.push(`C ${cx1} ${cy1} ${cx2} ${cy2} ${x} ${y}`)
         return this
     }
@@ -68,6 +84,7 @@ export function Create_SvgPathElement(d = '', attributes = {} )  { // , children
         d: 'M 6,10 A 6 4 10 0 0 14,10',
         ...attributes
     }
+    console.warn('Create_SvgPathElement: not asserting properties exist')
     const pathElem = document.createElementNS(svgNS, 'path')
 
     Object.entries(attr).forEach( ([key, value]) => {

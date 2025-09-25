@@ -158,7 +158,7 @@
             if( path instanceof SvgPathBuilder === false ) {
                 throw new TypeError( 'path must be an instance of SvgPathBuilder' )
             }
-            const renderSvg = newSvgElement({ path: config.path, title: '🐒 SvgWithTool newSvgElement: ' +  config.title })
+            const renderSvg = newSvgElement({ path: config.path, title: '🐒 ' +  config.title })
             config.parentElement.appendChild( renderSvg )
             // parentElement.appendChild( renderSvg )
 
@@ -197,6 +197,7 @@
             const config = {
                 title: '',
                 path: null, // new SvgPathBuilder(),
+                stroke: null,
                 ...options,
             }
             const svg_container = document.createElement( 'div' )
@@ -237,7 +238,7 @@
             id             = 'turtle-path-test'
             class          = 'svg-path'
             fill           = 'hsl( 200 50% 50% )'
-            stroke         = 'currentColor'
+            stroke         = '${ config.stroke ?? 'currentColor' }'
             stroke-width   = '1.5%'
             stroke-linecap = 'round'
             d = "${ config.path.build() }"
