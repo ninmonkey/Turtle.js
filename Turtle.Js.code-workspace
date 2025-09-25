@@ -51,7 +51,7 @@
         "livePreview.autoRefreshPreview": "On All Changes in Editor",
 
 
-        "livePreview.previewDebounceDelay": 20,
+        "livePreview.previewDebounceDelay": 800,
 
         "[javascript]": {
             "editor.maxTokenizationLineLength": 2500,

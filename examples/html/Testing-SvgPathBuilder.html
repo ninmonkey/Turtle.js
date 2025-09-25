@@ -127,79 +127,41 @@
         }
 
         function CreateSvgContainerWithTooltip( options = {} ) {
-            // const tmpTurt = NewTurtle( title )
             const config = {
                 title: 'no title',
                 id: 'svg-container-with-tooltip',
                 path: null,
-                ...options
+                ...options,
             }
-
+            config.parentElement = document.querySelector( ".parent-context" )
+                // parentElement: options.parentElement ?? document.querySelector( ".parent-context" ),
             const elem_root = document.createElement( 'div' )
-
-            // elem_root.setAttribute( 'id', config.id )
-            if( false ) {
-                // const elem = document.createElement( 'div' )
-                // if( path instanceof SvgPathBuilder === false ) {
-                //     throw new TypeError( 'path must be an instance of SvgPathBuilder' )
-                // }
-                // const renderSvg = newSvgElement({ path: path, title: title })
-                // debug_InspectPathSize( renderSvg )
-                // window.bag.last_renderSvg = renderSvg
-
-
-                // elem.classList.add( 'newPath-summary' )
-                // elem.innerHTML = `
-                // <h3>${title}</h3>
-                // <code>
-                // ${ path.build() }
-                // </code>`
-                // // ${ renderSvg }
-                // // parentElement.appendChild( elem )
-                // parentElement.appendChild( renderSvg )
-                // // return elem
-            }
-            const defaultPath = new SvgPathBuilder()
-                .moveTo( 0, 0 ).lineTo( 10, 0 )
-                .moveTo( 0, 0 ).lineTo( 0, 10  )
-                // .moveTo( 0, 0 )
-                .lineTo( 10, 10  )
-                .lineTo( 0, 10  )
 
             if( config.path == null ) {
                 console.warn('no path provided, creating a default')
+                const defaultPath = new SvgPathBuilder()
+                    .moveTo( 0, 0 ).lineTo( 10, 0 )
+                    .moveTo( 0, 0 ).lineTo( 0, 10  )
+                    // .moveTo( 0, 0 )
+                    .lineTo( 10, 10  )
+                    .lineTo( 0, 10  )
+
                 config.path = defaultPath
             }
-
-            /* orig */
-            if( false ) {
-                config.path = path
-                const new_svg = newSvgElement({path: config.path, title: 'quick test'})
-                const parentElement = document.querySelector( ".parent-context" )
-                parentElement.appendChild( new_svg )
-
-                console.trace('exit: CreateSvgContainerWithTooltip', { config, elem_root  })
-                console.warn('🚧 left off here', { config, elem_root  })
-                return elem_root
-            } else {
-                if( path instanceof SvgPathBuilder === false ) {
-                    throw new TypeError( 'path must be an instance of SvgPathBuilder' )
-                }
-                const renderSvg = newSvgElement({ path: config.path, title: 'New: ' +  config.title })
-                debug_InspectPathSize( renderSvg )
-                window.bag.last_renderSvg = renderSvg
-
-
-                // elem.classList.add( 'newPath-summary' )
-                // elem.innerHTML = `
-                // <h3>${title}</h3>
-                // <code>
-                // ${ path.build() }
-                // </code>`
-                // ${ renderSvg }
-                // parentElement.appendChild( elem )
-                parentElement.appendChild( renderSvg )
+            if( path instanceof SvgPathBuilder === false ) {
+                throw new TypeError( 'path must be an instance of SvgPathBuilder' )
             }
+
+            // const new_svg = newSvgElement({path: config.path, title: 'quick test'})
+            const parentElement = document.querySelector( ".parent-context" )
+
+            if( path instanceof SvgPathBuilder === false ) {
+                throw new TypeError( 'path must be an instance of SvgPathBuilder' )
+            }
+            const renderSvg = newSvgElement({ path: config.path, title: '🐒 SvgWithTool newSvgElement: ' +  config.title })
+            config.parentElement.appendChild( renderSvg )
+            // parentElement.appendChild( renderSvg )
+
 
             return elem_root
 
@@ -234,7 +196,7 @@
         function newSvgElement( options  = {} ) {
             const config = {
                 title: '',
-                path: new SvgPathBuilder(),
+                path: null, // new SvgPathBuilder(),
                 ...options,
             }
             const svg_container = document.createElement( 'div' )
@@ -304,17 +266,26 @@
             .lineTo( 10, 10  )
             .lineTo( 0, 10  )
 
-        curSummary = NewPathSummary({ title: 'Old: PathSummary', path })
-
         // const tmpTurt = NewTurtle( 'from TwoLines' )
         // const tmpTurt = NewSvgContainerWithTooltip( 'from TwoLines',
             // null )
 
         console.trace('start: CreateSvgContainerWithTooltip')
+        // const parentElement = document.querySelector( ".parent-context" )
 
         curSvgSource = CreateSvgContainerWithTooltip( {
-            title: 'now',
-            path
+            title: 'now A',
+            path,
+            parentElement,
+        } )
+
+        path
+            .lineTo( 30, 10 )
+
+        curSvgSource = CreateSvgContainerWithTooltip( {
+            title: 'now B',
+            path,
+            parentElement,
         } )
 
         console.trace('after new created')
