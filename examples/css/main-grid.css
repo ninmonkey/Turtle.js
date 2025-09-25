@@ -161,3 +161,13 @@ turtle-svg {
 .tooltip {
     font-size: 0.8rem;
 }
+
+div:has(section.svg-wrapper) {
+    margin: 10px 10px;
+}
+
+section.svg-wrapper {
+    padding: 2ch 2ch;
+    font-size: 0.9rem;
+    box-shadow: var(--shadow-elevation-medium);
+}

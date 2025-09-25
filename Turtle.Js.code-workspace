@@ -1,7 +1,7 @@
 {
     "folders": [
         {
-            "path": "."
+            "path": "." // 2025-09-20
         }
     ],
 
@@ -50,6 +50,7 @@
         // "livePreview.autoRefreshPreview": "On Changes to Saved Files",
         "livePreview.autoRefreshPreview": "On All Changes in Editor",
 
+
         "livePreview.previewDebounceDelay": 20,
 
         "[javascript]": {
@@ -93,7 +94,8 @@
                 "type": "chrome",
                 "name": "Turtle.js ⁞ 🐛 Attach to External Preview",
                 "request": "launch",
-                "url": "http://127.0.0.1:3000/examples/html/grid-example.html",
+                // "url": "http://127.0.0.1:3000/examples/html/grid-example.html",
+                "url": "http://127.0.0.1:3000/examples/html/Testing-SvgPathBuilder.html",
                 "presentation": {
                     "hidden": false,
                     "group": "0",

@@ -114,7 +114,7 @@ export function Create_SvgElement(tag = 'svg', attributes = {}, children = []) {
         rootElem.setAttributeNS( null, key, value);
     });
 
-    console.info( 'CreateSvgElement', { rootElem, tag, attributes, children })
+    console.trace( 'exit: Create_SvgElement', { rootElem, tag, attributes, children })
 
     // children.forEach(child => {
     //     if (typeof child === 'string') {

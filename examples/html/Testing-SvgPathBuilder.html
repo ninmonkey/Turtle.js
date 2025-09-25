@@ -23,6 +23,9 @@
             max-width: 180ch;
             margin: min(10vw, 30px) auto;
         }
+
+
+
     </style>
 </head>
 
@@ -69,6 +72,9 @@
         const cg = new ColorGenerator( { mode: 'grayscale' } )
 
         function debug_InspectPathSize(  parent ) {
+            /**
+             * @description experiment to remove. inspect dynamic svg DOM
+             **/
             const firstPath =  parent.querySelectorAll('svg path')[0]
             console.trace('debug_InspectPathSize', { firstPath, parent } )
 
@@ -125,12 +131,75 @@
             const config = {
                 title: 'no title',
                 id: 'svg-container-with-tooltip',
+                path: null,
                 ...options
             }
 
             const elem_root = document.createElement( 'div' )
-            // elem_root.setAttribute( 'id', config.id )
 
+            // elem_root.setAttribute( 'id', config.id )
+            if( false ) {
+                // const elem = document.createElement( 'div' )
+                // if( path instanceof SvgPathBuilder === false ) {
+                //     throw new TypeError( 'path must be an instance of SvgPathBuilder' )
+                // }
+                // const renderSvg = newSvgElement({ path: path, title: title })
+                // debug_InspectPathSize( renderSvg )
+                // window.bag.last_renderSvg = renderSvg
+
+
+                // elem.classList.add( 'newPath-summary' )
+                // elem.innerHTML = `
+                // <h3>${title}</h3>
+                // <code>
+                // ${ path.build() }
+                // </code>`
+                // // ${ renderSvg }
+                // // parentElement.appendChild( elem )
+                // parentElement.appendChild( renderSvg )
+                // // return elem
+            }
+            const defaultPath = new SvgPathBuilder()
+                .moveTo( 0, 0 ).lineTo( 10, 0 )
+                .moveTo( 0, 0 ).lineTo( 0, 10  )
+                // .moveTo( 0, 0 )
+                .lineTo( 10, 10  )
+                .lineTo( 0, 10  )
+
+            if( config.path == null ) {
+                console.warn('no path provided, creating a default')
+                config.path = defaultPath
+            }
+
+            /* orig */
+            if( true ) {
+                config.path = path
+                const new_svg = newSvgElement({path: config.path, title: 'quick test'})
+                const parentElement = document.querySelector( ".parent-context" )
+                parentElement.appendChild( new_svg )
+
+                console.trace('exit: CreateSvgContainerWithTooltip', { config, elem_root  })
+                console.warn('🚧 left off here', { config, elem_root  })
+                return elem_root
+            } else {
+                if( path instanceof SvgPathBuilder === false ) {
+                    throw new TypeError( 'path must be an instance of SvgPathBuilder' )
+                }
+                const renderSvg = newSvgElement({ path: path, title: title })
+                debug_InspectPathSize( renderSvg )
+                window.bag.last_renderSvg = renderSvg
+
+
+                elem.classList.add( 'newPath-summary' )
+                elem.innerHTML = `
+                <h3>${title}</h3>
+                <code>
+                ${ path.build() }
+                </code>`
+                // ${ renderSvg }
+                // parentElement.appendChild( elem )
+                parentElement.appendChild( renderSvg )
+            }
 
             return elem_root
 
@@ -165,30 +234,30 @@
         function newSvgElement( options  = {} ) {
             const config = {
                 title: '',
-                path: null,
+                path: new SvgPathBuilder(),
                 ...options,
             }
             const svg_container = document.createElement( 'div' )
             // svg_container.setAttribute( 'id', 'some-template' )
-            const disabled = `
-            <style>
-    :root {
-        --color-fg: blue;
-    }
-    :host {
-        display: block;
-        padding: 10px;
-        margin: 10px;
-    }
-    .svg-title, svg {
-        margin: 1rem;
-    }
-    .hidden { display: none; }
-    svg {
-        // padding: 1rem;
-    }
-</style>
-            `
+//             const disabled = `
+//             <style>
+//     :root {
+//         --color-fg: blue;
+//     }
+//     :host {
+//         display: block;
+//         padding: 10px;
+//         margin: 10px;
+//     }
+//     .svg-title, svg {
+//         margin: 1rem;
+//     }
+//     .hidden { display: none; }
+//     svg {
+//         // padding: 1rem;
+//     }
+// </style>
+            // `
             const template = `
 <section class="svg-wrapper">
         <span class='svg-title'>${ config.title }</span>
@@ -209,12 +278,13 @@
             stroke         = 'currentColor'
             stroke-width   = '1.5%'
             stroke-linecap = 'round'
-            d = "${ options.path.build() }"
+            d = "${ config.path.build() }"
         ></path>
     </svg>
         </section>`
 
             svg_container.innerHTML = template
+            console.trace('🚧exit: newSvgElement', { svg_container, config, options })
             return svg_container
         }
 
@@ -230,8 +300,11 @@
         path
             .moveTo( 0, 0 ).lineTo( 10, 0 )
             .moveTo( 0, 0 ).lineTo( 0, 10  )
+            // .moveTo( 0, 0 )
+            .lineTo( 10, 10  )
+            .lineTo( 0, 10  )
 
-        curSummary = NewPathSummary({ title: 'TwoLines', path })
+        curSummary = NewPathSummary({ title: 'FromOld', path })
 
         // const tmpTurt = NewTurtle( 'from TwoLines' )
         // const tmpTurt = NewSvgContainerWithTooltip( 'from TwoLines',
@@ -240,14 +313,19 @@
         console.trace('start: CreateSvgContainerWithTooltip')
 
         curSvgSource = CreateSvgContainerWithTooltip( {
-            title: 'from TwoLines',
+            title: 'now',
             path
         } )
+
+        console.trace('after new created')
 
         path = new SvgPathBuilder()
         path
             .moveTo( 10, 0 ).lineTo( 10, 10 )
             .moveTo( 0, 0 ).lineTo( 0, 10  )
+            .moveTo( 0, 0 )
+            .lineTo(10, 0 )
+            .lineTo( 20, 10  )
 
         curSummary = NewPathSummary({ title: 'TwoLines 2', path })
 
