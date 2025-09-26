@@ -66,15 +66,10 @@
         import { SvgPathBuilder, Create_SvgPathElement, Create_SvgElement, CreateSvgContainerWithTooltip } from './../../js/svg.js'
 
         window.bag ??= {}
-
         const parentElement = document.querySelector( ".parent-context" )
+
         let cur
         const cg = new ColorGenerator( { mode: 'grayscale' } )
-
-
-
-        
-
         let i = 0
         let deg = 0
         let path // const newPath = new SvgPathBuilder()
@@ -89,22 +84,32 @@
             .lineTo( 10, 10  )
             .lineTo( 0, 10  )
 
+        /* path attrs
+                id            : 'turtle-path-n',
+                class         : 'svg-path',
+                d             : config.path.build(),
+                fill          : 'hsl( 200 50% 50% / .5)',
+                stroke        : 'hsl( 180 70% 50% / .75)', // currentColor
+                'stroke-width': '2.5%',
+
+        */
         curSvgSource = CreateSvgContainerWithTooltip( {
-            title: 'now A',
+            title: 'green stroke',
             path,
             parentElement,
+        }, {
+            stroke: cg.Next,
+        }, {
+            viewBox: '-10 -10 50 50',
         } )
 
-        path
-            .lineTo( 30, 10 )
+        path.lineTo( 30, 10 )
 
         curSvgSource = CreateSvgContainerWithTooltip( {
             title: 'now B',
             path,
             parentElement,
         } )
-
-        console.trace('🧪 after creating paths')
 
         path = new SvgPathBuilder()
         path
@@ -161,12 +166,15 @@
                     const rawText = `
                     <p>
                     Viewbox: ${ abbr_viewBox }
-                    <br/>X, Y: ${ cur.getAttribute( 'x' ) }, ${ cur.getAttribute( 'y' ) }.
-                    <br/>Width, Height (attr):d ${ cur.getAttribute( 'width' ) } x ${ cur.getAttribute( 'height' ) }
                     <br/>BaseVal: ${ cur.width.baseVal.value.toFixed( 1 ) } x ${ cur.height.baseVal.value.toFixed( 1 ) }
                     </p>
                     <p>Svg:</p><pre class="inline-code-block"><code class="language-xml">${ escaped_xml
                         }</code></pre>`
+
+                        /* old:
+                            <br/>X, Y: ${ cur.getAttribute( 'x' ) }, ${ cur.getAttribute( 'y' ) }.
+                            <br/>Width, Height (attr):d ${ cur.getAttribute( 'width' ) } x ${ cur.getAttribute( 'height' ) }.
+                        */
                     cur_tip.innerHTML = rawText
 
                     window.Prism.highlightAll()
@@ -217,9 +225,6 @@
         window.fn.Create_SvgPathElement = Create_SvgPathElement
 
         console.trace( 'debug enabled globals: ', { Turtle, TurtleSvgElement, bag } )
-        console.log('try funcs')
-        let t = document.querySelectorAll('svg')[0]
-        fn.pathSize( t )
 
     </script>
     <script src="../../js/prism.js"></script>
