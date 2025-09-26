@@ -64,7 +64,7 @@ export class SvgPathBuilder {
     }
 }
 
-export function Create_SvgPathElement(d = '', attributes = {} )  { // , children = []) {
+export function Create_SvgPathElement(attributes = {} )  { // , children = []) {
     // const template = `
     // <path
     // fill="none"
@@ -74,39 +74,25 @@ export function Create_SvgPathElement(d = '', attributes = {} )  { // , children
     // `
 
     const attr = {
-        id           : 'path-n',
+        // id           : 'path-n',
         class        : 'svg-path',
-        fill         : 'transparent',
+        fill         : 'hsl( 200 50% 50% / .5)', // currentColor/transparent
         stroke       : 'currentColor',
-        strokeWidth  : '1.5%',
-        strokeLinecap: 'round',
-
-        d: 'M 6,10 A 6 4 10 0 0 14,10',
+        'stroke-width'  : '1.5%',
+        'stroke-Linecap': 'round',
+        // d: 'M 6,10 A 6 4 10 0 0 14,10',
         ...attributes
     }
+    attr.stroke = 'red';
+
     console.warn('Create_SvgPathElement: not asserting properties exist')
-    const pathElem = document.createElementNS(svgNS, 'path')
+    const pathElem = document.createElementNS(svgNS, 'path') // must this be created on parent of svg type ?
 
     Object.entries(attr).forEach( ([key, value]) => {
         pathElem.setAttributeNS(null, key, value)
     })
-    /* disabled attrs
-        id             = "${ attr.id }"
-    */
-    const template_path = `
-    <path
-        class          = "${ attr.class }"
-        fill           = "${ attr.fill }"
-        stroke         = "${ attr.stroke }"
-        stroke-width   = "${ attr.strokeWidth }"
-        stroke-linecap = "${ attr.strokeLinecap }"
-        d              = "${ attr.d }"
-    ></path>
-    `
-
-    console.info( 'Create_SvgPathElement', { attr, pathElem  } ) // children })
     return pathElem
-    //    ex: <path
+    //    original: <path
     //         id             = 'turtle-path'
     //         class          = 'svg-path'
     //         fill           = 'transparent'
@@ -131,7 +117,7 @@ export function Create_SvgElement(tag = 'svg', attributes = {}, children = []) {
         rootElem.setAttributeNS( null, key, value);
     });
 
-    console.trace( 'exit: Create_SvgElement', { rootElem, tag, attributes, children })
+    console.trace( '🐧Exit: Create_SvgElement', { rootElem, tag, attributes, children })
 
     // children.forEach(child => {
     //     if (typeof child === 'string') {

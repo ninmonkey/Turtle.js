@@ -63,7 +63,7 @@
         import { TurtleSvgElement } from './../../js/custom-element/turtle-svg-element.js';
         import { randomInt, elementFromIdOrValue, simpleFormatHtmlWhitespace, simpleEscapeHtml, ColorGenerator } from './../../js/utils.js'
         import { GetAllElements } from './../../js/debug_utils.js'
-        import { SvgPathBuilder } from './../../js/svg.js'
+        import { SvgPathBuilder, Create_SvgPathElement, Create_SvgElement } from './../../js/svg.js'
 
         window.bag ??= {}
 
@@ -158,7 +158,7 @@
             if( path instanceof SvgPathBuilder === false ) {
                 throw new TypeError( 'path must be an instance of SvgPathBuilder' )
             }
-            const renderSvg = newSvgElement({ path: config.path, title: '🐒 ' +  config.title })
+            const renderSvg = newSvgElement({ path: config.path, title: '🦍 ' +  config.title })
             config.parentElement.appendChild( renderSvg )
             // parentElement.appendChild( renderSvg )
 
@@ -201,52 +201,39 @@
                 ...options,
             }
             const svg_container = document.createElement( 'div' )
-            // svg_container.setAttribute( 'id', 'some-template' )
-//             const disabled = `
-//             <style>
-//     :root {
-//         --color-fg: blue;
-//     }
-//     :host {
-//         display: block;
-//         padding: 10px;
-//         margin: 10px;
-//     }
-//     .svg-title, svg {
-//         margin: 1rem;
-//     }
-//     .hidden { display: none; }
-//     svg {
-//         // padding: 1rem;
-//     }
-// </style>
-            // `
-            const template = `
-<section class="svg-wrapper">
-        <span class='svg-title'>${ config.title }</span>
-    <!-- was
-        width  = '100%'
-        height = '100%' -->
-    <svg
-        class  = 'svg-root'
-        width = '200px'
-        height = '200px'
-        viewBox = '-10 -10 50 50'
 
-    >
-        <path
-            id             = 'turtle-path-test'
-            class          = 'svg-path'
-            fill           = 'hsl( 200 50% 50% )'
-            stroke         = '${ config.stroke ?? 'currentColor' }'
-            stroke-width   = '1.5%'
-            stroke-linecap = 'round'
-            d = "${ config.path.build() }"
-        ></path>
-    </svg>
-        </section>`
+            let pathElem = Create_SvgPathElement({
+                id            : 'turtle-path-n',
+                class         : 'svg-path',
+                d             : config.path.build(),
+                fill          : 'hsl( 200 50% 50% / .5)',
+                stroke        : 'hsl( 180 70% 50% / .75)', // currentColor
+                'stroke-width': '2.5%',
+
+                // 'stroke-linecap': 'round',
+            })
+
+            const inlinePath = pathElem.outerHTML
+            let innerSvg = `<svg
+                class  = 'svg-root'
+                width = '200px'
+                height = '200px'
+                viewBox = '-10 -10 50 50'
+
+            >
+                ${ inlinePath }
+
+            </svg>`
+
+            const template = `
+            <section class="svg-wrapper">
+                <span class='svg-title'>${ config.title }</span>
+            <!-- was
+                width  = '100%'
+                height = '100%' -->
+            ${ innerSvg }
+                </section>`
             svg_container.innerHTML = template
-            // console.trace('🚧exit: newSvgElement', { svg_container, config, options })
             return svg_container
         }
 
