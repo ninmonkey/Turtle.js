@@ -104,3 +104,77 @@ export function Create_SvgElement(tag = 'svg', attributes = {}, children = []) {
     }
     return rootElem;
 }
+
+export function CreateSvgContainerWithTooltip( options = {} ) {
+    const config = {
+        title: 'no title',
+        id: 'svg-container-with-tooltip',
+        path: null,
+        // parentElement: document.querySelector( ".parent-context" ),
+        ...options,
+    }
+    config.parentElement = document.querySelector( ".parent-context" )
+
+    const elem_root = document.createElement( 'div' )
+
+    if( config.path == null ) {
+        throw new Error('no path provided!')
+        console.warn('no path provided, creating a default')
+        const defaultPath = new SvgPathBuilder()
+            .moveTo( 0, 0 ).lineTo( 10, 0 )
+        config.path = defaultPath
+    }
+
+    // const parentElement = document.querySelector( ".parent-context" )
+
+    if( config.path instanceof SvgPathBuilder === false ) {
+        throw new TypeError( 'path must be an instance of SvgPathBuilder' )
+    }
+    const renderSvg = newSvgElement({
+        path: config.path, title: '🦍 ' +  config.title
+    })
+
+    config.parentElement.appendChild( renderSvg )
+    return elem_root
+}
+
+export function newSvgElement( options  = {} ) {
+    const config = {
+        title: '',
+        path: null, // new SvgPathBuilder(),
+        stroke: null,
+        ...options,
+    }
+    const wrapper_div = document.createElement( 'section' )
+    wrapper_div.classList.add('svg-wrapper')
+
+    const svgElem = Create_SvgElement(
+        'svg',  {
+        id     : 'turtle-svg-n',
+        class  : 'svg-root',
+        viewBox: '-10 -10 50 50',
+        // width  : '200px',
+        // height : '200px',
+    })
+
+    const pathElem = Create_SvgPathElement({
+        id            : 'turtle-path-n',
+        class         : 'svg-path',
+        d             : config.path.build(),
+        fill          : 'hsl( 200 50% 50% / .5)',
+        stroke        : 'hsl( 180 70% 50% / .75)', // currentColor
+        'stroke-width': '2.5%',
+    })
+
+    const titleElem = document.createElement('div')
+
+    titleElem.classList.add('svg-title')
+    titleElem.textContent = config.title
+
+    wrapper_div.appendChild( titleElem )
+
+    svgElem.appendChild( pathElem )
+    wrapper_div.appendChild( svgElem )
+
+    return wrapper_div
+}
