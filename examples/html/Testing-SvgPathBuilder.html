@@ -148,50 +148,18 @@
 
                 config.path = defaultPath
             }
-            if( path instanceof SvgPathBuilder === false ) {
-                throw new TypeError( 'path must be an instance of SvgPathBuilder' )
-            }
-
-            // const new_svg = newSvgElement({path: config.path, title: 'quick test'})
             const parentElement = document.querySelector( ".parent-context" )
 
             if( path instanceof SvgPathBuilder === false ) {
                 throw new TypeError( 'path must be an instance of SvgPathBuilder' )
             }
-            const renderSvg = newSvgElement({ path: config.path, title: '🦍 ' +  config.title })
+            const renderSvg = newSvgElement({
+                path: config.path, title: '🦍 ' +  config.title
+            })
+
             config.parentElement.appendChild( renderSvg )
-            // parentElement.appendChild( renderSvg )
-
-
             return elem_root
-
-
-        //     const tmpTurt = new TurtleSvgElement()
-        //     return tmpTurt
-        //     const target = tmpTurt.getNamedElements().svg
-
-        // //     const innerPathTemplate = `
-        // //      <path
-        // //     id             = 'turtle-path-test'
-        // //     class          = 'svg-path'
-        // //     fill           = 'hsl( 200 50% 50% )'
-        // //     stroke         = 'currentColor'
-        // //     stroke-width   = '1.5%'
-        // //     stroke-linecap = 'round'
-        // //     d = "${ options.path.build() }"
-        // // ></path>
-        // //     ```
-        //     const one = newSvgElement( { path: null })
-        //     target.outerHTML = svg.outerHTML
-        //     return tmpTurt
-        //     // tmpTurt.#context.outerHTML = o.outerHTML
-
-            // const elem = newSvgElement({ path: path, title: title })
-            // parentElement.appendChild( elem )
-            // return elem
-
         }
-
 
         function newSvgElement( options  = {} ) {
             const config = {
@@ -208,8 +176,8 @@
                 id     : 'turtle-svg-n',
                 class  : 'svg-root',
                 viewBox: '-10 -10 50 50',
-                width  : '200px',
-                height : '200px',
+                // width  : '200px',
+                // height : '200px',
             })
 
             const pathElem = Create_SvgPathElement({
@@ -221,20 +189,16 @@
                 'stroke-width': '2.5%',
             })
 
+            const titleElem = document.createElement('div')
+
+            titleElem.classList.add('svg-title')
+            titleElem.textContent = config.title
+
+            wrapper_div.appendChild( titleElem )
+
             svgElem.appendChild( pathElem )
             wrapper_div.appendChild( svgElem )
 
-            const renderTemplate = `
-            <section class="svg-wrapper">
-                <span class='svg-title'>${ config.title }</span>
-            <!-- was
-                width  = '100%'
-                height = '100%' -->
-            ${ wrapper_div.outerHTML }
-                </section>`
-            // wrapper_div.innerHTML = template
-
-            // innerSvg = svgElem.outerHTML
             return wrapper_div
         }
 
@@ -243,7 +207,6 @@
         let path // const newPath = new SvgPathBuilder()
         let curSummary
         let curSvgSource
-
 
         cur  = null
         path = new SvgPathBuilder()
@@ -276,7 +239,6 @@
             .moveTo( 10, 0 ).lineTo( 10, 10 )
             .lineTo( 0, 10  )
 
-
          curSvgSource = CreateSvgContainerWithTooltip( {
             title: 'now C',
             path,
@@ -292,10 +254,6 @@
             .polygon( ( 1 + i++ ), 3 )
             .rotate( 90 * Math.PI / 180 )
             .polygon( ( 1 + i++ ), 3 )
-
-
-
-
 
 
 
