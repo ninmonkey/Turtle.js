@@ -65,14 +65,6 @@ export class SvgPathBuilder {
 }
 
 export function Create_SvgPathElement(attributes = {} )  { // , children = []) {
-    // const template = `
-    // <path
-    // fill="none"
-    // stroke="pink"
-    // d="M 6,10
-    //        A 6 4 10 0 0 14,10" />
-    // `
-
     const attr = {
         // id           : 'path-n',
         class        : 'svg-path',
@@ -80,53 +72,35 @@ export function Create_SvgPathElement(attributes = {} )  { // , children = []) {
         stroke       : 'currentColor',
         'stroke-width'  : '1.5%',
         'stroke-Linecap': 'round',
-        // d: 'M 6,10 A 6 4 10 0 0 14,10',
-        ...attributes
+        ...attributes,
     }
-    // attr.stroke = 'red';
 
-    console.warn('Create_SvgPathElement: not asserting properties exist')
     const pathElem = document.createElementNS(svgNS, 'path') // must this be created on parent of svg type ?
 
     Object.entries(attr).forEach( ([key, value]) => {
         pathElem.setAttributeNS(null, key, value)
     })
     return pathElem
-    //    original: <path
-    //         id             = 'turtle-path'
-    //         class          = 'svg-path'
-    //         fill           = 'transparent'
-    //         stroke         = 'currentColor'
-    //         stroke-width   = '1.5%'
-    //         stroke-linecap = 'round'
-    //     ></path>
-
 }
 
 export function Create_SvgElement(tag = 'svg', attributes = {}, children = []) {
     /**
-     * @description Creates an SVG element with specified attributes and children
-     * @returns {SVGElement} New SVG element
+     * @description Creates an `<svg>` element with specified attributes and children
+     * @param {string} tag Tag name, default 'svg'
+     * @returns {SVGElement} New SVG Element
      */
-    const config = {
-        viewBox: "0 0 200 100",
+    const attr = {
+        viewBox: "0 0 100 100",
         ...attributes,
     }
     const rootElem = document.createElementNS(svgNS, tag);
 
-    Object.entries(attributes).forEach(([key, value]) => {
+    Object.entries(attr).forEach(([key, value]) => {
         rootElem.setAttributeNS( null, key, value);
     });
-
-    console.trace( '🐧Exit: Create_SvgElement', { rootElem, tag, attributes, children })
-
-    // children.forEach(child => {
-    //     if (typeof child === 'string') {
-    //         rootElem.appendChild(document.createTextNode(child));
-    //     } else {
-    //         rootElem.appendChild(child);
-    //     }
-    // });
-
+    // console.trace( 'Create_SvgElement', { rootElem, tag, attributes, children })
+    for (const child of children ) {
+        rootElem.appendChild( child )
+    }
     return rootElem;
 }

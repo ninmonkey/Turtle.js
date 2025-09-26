@@ -79,7 +79,7 @@
                 ...options,
             }
             config.parentElement = document.querySelector( ".parent-context" )
-                // parentElement: options.parentElement ?? document.querySelector( ".parent-context" ),
+
             const elem_root = document.createElement( 'div' )
 
             if( config.path == null ) {
@@ -87,7 +87,7 @@
                 const defaultPath = new SvgPathBuilder()
                     .moveTo( 0, 0 ).lineTo( 10, 0 )
                     .moveTo( 0, 0 ).lineTo( 0, 10  )
-                    // .moveTo( 0, 0 )
+                    .moveTo( 0, 0 )
                     .lineTo( 10, 10  )
                     .lineTo( 0, 10  )
 
@@ -190,14 +190,10 @@
         } )
 
         i = 0; deg =  0;
-        // cur = NewTurtle( 'old tooltip method' )
-        //     .stroke( cg.Next )
+        // cur = NewTurtle( 'original' )
         //     .stroke( cg.Next )
         //     .polygon( ( 1 + i++ ), 3 )
         //     .rotate( 90 * Math.PI / 180 )
-        //     .polygon( ( 1 + i++ ), 3 )
-
-
 
         /* page specific handlers for `grid-example.html` */
         const toggleGridSizeButton = document.getElementById( "cmd-btn-toggle-grid-large" );
@@ -276,24 +272,21 @@
                 } )
             } )
         }
-
-        // const all_turtle_elements = document.querySelectorAll( 'turtle-svg' )
-        // RegisterTooltipsForTurtleSvgElements( all_turtle_elements )
-
         const all_wrappers = document.querySelectorAll('.svg-wrapper')
         RegisterTooltipsForTurtleSvgElements( all_wrappers )
 
         // globals
         window.bag ??= {}
         window.fn ??= {}
-        window.Turtle = Turtle
-        window.TurtleSvgElement = TurtleSvgElement
-        window.bag.root_elem = parentElement
-        window.bag.all_wrappers = all_wrappers
 
-        // window.t1 = turt
-        // window.t3 = dest
-        window.dbg_all = GetAllElements
+        window.Turtle                   = Turtle
+        window.TurtleSvgElement         = TurtleSvgElement
+        window.bag.root_elem            = parentElement
+        window.bag.all_wrappers         = all_wrappers
+        window.fn.allElements           = GetAllElements
+        window.fn.SvgPathBuilder        = SvgPathBuilder
+        window.fn.Create_SvgElement     = Create_SvgElement
+        window.fn.Create_SvgPathElement = Create_SvgPathElement
 
         console.trace( 'debug enabled globals: ', { Turtle, TurtleSvgElement, bag } )
         console.log('try funcs')
