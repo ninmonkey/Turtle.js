@@ -200,41 +200,42 @@
                 stroke: null,
                 ...options,
             }
-            const svg_container = document.createElement( 'div' )
+            const wrapper_div = document.createElement( 'section' )
+            wrapper_div.classList.add('svg-wrapper')
 
-            let pathElem = Create_SvgPathElement({
+            const svgElem = Create_SvgElement(
+                'svg',  {
+                id     : 'turtle-svg-n',
+                class  : 'svg-root',
+                viewBox: '-10 -10 50 50',
+                width  : '200px',
+                height : '200px',
+            })
+
+            const pathElem = Create_SvgPathElement({
                 id            : 'turtle-path-n',
                 class         : 'svg-path',
                 d             : config.path.build(),
                 fill          : 'hsl( 200 50% 50% / .5)',
                 stroke        : 'hsl( 180 70% 50% / .75)', // currentColor
                 'stroke-width': '2.5%',
-
-                // 'stroke-linecap': 'round',
             })
 
-            const inlinePath = pathElem.outerHTML
-            let innerSvg = `<svg
-                class  = 'svg-root'
-                width = '200px'
-                height = '200px'
-                viewBox = '-10 -10 50 50'
+            svgElem.appendChild( pathElem )
+            wrapper_div.appendChild( svgElem )
 
-            >
-                ${ inlinePath }
-
-            </svg>`
-
-            const template = `
+            const renderTemplate = `
             <section class="svg-wrapper">
                 <span class='svg-title'>${ config.title }</span>
             <!-- was
                 width  = '100%'
                 height = '100%' -->
-            ${ innerSvg }
+            ${ wrapper_div.outerHTML }
                 </section>`
-            svg_container.innerHTML = template
-            return svg_container
+            // wrapper_div.innerHTML = template
+
+            // innerSvg = svgElem.outerHTML
+            return wrapper_div
         }
 
         let i = 0
