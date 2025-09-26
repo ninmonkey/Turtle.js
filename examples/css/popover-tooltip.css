@@ -126,6 +126,11 @@ to take effect, as the specificity is the same */
 /* Styling hint popovers */
 
 [popover="hint"] {
+    /* background: #271717;
+    background: hsl(226, 38%, 37%);
+    background: hsl(223, 31%, 18%); */
+    background: hsl(222, 30%, 37%);
+
     inset: unset;
     position: absolute;
     top: calc(anchor(top) + 100px);
@@ -134,7 +139,7 @@ to take effect, as the specificity is the same */
 
     padding: 8px;
     border-radius: 6px;
-    background: #271717;
+
     color: whitesmoke;
     box-shadow: 1px 1px 3px #999;
     border: none;
