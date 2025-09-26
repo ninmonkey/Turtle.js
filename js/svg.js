@@ -83,7 +83,7 @@ export function Create_SvgPathElement(attributes = {} )  { // , children = []) {
         // d: 'M 6,10 A 6 4 10 0 0 14,10',
         ...attributes
     }
-    attr.stroke = 'red';
+    // attr.stroke = 'red';
 
     console.warn('Create_SvgPathElement: not asserting properties exist')
     const pathElem = document.createElementNS(svgNS, 'path') // must this be created on parent of svg type ?
@@ -109,7 +109,8 @@ export function Create_SvgElement(tag = 'svg', attributes = {}, children = []) {
      * @returns {SVGElement} New SVG element
      */
     const config = {
-        viewBox: "0 0 200 100"
+        viewBox: "0 0 200 100",
+        ...attributes,
     }
     const rootElem = document.createElementNS(svgNS, tag);
 

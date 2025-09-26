@@ -71,61 +71,6 @@
         let cur
         const cg = new ColorGenerator( { mode: 'grayscale' } )
 
-        function debug_InspectPathSize(  parent ) {
-            /**
-             * @description experiment to remove. inspect dynamic svg DOM
-             **/
-            const firstPath =  parent.querySelectorAll('svg path')[0]
-            console.trace('debug_InspectPathSize', { firstPath, parent } )
-
-            const info = { firstPath }
-
-            if( firstPath ) {
-                const owner = firstPath.ownerSVGElement
-
-                info.bbox                     = firstPath.getBBox()
-                info.owner                    = owner
-                info.owner_BBox               = owner.getBBox()
-                info.owner_ClientRects        = owner.getClientRects()
-                info.owner_BoundingClientRect = owner.getBoundingClientRect()
-                info.first_BBox               = firstPath.getBBox()
-                info.first                    = firstPath.getClientRects()
-            }
-            console.log( info )
-            window.bag.lastInspect = info
-            return info
-        }
-
-        function NewPathSummary ( { title, path } ) {
-            const elem = document.createElement( 'div' )
-            if( path instanceof SvgPathBuilder === false ) {
-                throw new TypeError( 'path must be an instance of SvgPathBuilder' )
-            }
-            const renderSvg = newSvgElement({ path: path, title: title })
-            debug_InspectPathSize( renderSvg )
-            window.bag.last_renderSvg = renderSvg
-
-
-            elem.classList.add( 'newPath-summary' )
-            elem.innerHTML = `
-            <h3>${title}</h3>
-            <code>
-            ${ path.build() }
-            </code>`
-            // ${ renderSvg }
-            // parentElement.appendChild( elem )
-            parentElement.appendChild( renderSvg )
-            return elem
-        }
-
-        function NewTurtle ( title ) {
-            const elem = new TurtleSvgElement()
-            const turt = elem.Turtle
-            parentElement.appendChild( elem )
-            elem.Title = title
-            return turt
-        }
-
         function CreateSvgContainerWithTooltip( options = {} ) {
             const config = {
                 title: 'no title',
@@ -205,7 +150,6 @@
         let i = 0
         let deg = 0
         let path // const newPath = new SvgPathBuilder()
-        let curSummary
         let curSvgSource
 
         cur  = null
@@ -245,15 +189,13 @@
             parentElement,
         } )
 
-        curSummary = NewPathSummary({ title: 'Old: NewPathSummary', path })
-
         i = 0; deg =  0;
-        cur = NewTurtle( 'old tooltip method' )
-            .stroke( cg.Next )
-            .stroke( cg.Next )
-            .polygon( ( 1 + i++ ), 3 )
-            .rotate( 90 * Math.PI / 180 )
-            .polygon( ( 1 + i++ ), 3 )
+        // cur = NewTurtle( 'old tooltip method' )
+        //     .stroke( cg.Next )
+        //     .stroke( cg.Next )
+        //     .polygon( ( 1 + i++ ), 3 )
+        //     .rotate( 90 * Math.PI / 180 )
+        //     .polygon( ( 1 + i++ ), 3 )
 
 
 
@@ -352,8 +294,6 @@
         // window.t1 = turt
         // window.t3 = dest
         window.dbg_all = GetAllElements
-
-        window.fn.pathSize = debug_InspectPathSize
 
         console.trace( 'debug enabled globals: ', { Turtle, TurtleSvgElement, bag } )
         console.log('try funcs')
