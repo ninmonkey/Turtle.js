@@ -1,0 +1,6 @@
+{
+
+    // "livePreview.serverRoot": "./examples/html",
+    "livePreview.defaultPreviewPath": "/examples/html/Testing-SvgPathBuilder.html"
+    // "livePreview.defaultPreviewPath": "/examples/html/Testing-SvgPathBuilder.html"
+}
