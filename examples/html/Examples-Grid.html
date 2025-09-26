@@ -23,9 +23,6 @@
             max-width: 180ch;
             margin: min(10vw, 30px) auto;
         }
-
-
-
     </style>
 </head>
 
@@ -66,58 +63,91 @@
         import { SvgPathBuilder, Create_SvgPathElement, Create_SvgElement, CreateSvgContainerWithTooltip } from './../../js/svg.js'
 
         window.bag ??= {}
-
         const parentElement = document.querySelector( ".parent-context" )
+
         let cur
         const cg = new ColorGenerator( { mode: 'grayscale' } )
-
-
-
-        
-
         let i = 0
         let deg = 0
         let path // const newPath = new SvgPathBuilder()
         let curSvgSource
 
-        cur  = null
+        cur = null
         path = new SvgPathBuilder()
         path
             .moveTo( 0, 0 ).lineTo( 10, 0 )
-            .moveTo( 0, 0 ).lineTo( 0, 10  )
+            .moveTo( 0, 0 ).lineTo( 0, 10 )
             // .moveTo( 0, 0 )
-            .lineTo( 10, 10  )
-            .lineTo( 0, 10  )
+            .lineTo( 10, 10 )
+            .lineTo( 0, 10 )
 
+        /* path attrs
+                id            : 'turtle-path-n',
+                class         : 'svg-path',
+                d             : config.path.build(),
+                fill          : 'hsl( 200 50% 50% / .5)',
+                stroke        : 'hsl( 180 70% 50% / .75)', // currentColor
+                'stroke-width': '2.5%',
+
+        */
         curSvgSource = CreateSvgContainerWithTooltip( {
-            title: 'now A',
+            title: 'green stroke',
             path,
             parentElement,
+        }, {
+            stroke: cg.Next,
+        }, {
+            viewBox: '-10 -10 50 50',
         } )
 
+
+        path = new SvgPathBuilder()
         path
-            .lineTo( 30, 10 )
+            .moveTo( 0, 0 ).lineTo( 10, 0 )
+            .moveTo( 0, 0 ).lineTo( 0, 10 )
+
+
+
+        curSvgSource = CreateSvgContainerWithTooltip( {
+            title: 'green 2',
+            path,
+            parentElement,
+        }, {
+            stroke: cg.Next,
+        }, {
+            viewBox: '-10 -10 50 50',
+        } )
+
+        path.lineTo( 30, 10 )
 
         curSvgSource = CreateSvgContainerWithTooltip( {
             title: 'now B',
             path,
             parentElement,
-        } )
+        }, {
+            stroke: cg.Next,
+        }, {
 
-        console.trace('🧪 after creating paths')
+        } )
 
         path = new SvgPathBuilder()
         path
             .moveTo( 10, 0 ).lineTo( 10, 10 )
-            .lineTo( 0, 10  )
+            .lineTo( 0, 10 )
 
-         curSvgSource = CreateSvgContainerWithTooltip( {
+        curSvgSource = CreateSvgContainerWithTooltip( {
             title: 'now C',
             path,
             parentElement,
+        }, {
+            stroke: cg.Next,
+        }, {
+
         } )
 
-        i = 0; deg =  0;
+        i = 0; deg = 0;
+
+
         // cur = NewTurtle( 'original' )
         //     .stroke( cg.Next )
         //     .polygon( ( 1 + i++ ), 3 )
@@ -148,7 +178,7 @@
                 turtleSvgElem.addEventListener( "mouseover", () => {
                     const cur_tip = tooltips[ 0 ]
                     // let cur = turtleSvgElem.shadowRoot.querySelector( 'svg' )
-                    const cur = turtleSvgElem.querySelector('svg')
+                    const cur = turtleSvgElem.querySelector( 'svg' )
                     const formatted_xml = simpleFormatHtmlWhitespace( cur.outerHTML )
                     const escaped_xml =
                         simpleEscapeHtml( formatted_xml )
@@ -161,12 +191,15 @@
                     const rawText = `
                     <p>
                     Viewbox: ${ abbr_viewBox }
-                    <br/>X, Y: ${ cur.getAttribute( 'x' ) }, ${ cur.getAttribute( 'y' ) }.
-                    <br/>Width, Height (attr):d ${ cur.getAttribute( 'width' ) } x ${ cur.getAttribute( 'height' ) }
                     <br/>BaseVal: ${ cur.width.baseVal.value.toFixed( 1 ) } x ${ cur.height.baseVal.value.toFixed( 1 ) }
                     </p>
                     <p>Svg:</p><pre class="inline-code-block"><code class="language-xml">${ escaped_xml
                         }</code></pre>`
+
+                    /* old:
+                        <br/>X, Y: ${ cur.getAttribute( 'x' ) }, ${ cur.getAttribute( 'y' ) }.
+                        <br/>Width, Height (attr):d ${ cur.getAttribute( 'width' ) } x ${ cur.getAttribute( 'height' ) }.
+                    */
                     cur_tip.innerHTML = rawText
 
                     window.Prism.highlightAll()
@@ -191,7 +224,7 @@
                 turtleSvgElem.addEventListener( "click", () => {
                     const cur_tip = tooltips[ 0 ]
                     // const rawSvgText = turtleSvgElem.getNamedElements().svg.outerHTML
-                    const rawSvgText = turtleSvgElem.querySelector('svg').outerHTML
+                    const rawSvgText = turtleSvgElem.querySelector( 'svg' ).outerHTML
                     console.info( 'copied SVG to clipboard', { rawSvgText } )
                     navigator.clipboard.writeText( rawSvgText )
                         .catch( err => {
@@ -200,26 +233,23 @@
                 } )
             } )
         }
-        const all_wrappers = document.querySelectorAll('.svg-wrapper')
+        const all_wrappers = document.querySelectorAll( '.svg-wrapper' )
         RegisterTooltipsForTurtleSvgElements( all_wrappers )
 
         // globals
         window.bag ??= {}
         window.fn ??= {}
 
-        window.Turtle                   = Turtle
-        window.TurtleSvgElement         = TurtleSvgElement
-        window.bag.root_elem            = parentElement
-        window.bag.all_wrappers         = all_wrappers
-        window.fn.allElements           = GetAllElements
-        window.fn.SvgPathBuilder        = SvgPathBuilder
-        window.fn.Create_SvgElement     = Create_SvgElement
+        window.Turtle = Turtle
+        window.TurtleSvgElement = TurtleSvgElement
+        window.bag.root_elem = parentElement
+        window.bag.all_wrappers = all_wrappers
+        window.fn.allElements = GetAllElements
+        window.fn.SvgPathBuilder = SvgPathBuilder
+        window.fn.Create_SvgElement = Create_SvgElement
         window.fn.Create_SvgPathElement = Create_SvgPathElement
 
         console.trace( 'debug enabled globals: ', { Turtle, TurtleSvgElement, bag } )
-        console.log('try funcs')
-        let t = document.querySelectorAll('svg')[0]
-        fn.pathSize( t )
 
     </script>
     <script src="../../js/prism.js"></script>
