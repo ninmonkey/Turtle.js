@@ -105,7 +105,7 @@ export function Create_SvgElement(tag = 'svg', attributes = {}, children = []) {
     return rootElem;
 }
 
-export function CreateSvgContainerWithTooltip( options = {} ) {
+export function CreateSvgContainerWithTooltip( options = {}, svgPathAttributes = {}, svgRootAttributes = {}  ) {
     const config = {
         title: 'no title',
         id: 'svg-container-with-tooltip',
@@ -113,6 +113,14 @@ export function CreateSvgContainerWithTooltip( options = {} ) {
         // parentElement: document.querySelector( ".parent-context" ),
         ...options,
     }
+    const path_attr = {
+        // stroke: 'blue',
+        ...svgPathAttributes,
+    }
+    const svgRoot_attr = {
+        ...svgRootAttributes,
+    }
+
     config.parentElement = document.querySelector( ".parent-context" )
 
     const elem_root = document.createElement( 'div' )
@@ -131,20 +139,28 @@ export function CreateSvgContainerWithTooltip( options = {} ) {
         throw new TypeError( 'path must be an instance of SvgPathBuilder' )
     }
     const renderSvg = newSvgElement({
-        path: config.path, title: '🦍 ' +  config.title
-    })
+        path: config.path, title: '🦍 ' +  config.title,
+    }, path_attr, svgRoot_attr )
 
     config.parentElement.appendChild( renderSvg )
     return elem_root
 }
 
-export function newSvgElement( options  = {} ) {
+export function newSvgElement( options  = {}, svgPathAttributes = {}, svgRootAttributes = {} ) {
     const config = {
         title: '',
         path: null, // new SvgPathBuilder(),
         stroke: null,
         ...options,
     }
+    const path_attr = {
+        // stroke: 'red',
+        ...svgPathAttributes,
+    }
+    const svgRoot_attr = {
+        ...svgRootAttributes,
+    }
+
     const wrapper_div = document.createElement( 'section' )
     wrapper_div.classList.add('svg-wrapper')
 
@@ -153,6 +169,7 @@ export function newSvgElement( options  = {} ) {
         id     : 'turtle-svg-n',
         class  : 'svg-root',
         viewBox: '-10 -10 50 50',
+        ...svgRoot_attr,
         // width  : '200px',
         // height : '200px',
     })
@@ -164,6 +181,8 @@ export function newSvgElement( options  = {} ) {
         fill          : 'hsl( 200 50% 50% / .5)',
         stroke        : 'hsl( 180 70% 50% / .75)', // currentColor
         'stroke-width': '2.5%',
+        ...path_attr,
+
     })
 
     const titleElem = document.createElement('div')
