@@ -133,8 +133,6 @@ export function CreateSvgContainerWithTooltip( options = {}, svgPathAttributes =
         config.path = defaultPath
     }
 
-    // const parentElement = document.querySelector( ".parent-context" )
-
     if( config.path instanceof SvgPathBuilder === false ) {
         throw new TypeError( 'path must be an instance of SvgPathBuilder' )
     }

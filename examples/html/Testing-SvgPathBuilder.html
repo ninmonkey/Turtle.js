@@ -67,6 +67,8 @@
 
         window.bag ??= {}
         const parentElement = document.querySelector( ".parent-context" )
+        const loggerConfig = { mouseEvents: false }
+        window.loggerConfig = loggerConfig
 
         let cur
         const cg = new ColorGenerator( { mode: 'grayscale' } )
@@ -152,6 +154,7 @@
             turtleSvgElements.forEach( ( turtleSvgElem ) => {
                 turtleSvgElem.addEventListener( "mouseover", () => {
                     const cur_tip = tooltips[ 0 ]
+                    if( window.loggerConfig.mouseEvents )  {  console.debug( '🐁 MouseOver:', { turtleSvgElem } ); }
                     // let cur = turtleSvgElem.shadowRoot.querySelector( 'svg' )
                     const cur = turtleSvgElem.querySelector('svg')
                     const formatted_xml = simpleFormatHtmlWhitespace( cur.outerHTML )
@@ -182,21 +185,25 @@
                 } );
 
                 turtleSvgElem.addEventListener( "mouseout", () => {
+                    if( window.loggerConfig.mouseEvents )  { console.debug( '🐁 MouseOut:', { turtleSvgElem } ) }
                     const cur_tip = tooltips[ 0 ]
                     cur_tip.hidePopover();
                 } );
 
                 turtleSvgElem.addEventListener( "focus", () => {
+                    if( window.loggerConfig.mouseEvents )  { console.debug( '🐁 focus:', { turtleSvgElem } ) }
                     const cur_tip = tooltips[ 0 ]
                     cur_tip.showPopover( { source: turtleSvgElem } );
                 } );
 
                 turtleSvgElem.addEventListener( "blur", () => {
+                    if( window.loggerConfig.mouseEvents )  { console.debug( '🐁 blur:', { turtleSvgElem } ) }
                     const cur_tip = tooltips[ 0 ]
                     cur_tip.hidePopover();
                 } )
 
                 turtleSvgElem.addEventListener( "click", () => {
+                    if( window.loggerConfig.mouseEvents )  { console.debug( '🐁 click:', { turtleSvgElem } ) }
                     const cur_tip = tooltips[ 0 ]
                     // const rawSvgText = turtleSvgElem.getNamedElements().svg.outerHTML
                     const rawSvgText = turtleSvgElem.querySelector('svg').outerHTML
