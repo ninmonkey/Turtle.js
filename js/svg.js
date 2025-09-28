@@ -22,23 +22,27 @@ export class SvgPathBuilder {
         return this.#steps.join(' ')
     }
 
-    moveTo(x, y) {
-        this.#steps.push(`m ${x} ${y}`)
-        return this
-    }
-    moveToGlobal(x, y) {
+    moveAbsolute(x, y) {
         this.#steps.push(`M ${x} ${y}`)
         return this
     }
-
-    lineTo(x, y) {
-        this.#steps.push(`l ${x} ${y}`)
+    move(x, y) {
+        this.#steps.push(`m ${x} ${y}`)
         return this
     }
-    lineToGlobal(x, y) {
+    M( x, y ) { return this.moveAbsolute( x, y ) }
+    m( x, y ) { return this.move( x, y ) }
+
+    lineAbsolute(x, y) {
         this.#steps.push(`L ${x} ${y}`)
         return this
     }
+    line(x, y) {
+        this.#steps.push(`l ${x} ${y}`)
+        return this
+    }
+    L( x, y ) { return this.lineAbsolute( x, y ) }
+    l( x, y ) { return this.line( x, y ) }
 
     quadraticCurveTo(cx, cy, x, y) {
         this.#steps.push(`q ${cx} ${cy} ${x} ${y}`)
@@ -71,7 +75,7 @@ export function Create_SvgPathElement(attributes = {} )  { // , children = []) {
         fill         : 'hsl( 200 50% 50% / .5)', // currentColor/transparent
         stroke       : 'currentColor',
         'stroke-width'  : '1.5%',
-        'stroke-Linecap': 'round',
+        'stroke-linecap': 'round',
         ...attributes,
     }
 
@@ -148,7 +152,11 @@ export function newSvgElement( options  = {}, svgPathAttributes = {}, svgRootAtt
     const config = {
         title: '',
         path: null, // new SvgPathBuilder(),
-        stroke: null,
+        /* should move to styleAttrs?
+            // stroke: `hsl( 180 70% 50% / .75)`,
+            // 'stroke-width': `2.5%`,
+            // fill: 'hsl( 200 50% 50% / .5)',
+        */
         ...options,
     }
     const path_attr = {
@@ -172,13 +180,25 @@ export function newSvgElement( options  = {}, svgPathAttributes = {}, svgRootAtt
         // height : '200px',
     })
 
+    const rootStyleElem = document.createElement('style')
+    // miter | miter-clip | round | bevel | arcs // stroke-linecap: 'arcs';
+    const rootCssTemplate = `
+    path {
+        fill: ${ config.fill };
+        stroke: ${ config.stroke };
+        stroke-width: ${ config['stroke-width'] };
+    }
+    `
+    rootStyleElem.textContent = rootCssTemplate
+
     const pathElem = Create_SvgPathElement({
         id            : 'turtle-path-n',
         class         : 'svg-path',
         d             : config.path.build(),
-        fill          : 'hsl( 200 50% 50% / .5)',
-        stroke        : 'hsl( 180 70% 50% / .75)', // currentColor
-        'stroke-width': '2.5%',
+        /* moved default styles to style elem */
+        // fill          : 'hsl( 200 50% 50% / .5)',
+        // stroke        : 'hsl( 180 70% 50% / .75)', // currentColor
+        // 'stroke-width': '2.5%',
         ...path_attr,
 
     })
@@ -190,8 +210,11 @@ export function newSvgElement( options  = {}, svgPathAttributes = {}, svgRootAtt
 
     wrapper_div.appendChild( titleElem )
 
+    svgElem.appendChild( rootStyleElem )
     svgElem.appendChild( pathElem )
+
     wrapper_div.appendChild( svgElem )
+
 
     return wrapper_div
 }
