@@ -137,7 +137,7 @@ export function CreateSvgContainerWithTooltip( options = {}, svgPathAttributes =
         throw new TypeError( 'path must be an instance of SvgPathBuilder' )
     }
     const renderSvg = newSvgElement({
-        path: config.path, title: '🦍 ' +  config.title,
+        path: config.path, title: config.title,
     }, path_attr, svgRoot_attr )
 
     config.parentElement.appendChild( renderSvg )

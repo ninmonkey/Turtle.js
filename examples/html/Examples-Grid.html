@@ -75,11 +75,35 @@
         window.loggerConfig = loggerConfig
 
         let cur
-        const cg = new ColorGenerator( { mode: 'grayscale' } )
+        const cg = new ColorGenerator()
         let i = 0
         let deg = 0
         let path // const newPath = new SvgPathBuilder()
         let curSvgSource
+
+        window.cg ??= cg
+
+        if( true ) { // block mimics the docs
+            path = new SvgPathBuilder()
+            path
+                .moveToGlobal( 2 , 2 )
+                .lineToGlobal( 8, -2 )
+                .lineToGlobal( 8, -8 )
+                .lineToGlobal( 2, -8 )
+                .lineToGlobal( 2, 2 )
+                .closePath()
+
+
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `square ( moveto )`,
+                    path,
+                    parentElement,
+                }, {
+                    stroke: cg.Next,
+                }, {
+                    viewBox: '0 0 10 10',
+                } )
+        }
 
         if ( true ) { // old, to remove
             cur = null
@@ -257,6 +281,7 @@
         // globals
         window.bag ??= {}
         window.fn ??= {}
+        window.cls ??= {}
 
         window.Turtle = Turtle
         window.TurtleSvgElement = TurtleSvgElement
@@ -266,6 +291,7 @@
         window.fn.SvgPathBuilder = SvgPathBuilder
         window.fn.Create_SvgElement = Create_SvgElement
         window.fn.Create_SvgPathElement = Create_SvgPathElement
+        window.cls.ColorGenerator =ColorGenerator
 
 
         console.trace( 'debug enabled globals: ', { Turtle, TurtleSvgElement, bag } )
