@@ -66,8 +66,10 @@ export class ColorGenerator {
      */
     #hue = 0.0 // current color
     #stepDegrees = 137.508 // amount to vary by each step
-    #colorList = []
-    mode = 'rotateHue'
+    // #colorList = []
+    #mode = 'rotateHue'
+
+    modeNames = [ 'rotateHue' ] // 'grayscale', 'list'
 
     ColorGenerator( config = {} ) {
         /**
@@ -76,30 +78,35 @@ export class ColorGenerator {
          * @param {number} config.stepDegrees Step in degrees for each color in HSL space
          */
         const defaults = {
+            mode: 'rotateHue',
             stepInitial: 0.0,
             stepDegrees: 30,
         }
-        const settings = { ...defaults, ...config }
+        const settings = { ...defaults, ...config  }
 
 
         this.#hue = settings.stepInitial
         this.#stepDegrees = settings.stepDegrees;
+        this.#mode = settings.mode
 
     }
 
     #next () {
-        switch  ( this.mode ) {
+        let color
+        switch  ( this.#mode ) {
             case 'rotateHue':
-                const color = `hsl(${this.#hue}, 50%, 60%)`;
+                color = `hsl(${this.#hue}, 50%, 60%)`;
                 this.#hue = (this.#hue + this.#stepDegrees) % 360;
                 return color;
-            case 'grayscale':
-                throw 'NYI: Increment grayscale'
             default:
-                throw `Unknown color mode: ${this.mode}`
+                throw `Unknown color mode: ${this.#mode}`
         }
     }
 
+    get Reset() {
+        this.#hue = 0.0
+        return this
+    }
     get Next() {
         return this.#next();
     }
