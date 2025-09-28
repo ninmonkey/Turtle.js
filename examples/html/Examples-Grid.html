@@ -86,13 +86,30 @@
         if( true ) { // block mimics the docs
             path = new SvgPathBuilder()
             path
-                .moveAbsolute( 2 , 2 )
-                .lineAbsolute( 8, -2 )
-                .lineAbsolute( 8, -8 )
-                .lineAbsolute( 2, -8 )
-                .lineAbsolute( 2, 2 )
+                .M( 2 , 2 )
+                .L( 8, 2 )
+                .L( 8, 8 )
+                .L( 2, 8 )
                 .closePath()
 
+
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `square2 ( moveto ) abbr`,
+                    path,
+                    parentElement,
+                }, {
+                    stroke: cg.Next,
+                }, {
+                    viewBox: '0 0 10 10',
+                } )
+
+            path = new SvgPathBuilder()
+            path
+                .moveAbsolute( 2 , 2 )
+                .lineAbsolute( 8, 2 )
+                .lineAbsolute( 8, 8 )
+                .lineAbsolute( 2, 8 )
+                .closePath()
 
             curSvgSource = CreateSvgContainerWithTooltip( {
                     title: `square ( moveto )`,
@@ -103,103 +120,7 @@
                 }, {
                     viewBox: '0 0 10 10',
                 } )
-            path = new SvgPathBuilder()
-            path
-                .M( 2 , 2 )
-                .L( 8, -2 )
-                .L( 8, -8 )
-                .L( 2, -8 )
-                .L( 2, 2 )
-                .closePath()
-
-
-            curSvgSource = CreateSvgContainerWithTooltip( {
-                    title: `square2 ( moveto )`,
-                    path,
-                    parentElement,
-                }, {
-                    stroke: cg.Next,
-                }, {
-                    viewBox: '0 0 10 10',
-                } )
         }
-
-        if ( true ) { // old, to remove
-            cur = null
-            path = new SvgPathBuilder()
-            path
-                .move( 0, 0 ).line( 10, 0 )
-                .move( 0, 0 ).line( 0, 10 )
-                // .move( 0, 0 )
-                .line( 10, 10 )
-                .line( 0, 10 )
-
-            /* path attrs
-                    id            : 'turtle-path-n',
-                    class         : 'svg-path',
-                    d             : config.path.build(),
-                    fill          : 'hsl( 200 50% 50% / .5)',
-                    stroke        : 'hsl( 180 70% 50% / .75)', // currentColor
-                    'stroke-width': '2.5%',
-
-            */
-            curSvgSource = CreateSvgContainerWithTooltip( {
-                title: 'green stroke',
-                path,
-                parentElement,
-            }, {
-                stroke: cg.Next,
-            }, {
-                viewBox: '-10 -10 50 50',
-            } )
-
-
-            path = new SvgPathBuilder()
-            path
-                .move( 0, 0 ).line( 10, 0 )
-                .move( 0, 0 ).line( 0, 10 )
-
-            curSvgSource = CreateSvgContainerWithTooltip( {
-                title: 'green 2',
-                path,
-                parentElement,
-            }, {
-                stroke: cg.Next,
-            }, {
-                viewBox: '-10 -10 50 50',
-            } )
-
-            path.line( 30, 10 )
-
-            curSvgSource = CreateSvgContainerWithTooltip( {
-                title: 'now B',
-                path,
-                parentElement,
-            }, {
-                stroke: cg.Next,
-            }, {
-
-            } )
-
-            path = new SvgPathBuilder()
-            path
-                .move( 10, 0 ).line( 10, 10 )
-                .line( 0, 10 )
-
-            curSvgSource = CreateSvgContainerWithTooltip( {
-                title: 'now C',
-                path,
-                parentElement,
-            }, {
-                stroke: cg.Next,
-            }, {
-
-            } )
-
-            i = 0; deg = 0;
-
-        }
-
         // cur = NewTurtle( 'original' )
         //     .stroke( cg.Next )
         //     .polygon( ( 1 + i++ ), 3 )
