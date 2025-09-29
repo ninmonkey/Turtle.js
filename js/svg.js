@@ -122,6 +122,9 @@ export function CreateSvgContainerWithTooltip( options = {}, svgPathAttributes =
         ...svgPathAttributes,
     }
     const svgRoot_attr = {
+        viewBox: '0 0 10 10',
+        // width: '200px',
+        // height: '200px',
         ...svgRootAttributes,
     }
 

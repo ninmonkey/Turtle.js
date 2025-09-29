@@ -88,26 +88,12 @@
 
         if( true ) { // block mimics the docs
             pathAttrs = { stroke: cg.Next }
-            rootAttrs = { viewBox: '0 0 10 10' }
+            rootAttrs = { viewBox: '0 0 400 400' }
+
 
             path = new SvgPathBuilder()
-            path.M( 2 , 2 )
-                .L( 8, 2 ).L( 8, 8 ).L( 2, 8 )
-                .closePath()
-
-            curSvgSource = CreateSvgContainerWithTooltip( {
-                    title: `square2 ( moveto ) abbr`,
-                    path,
-                    parentElement,
-                }, pathAttrs, rootAttrs )
-
-
-            pathAttrs = { stroke: cg.Next }
-            rootAttrs = { viewBox: '0 0 10 10' }
-
-            path = new SvgPathBuilder()
-            path.M( 2 , 2 )
-                .L( 8, 2 ).L( 8, 8 ).L( 2, 8 )
+            path.M( 100, 100 )
+                .L( 300, 100 ).L( 200, 300 )
                 .closePath()
 
             curSvgSource = CreateSvgContainerWithTooltip( {
