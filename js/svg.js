@@ -62,6 +62,27 @@ export class SvgPathBuilder {
     L( x, y ) { return this.lineAbsolute( x, y ) }
     l( x, y ) { return this.line( x, y ) }
 
+    horizontalAbsolute( x ) {
+        this.#steps.push(`H ${x}`)
+        return this
+    }
+    horizontal( x ) {
+        this.#steps.push(`h ${x}`)
+        return this
+    }
+    verticalAbsolute( y ) {
+        this.#steps.push(`V ${y}`)
+        return this
+    }
+    vertical( y ) {
+        this.#steps.push(`v ${y}`)
+        return this
+    }
+    H( x ) { return this.horizontalAbsolute( x ) }
+    h( x ) { return this.horizontal( x ) }
+    V( y ) { return this.verticalAbsolute( y ) }
+    v( y ) { return this.vertical( y ) }
+
     quadraticCurveTo(cx, cy, x, y) {
         this.#steps.push(`q ${cx} ${cy} ${x} ${y}`)
         return this

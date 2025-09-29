@@ -87,6 +87,47 @@
         window.cg ??= cg
 
         if( true ) { // block mimics the docs
+
+            pathAttrs = { stroke: cg.Next }
+            rootAttrs = { viewBox: '0 0 100 100' }
+
+            path = new SvgPathBuilder()
+                .M( 4, 0 ).H( 50 ).v( 20 ).H( 100 )
+                .v( 20 )
+                .H( 20 )
+                .H( 4 )
+                .V( 4 )
+                .closePath()
+
+
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `horizontal/vertical ( absolute  )`,
+                    path,
+                    parentElement,
+                }, pathAttrs, rootAttrs )
+
+
+
+
+            pathAttrs = { stroke: cg.Next }
+            rootAttrs = { viewBox: '0 0 100 100' }
+
+            path = new SvgPathBuilder()
+                .M( 10, 10 )
+                .horizontal( 20 ).vertical( 20 ).horizontal( -20 )
+                .closePath()
+
+
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `horizontal/vertical ( relative )`,
+                    path,
+                    parentElement,
+                }, pathAttrs, rootAttrs )
+
+
+
+
+
             pathAttrs = { stroke: cg.Next }
             rootAttrs = { viewBox: '0 0 400 400' }
 
