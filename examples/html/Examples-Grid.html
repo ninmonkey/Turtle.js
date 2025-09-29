@@ -90,14 +90,27 @@
             pathAttrs = { stroke: cg.Next }
             rootAttrs = { viewBox: '0 0 400 400' }
 
+            path = new SvgPathBuilder()
+            path.addPathString( 'M 100 100 L 300 100 L 200 300 Z' )
+            path = new SvgPathBuilder().addPathString( 'M 100 100 L 300 100 L 200 300 Z' )
 
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `triangle ( from string ) `,
+                    path,
+                    parentElement,
+                }, pathAttrs, rootAttrs )
+
+
+
+            pathAttrs = { stroke: cg.Next }
+            rootAttrs = { viewBox: '0 0 400 400' }
             path = new SvgPathBuilder()
             path.M( 100, 100 )
                 .L( 300, 100 ).L( 200, 300 )
                 .closePath()
 
             curSvgSource = CreateSvgContainerWithTooltip( {
-                    title: `triangle`,
+                    title: `triangle ( from calls )`,
                     path,
                     parentElement,
                 }, pathAttrs, rootAttrs )

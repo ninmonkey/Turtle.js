@@ -4,7 +4,7 @@ export class SvgPathBuilder {
     /**
      * @description Builds path strings for SVG <path> `d` attributes
      * @link https://svgwg.org/specs/paths/#PathDataGeneralInformation
-     * @LINK https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/d
+     * @link https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/d
      * @link https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorials/SVG_from_scratch/Paths
      */
     #steps = []
@@ -14,11 +14,29 @@ export class SvgPathBuilder {
         this.clear()
     }
 
+    addPathString( pathString ) {
+        /**
+         * @description Adds a raw path string to the steps
+         * @param {string} pathString Raw SVG path string, e.g. "M 10 10 L 20 20"
+         * @example
+         * const path = new SvgPathBuilder().addPathString("M 10 10 L 20 20")
+         * @returns {SvgPathBuilder} this
+         */
+        this.#steps.push( pathString )
+        return this
+    }
+
     clear() {
         this.#steps = Array.from( [] )
     }
 
     build() {
+        /**
+         * @description Builds and returns the SVG pathdata string
+         * @returns {string} SVG path data string
+         * @example
+         * path.build() // "M 10 10 L 20 20"
+         */
         return this.#steps.join(' ')
     }
 
@@ -69,6 +87,11 @@ export class SvgPathBuilder {
 }
 
 export function Create_SvgPathElement(attributes = {} )  { // , children = []) {
+    /**
+     * @description create a single SVG <path> element with styles and attributes
+     * @param {Object} attributes Attributes to apply to the path element
+     * @returns {SVGPathElement} New SVG Path Element
+     */
     const attr = {
         // id           : 'path-n',
         class        : 'svg-path',
@@ -89,7 +112,7 @@ export function Create_SvgPathElement(attributes = {} )  { // , children = []) {
 
 export function Create_SvgElement(tag = 'svg', attributes = {}, children = []) {
     /**
-     * @description Creates an `<svg>` element with specified attributes and children
+     * @description Creates an `<svg>` element with specified Namespace, attributes and children
      * @param {string} tag Tag name, default 'svg'
      * @returns {SVGElement} New SVG Element
      */
@@ -110,6 +133,16 @@ export function Create_SvgElement(tag = 'svg', attributes = {}, children = []) {
 }
 
 export function CreateSvgContainerWithTooltip( options = {}, svgPathAttributes = {}, svgRootAttributes = {}  ) {
+    /**
+     * @description Wraps an SVG in a grid cell with shadows and tooltips that view the svg's sourcecode
+     * @param {Object} options Configuration options
+     * @param {string} options.title Title text for the tooltip
+     * @param {SvgPathBuilder} options.path An instance of SvgPathBuilder
+     * @param {HTMLElement} options.parentElement The parent element to append the SVG container to
+     * @param {Object} svgPathAttributes Attributes to apply to the SVG <path> element
+     * @param {Object} svgRootAttributes Attributes to apply to the SVG <svg> root element
+     * @returns {HTMLElement} The root div containing the SVG and tooltip
+     */
     const config = {
         title: 'no title',
         id: 'svg-container-with-tooltip',
@@ -152,6 +185,9 @@ export function CreateSvgContainerWithTooltip( options = {}, svgPathAttributes =
 }
 
 export function newSvgElement( options  = {}, svgPathAttributes = {}, svgRootAttributes = {} ) {
+    /**
+     * @description used by `CreateSvgContainerWithTooltip`
+     */
     const config = {
         title: '',
         path: null, // new SvgPathBuilder(),
