@@ -63,7 +63,7 @@
         import { TurtleSvgElement } from './../../js/custom-element/turtle-svg-element.js';
         import { randomInt, elementFromIdOrValue, simpleFormatHtmlWhitespace, simpleEscapeHtml, ColorGenerator } from './../../js/utils.js'
         import { GetAllElements } from './../../js/debug_utils.js'
-        import { SvgPathBuilder, Create_SvgPathElement, Create_SvgElement, CreateSvgContainerWithTooltip } from './../../js/svg.js'
+        import { SvgPathBuilder, CreateElement_Path, CreateElement_Svg, CreateSvgContainerWithTooltip } from './../../js/svg.js'
 
         window.bag ??= {}
         const parentElement = document.querySelector( ".parent-context" )
@@ -222,14 +222,14 @@
         window.bag ??= {}
         window.fn ??= {}
 
-        window.Turtle                   = Turtle
-        window.TurtleSvgElement         = TurtleSvgElement
-        window.bag.root_elem            = parentElement
-        window.bag.all_wrappers         = all_wrappers
-        window.fn.allElements           = GetAllElements
-        window.fn.SvgPathBuilder        = SvgPathBuilder
-        window.fn.Create_SvgElement     = Create_SvgElement
-        window.fn.Create_SvgPathElement = Create_SvgPathElement
+        window.Turtle                = Turtle
+        window.TurtleSvgElement      = TurtleSvgElement
+        window.bag.root_elem         = parentElement
+        window.bag.all_wrappers      = all_wrappers
+        window.fn.allElements        = GetAllElements
+        window.fn.SvgPathBuilder     = SvgPathBuilder
+        window.fn.CreateElement_Svg  = CreateElement_Svg
+        window.fn.CreateElement_Path = CreateElement_Path
 
         console.trace( 'debug enabled globals: ', { Turtle, TurtleSvgElement, bag } )
 

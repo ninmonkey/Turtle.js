@@ -107,11 +107,16 @@ export class SvgPathBuilder {
     }
 }
 
-export function Create_SvgPathElement(attributes = {} )  { // , children = []) {
+export function CreateElement_Path(attributes = {} )  { // , children = []) {
     /**
      * @description create a single SVG <path> element with styles and attributes
      * @param {Object} attributes Attributes to apply to the path element
      * @returns {SVGPathElement} New SVG Path Element
+     * @link https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/path
+     * @summary
+     * valid content:
+     * - BasicShapes: <circle>, <ellipse>, <line>, <polygon>, <polyline>, <rect>
+     * - Descriptive Elements: <desc>, <metadata>, <title>
      */
     const attr = {
         // id           : 'path-n',
@@ -131,7 +136,7 @@ export function Create_SvgPathElement(attributes = {} )  { // , children = []) {
     return pathElem
 }
 
-export function Create_SvgElement(tag = 'svg', attributes = {}, children = []) {
+export function CreateElement_Svg(tag = 'svg', attributes = {}, children = []) {
     /**
      * @description Creates an `<svg>` element with specified Namespace, attributes and children
      * @param {string} tag Tag name, default 'svg'
@@ -230,7 +235,7 @@ export function newSvgElement( options  = {}, svgPathAttributes = {}, svgRootAtt
     const wrapper_div = document.createElement( 'section' )
     wrapper_div.classList.add('svg-wrapper')
 
-    const svgElem = Create_SvgElement(
+    const svgElem = CreateElement_Svg(
         'svg',  {
         id     : 'turtle-svg-n',
         class  : 'svg-root',
@@ -251,7 +256,7 @@ export function newSvgElement( options  = {}, svgPathAttributes = {}, svgRootAtt
     `
     rootStyleElem.textContent = rootCssTemplate
 
-    const pathElem = Create_SvgPathElement({
+    const pathElem = CreateElement_Path({
         id            : 'turtle-path-n',
         class         : 'svg-path',
         d             : config.path.build(),
