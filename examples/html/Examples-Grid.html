@@ -89,6 +89,30 @@
         if( true ) { // block mimics the docs
 
             pathAttrs = { stroke: cg.Next }
+            rootAttrs = { viewBox: '0 0 100 100', id: 'tut1' }
+            // pathAttrs = {}
+            // rootAttrs = {}
+
+            path = new SvgPathBuilder()
+                .addPathString( 'M 10 10 L 30 10 L 20 30' )
+                .stroke( cg.Next )
+                .fill( cg.Next )
+                .fill( 'magenta' )
+                .closePath()
+
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `using stroke/fill`,
+                    path,
+                    parentElement,
+                }, pathAttrs, rootAttrs )
+
+
+
+
+
+
+
+            pathAttrs = { stroke: cg.Next }
             rootAttrs = { viewBox: '0 0 100 100' }
 
             path = new SvgPathBuilder()

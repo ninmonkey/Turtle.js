@@ -8,13 +8,29 @@ export class SvgPathBuilder {
      * @link https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorials/SVG_from_scratch/Paths
      */
     #steps = []
-    #style = { 'left off': 'define stroke or style for <path>' }
+    #pathAttrs = { // for the `<oath>` element
+        // stroke: "black",
+        // fill: "green",
+        // 'stroke-width': `2.5%`,
+        // 'fill-opacity': `0.5`,
+    }
+
 
 
     constructor() {
         // future: toggle can future minify or expand the path data for human readability
         this.clear()
     }
+
+    stroke( color ) {
+        this.#pathAttrs.stroke = color
+        return this
+    }
+    fill( color ) {
+        this.#pathAttrs.fill = color
+        return this
+    }
+    get pathAttrs() { return this.#pathAttrs }
 
     addPathString ( pathString ) {
         /**
@@ -52,14 +68,15 @@ export class SvgPathBuilder {
          * const pathElem = path.createPathElement({ stroke: 'red', 'stroke-width': 2 })
          */
         const pathElem = CreateElement_Path( {
-            id: 'turtle-path-n',
-            class: 'svg-path',
-            d: this.buildPathString(),
+            // id: 'turtle-path-n',
+            // class: 'svg-path',
             /* moved default styles to style elem */
             // fill          : 'hsl( 200 50% 50% / .5)',
             // stroke        : 'hsl( 180 70% 50% / .75)', // currentColor
             // 'stroke-width': '2.5%',
             ...attributes,
+            ...this.#pathAttrs,
+            d: this.buildPathString(),
 
         } )
         return pathElem
@@ -287,10 +304,9 @@ export function newSvgElementWithStyle ( options = {}, svgPathAttributes = {}, s
 
             id: 'turtle-path-n',
             // d: config.path.buildPathString(),
-            stroke: config.stroke,
-
             class: 'svg-path',
             ...path_attr,
+            ...config.path.pathAttrs
         }
     )
 
