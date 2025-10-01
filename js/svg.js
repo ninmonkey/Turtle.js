@@ -15,7 +15,6 @@ export class SvgPathBuilder {
         // 'fill-opacity': `0.5`,
     }
     constructor() {
-        // future: toggle can future minify or expand the path data for human readability
         this.clear()
     }
 
@@ -33,6 +32,7 @@ export class SvgPathBuilder {
 
     clear () {
         this.#steps = Array.from( [] )
+        this.move( 0, 0 ) // relative move prevents errors when missing the M/m prefix
     }
 
     buildPathString () {
