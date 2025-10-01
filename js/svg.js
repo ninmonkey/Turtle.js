@@ -14,23 +14,10 @@ export class SvgPathBuilder {
         // 'stroke-width': `2.5%`,
         // 'fill-opacity': `0.5`,
     }
-
-
-
     constructor() {
         // future: toggle can future minify or expand the path data for human readability
         this.clear()
     }
-
-    stroke( color ) {
-        this.#pathAttrs.stroke = color
-        return this
-    }
-    fill( color ) {
-        this.#pathAttrs.fill = color
-        return this
-    }
-    get pathAttrs() { return this.#pathAttrs }
 
     addPathString ( pathString ) {
         /**
@@ -81,6 +68,17 @@ export class SvgPathBuilder {
         } )
         return pathElem
     }
+
+    stroke( color ) {
+        this.#pathAttrs.stroke = color
+        return this
+    }
+    fill( color ) {
+        this.#pathAttrs.fill = color
+        return this
+    }
+    get pathAttrs() { return this.#pathAttrs }
+
 
     moveAbsolute ( x, y ) {
         this.#steps.push( `M ${ x } ${ y }` )

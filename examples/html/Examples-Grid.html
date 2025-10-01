@@ -75,7 +75,10 @@
         window.loggerConfig = loggerConfig
 
         let cur
-        const cg = new ColorGenerator( { stepDegrees: 20, })
+        const cg =
+            new ColorGenerator( { stepSize: 20, stepInitial: -180 })
+            // new ColorGenerator({ stepSize: 10, mode: 'grayscale', stepInitial: 50 })
+            // new ColorGenerator({ stepSize: 10, mode: 'grayscale', stepInitial: 50 })
         let i = 0
         let deg = 0
         let path // const newPath = new SvgPathBuilder()

@@ -64,14 +64,17 @@ export class ColorGenerator {
     /**
      * @description Every call returns the next color in the defined sequence
      * @example
-     * new ColorGenerator({ stepDegrees: 10, mode: 'rotateHue' })
+     * new ColorGenerator()
      * @example
-     * new ColorGenerator({ stepDegrees: 10, mode: 'grayscale' })
+     * new ColorGenerator({ stepSize: 20, stepInitial: -180 })
+     * new ColorGenerator({ stepSize: 10, mode: 'grayscale' })
+     * new ColorGenerator({ stepSize: 10, mode: 'grayscale', stepInitial: 40 })
      */
-    #hue = 0.0 // current color
-    #stepDegrees = 10 // amount to vary by each step
-    // #colorList = []
+    #curValue = 0.0 // current color
+    #stepSize = 10 // amount to vary by each step
     #mode = 'rotateHue'
+    #lastColor = `` // string
+    #stepInitial  = 0.0
 
     modeNames = [ 'rotateHue', 'grayscale' ] // 'grayscale', 'list'
 
@@ -79,16 +82,19 @@ export class ColorGenerator {
         /**
          * @description Create ColorGenerator instance
          * @param {Object} config Configuration options
-         * @param {number} config.stepDegrees Step in degrees for each color in HSL space
+         * @param {number} config.stepSize Step size for the unit. Ex: `<angle>` for hue, 256 for RGB color values
+         * @param {number} config.stepInitial resetting will revert to the value
+         * @param {string} config.mode Color generation mode. One of: [ 'rotateHue', 'grayscale' ]
          */
         const settings = {
             mode: 'rotateHue',
             stepInitial: 0.0,
-            stepDegrees: 20,
+            stepSize: 20,
             ...config,
         }
-        this.#hue = settings.stepInitial
-        this.#stepDegrees = settings.stepDegrees
+        this.#stepInitial  = settings.stepInitial
+        this.#curValue = settings.stepInitial
+        this.#stepSize = settings.stepSize
         this.#mode = settings.mode
 
         if( ! this.modeNames.includes( this.#mode ) ) {
@@ -97,26 +103,33 @@ export class ColorGenerator {
     }
 
     #next () {
+        /**
+         * @description calculates and stores next color to `#lastColor`
+         */
         let color
         switch  ( this.#mode ) {
             case 'rotateHue':
-                this.#hue += this.#stepDegrees
-                while( this.#hue >= 360 ) { this.#hue -= 360 }
-                color = `hsl(${this.#hue}, 50%, 60%)`;
-                // this.#hue = (this.#hue + this.#stepDegrees) % 360;
+                this.#curValue += this.#stepSize
+                while( this.#curValue >= 360 ) { this.#curValue -= 360 }
+                color = `hsl(${this.#curValue}, 50%, 60%)`;
+                this.#lastColor = color
                 return color;
             case 'grayscale':
-                this.#hue += this.#stepDegrees
-                while( this.#hue >= 256 ) { this.#hue -= 256 }
-                color = `rgb( ${this.#hue}, ${this.#hue}, ${this.#hue} )`;
+                this.#curValue += this.#stepSize
+                while( this.#curValue >= 256 ) { this.#curValue -= 256 }
+                color = `rgb( ${this.#curValue}, ${this.#curValue}, ${this.#curValue} )`;
+                this.#lastColor = color
                 return color;
             default:
                 throw `Unknown color mode: ${this.#mode}`
         }
     }
+    get Current() {
+        return this.#lastColor
+    }
 
     get Reset() {
-        this.#hue = 0.0
+        this.#curValue = this.#stepInitial
         return this
     }
     get Next() {
