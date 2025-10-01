@@ -255,6 +255,18 @@ export function CreateSvgContainerWithTooltip ( options = {}, svgPathAttributes 
 export function newSvgElementWithStyle ( options = {}, svgPathAttributes = {}, svgRootAttributes = {} ) {
     /**
      * @description used by `CreateSvgContainerWithTooltip`
+     * @param {Object} options Configuration options
+     * @param {SvgPathBuilder} options.path An instance of SvgPathBuilder
+     * @param {string} options.title Title text for the tooltip
+     * @param {Object} svgPathAttributes Attributes to apply to the <path> element
+     * @param {Object} svgRootAttributes Attributes to apply to the <svg> root element
+     * @param {string} options.stroke `stroke` for the root level `<style>` element
+     * @param {string} options.fill `fill` for the root level `<style>` element
+     * @param {string} svgRootAttributes.viewBox The `viewBox` attribute for the `<svg>` root element
+     * @param {string} svgRootAttributes.width The `width` attribute for the `<svg>` root element
+     * @param {string} svgRootAttributes.height The `height` attribute for the `<svg>` root element
+     * @param {string} svgRootAttributes.class The `class` attribute for the `<svg>` root element
+     * @returns {HTMLElement} The root div containing the SVG and tooltip
      */
     const config = {
         title: '',
@@ -279,11 +291,11 @@ export function newSvgElementWithStyle ( options = {}, svgPathAttributes = {}, s
 
     const svgElem = CreateElement_Svg(
         'svg', {
-        id: 'turtle-svg-n',
+        // id: 'turtle-svg-n',
         class: 'svg-root',
         viewBox: '-10 -10 50 50',
-        // width  : '200px',
-        // height : '200px',
+        // width  : '20px',
+        // height : '20px',
         ...svgRoot_attr,
     } )
 
@@ -301,8 +313,7 @@ export function newSvgElementWithStyle ( options = {}, svgPathAttributes = {}, s
     const pathElem = config.path.createPathElement(
         {
             // fill          : 'hsl( 200 50% 50% / .5)',
-
-            id: 'turtle-path-n',
+            // id: 'turtle-path-n',
             // d: config.path.buildPathString(),
             class: 'svg-path',
             ...path_attr,
