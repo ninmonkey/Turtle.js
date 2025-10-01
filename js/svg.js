@@ -8,13 +8,15 @@ export class SvgPathBuilder {
      * @link https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorials/SVG_from_scratch/Paths
      */
     #steps = []
+    #style = { 'left off': 'define stroke or style for <path>' }
+
 
     constructor() {
         // future: toggle can future minify or expand the path data for human readability
         this.clear()
     }
 
-    addPathString( pathString ) {
+    addPathString ( pathString ) {
         /**
          * @description Adds a raw path string to the steps
          * @param {string} pathString Raw SVG path string, e.g. "M 10 10 L 20 20"
@@ -26,88 +28,111 @@ export class SvgPathBuilder {
         return this
     }
 
-    clear() {
+    clear () {
         this.#steps = Array.from( [] )
     }
 
-    build() {
+    buildPathString () {
         /**
          * @description Builds and returns the SVG pathdata string
          * @returns {string} SVG path data string
          * @example
-         * path.build() // "M 10 10 L 20 20"
+         * path.buildPathString() // "M 10 10 L 20 20"
          */
-        return this.#steps.join(' ')
+        return this.#steps.join( ' ' )
     }
 
-    moveAbsolute(x, y) {
-        this.#steps.push(`M ${x} ${y}`)
-        return this
-    }
-    move(x, y) {
-        this.#steps.push(`m ${x} ${y}`)
-        return this
-    }
-    M( x, y ) { return this.moveAbsolute( x, y ) }
-    m( x, y ) { return this.move( x, y ) }
+    createPathElement ( attributes = {} ) {
+        /**
+         * @description Creates an SVG <path> element with the built path data and given attributes
+         * @param {Object} attributes Attributes to apply to the path element
+         * @returns {SVGPathElement} New SVG Path Element
+         * @link https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/path
+         * @example
+         * const pathElem = path.createPathElement({ stroke: 'red', 'stroke-width': 2 })
+         */
+        const pathElem = CreateElement_Path( {
+            id: 'turtle-path-n',
+            class: 'svg-path',
+            d: this.buildPathString(),
+            /* moved default styles to style elem */
+            // fill          : 'hsl( 200 50% 50% / .5)',
+            // stroke        : 'hsl( 180 70% 50% / .75)', // currentColor
+            // 'stroke-width': '2.5%',
+            ...attributes,
 
-    lineAbsolute(x, y) {
-        this.#steps.push(`L ${x} ${y}`)
-        return this
-    }
-    line(x, y) {
-        this.#steps.push(`l ${x} ${y}`)
-        return this
-    }
-    L( x, y ) { return this.lineAbsolute( x, y ) }
-    l( x, y ) { return this.line( x, y ) }
-
-    horizontalAbsolute( x ) {
-        this.#steps.push(`H ${x}`)
-        return this
-    }
-    horizontal( x ) {
-        this.#steps.push(`h ${x}`)
-        return this
-    }
-    verticalAbsolute( y ) {
-        this.#steps.push(`V ${y}`)
-        return this
-    }
-    vertical( y ) {
-        this.#steps.push(`v ${y}`)
-        return this
-    }
-    H( x ) { return this.horizontalAbsolute( x ) }
-    h( x ) { return this.horizontal( x ) }
-    V( y ) { return this.verticalAbsolute( y ) }
-    v( y ) { return this.vertical( y ) }
-
-    quadraticCurveTo(cx, cy, x, y) {
-        this.#steps.push(`q ${cx} ${cy} ${x} ${y}`)
-        return this
-    }
-    quadraticCurveToGlobal(cx, cy, x, y) {
-        this.#steps.push(`Q ${cx} ${cy} ${x} ${y}`)
-        return this
+        } )
+        return pathElem
     }
 
-    cubicCurveTo(cx1, cy1, cx2, cy2, x, y) {
-        this.#steps.push(`c ${cx1} ${cy1} ${cx2} ${cy2} ${x} ${y}`)
+    moveAbsolute ( x, y ) {
+        this.#steps.push( `M ${ x } ${ y }` )
         return this
     }
-    cubicCurveToGlobal(cx1, cy1, cx2, cy2, x, y) {
-        this.#steps.push(`C ${cx1} ${cy1} ${cx2} ${cy2} ${x} ${y}`)
+    move ( x, y ) {
+        this.#steps.push( `m ${ x } ${ y }` )
+        return this
+    }
+    M ( x, y ) { return this.moveAbsolute( x, y ) }
+    m ( x, y ) { return this.move( x, y ) }
+
+    lineAbsolute ( x, y ) {
+        this.#steps.push( `L ${ x } ${ y }` )
+        return this
+    }
+    line ( x, y ) {
+        this.#steps.push( `l ${ x } ${ y }` )
+        return this
+    }
+    L ( x, y ) { return this.lineAbsolute( x, y ) }
+    l ( x, y ) { return this.line( x, y ) }
+
+    horizontalAbsolute ( x ) {
+        this.#steps.push( `H ${ x }` )
+        return this
+    }
+    horizontal ( x ) {
+        this.#steps.push( `h ${ x }` )
+        return this
+    }
+    verticalAbsolute ( y ) {
+        this.#steps.push( `V ${ y }` )
+        return this
+    }
+    vertical ( y ) {
+        this.#steps.push( `v ${ y }` )
+        return this
+    }
+    H ( x ) { return this.horizontalAbsolute( x ) }
+    h ( x ) { return this.horizontal( x ) }
+    V ( y ) { return this.verticalAbsolute( y ) }
+    v ( y ) { return this.vertical( y ) }
+
+    quadraticCurveTo ( cx, cy, x, y ) {
+        this.#steps.push( `q ${ cx } ${ cy } ${ x } ${ y }` )
+        return this
+    }
+    quadraticCurveToGlobal ( cx, cy, x, y ) {
+        this.#steps.push( `Q ${ cx } ${ cy } ${ x } ${ y }` )
         return this
     }
 
-    closePath() {
-        this.#steps.push('Z')
+    cubicCurveTo ( cx1, cy1, cx2, cy2, x, y ) {
+        this.#steps.push( `c ${ cx1 } ${ cy1 } ${ cx2 } ${ cy2 } ${ x } ${ y }` )
+        return this
+    }
+    cubicCurveToGlobal ( cx1, cy1, cx2, cy2, x, y ) {
+        this.#steps.push( `C ${ cx1 } ${ cy1 } ${ cx2 } ${ cy2 } ${ x } ${ y }` )
+        return this
+    }
+
+    closePath () {
+        this.#steps.push( 'Z' )
         return this
     }
 }
 
-export function CreateElement_Path(attributes = {} )  { // , children = []) {
+export function CreateElement_Path ( attributes = {} ) { // , children = []) {
     /**
      * @description create a single SVG <path> element with styles and attributes
      * @param {Object} attributes Attributes to apply to the path element
@@ -120,23 +145,23 @@ export function CreateElement_Path(attributes = {} )  { // , children = []) {
      */
     const attr = {
         // id           : 'path-n',
-        class        : 'svg-path',
-        fill         : 'hsl( 200 50% 50% / .5)', // currentColor/transparent
-        stroke       : 'currentColor',
-        'stroke-width'  : '1.5%',
+        class: 'svg-path',
+        fill: 'hsl( 200 50% 50% / .5)', // currentColor/transparent
+        stroke: 'currentColor',
+        'stroke-width': '1.5%',
         'stroke-linecap': 'round',
         ...attributes,
     }
 
-    const pathElem = document.createElementNS(svgNS, 'path') // must this be created on parent of svg type ?
+    const pathElem = document.createElementNS( svgNS, 'path' ) // must this be created on parent of svg type ?
 
-    Object.entries(attr).forEach( ([key, value]) => {
-        pathElem.setAttributeNS(null, key, value)
-    })
+    Object.entries( attr ).forEach( ( [ key, value ] ) => {
+        pathElem.setAttributeNS( null, key, value )
+    } )
     return pathElem
 }
 
-export function CreateElement_Svg(tag = 'svg', attributes = {}, children = []) {
+export function CreateElement_Svg ( tag = 'svg', attributes = {}, children = [] ) {
     /**
      * @description Creates an `<svg>` element with specified Namespace, attributes and children
      * @param {string} tag Tag name, default 'svg'
@@ -146,19 +171,19 @@ export function CreateElement_Svg(tag = 'svg', attributes = {}, children = []) {
         viewBox: "0 0 100 100",
         ...attributes,
     }
-    const rootElem = document.createElementNS(svgNS, tag);
+    const rootElem = document.createElementNS( svgNS, tag );
 
-    Object.entries(attr).forEach(([key, value]) => {
-        rootElem.setAttributeNS( null, key, value);
-    });
+    Object.entries( attr ).forEach( ( [ key, value ] ) => {
+        rootElem.setAttributeNS( null, key, value );
+    } );
     // console.trace( 'Create_SvgElement', { rootElem, tag, attributes, children })
-    for (const child of children ) {
+    for ( const child of children ) {
         rootElem.appendChild( child )
     }
     return rootElem;
 }
 
-export function CreateSvgContainerWithTooltip( options = {}, svgPathAttributes = {}, svgRootAttributes = {}  ) {
+export function CreateSvgContainerWithTooltip ( options = {}, svgPathAttributes = {}, svgRootAttributes = {} ) {
     /**
      * @description Wraps an SVG in a grid cell with shadows and tooltips that view the svg's sourcecode
      * @param {Object} options Configuration options
@@ -191,18 +216,18 @@ export function CreateSvgContainerWithTooltip( options = {}, svgPathAttributes =
 
     const elem_root = document.createElement( 'div' )
 
-    if( config.path == null ) {
-        throw new Error('no path provided!')
-        console.warn('no path provided, creating a default')
+    if ( config.path == null ) {
+        throw new Error( 'no path provided!' )
+        console.warn( 'no path provided, creating a default' )
         const defaultPath = new SvgPathBuilder()
             .moveTo( 0, 0 ).lineTo( 10, 0 )
         config.path = defaultPath
     }
 
-    if( config.path instanceof SvgPathBuilder === false ) {
+    if ( config.path instanceof SvgPathBuilder === false ) {
         throw new TypeError( 'path must be an instance of SvgPathBuilder' )
     }
-    const renderSvg = newSvgElement({
+    const renderSvg = newSvgElementWithStyle( {
         path: config.path, title: config.title,
     }, path_attr, svgRoot_attr )
 
@@ -210,18 +235,15 @@ export function CreateSvgContainerWithTooltip( options = {}, svgPathAttributes =
     return elem_root
 }
 
-export function newSvgElement( options  = {}, svgPathAttributes = {}, svgRootAttributes = {} ) {
+export function newSvgElementWithStyle ( options = {}, svgPathAttributes = {}, svgRootAttributes = {} ) {
     /**
      * @description used by `CreateSvgContainerWithTooltip`
      */
     const config = {
         title: '',
-        path: null, // new SvgPathBuilder(),
-        /* should move to styleAttrs?
-            // stroke: `hsl( 180 70% 50% / .75)`,
-            // 'stroke-width': `2.5%`,
-            // fill: 'hsl( 200 50% 50% / .5)',
-        */
+        path: null,
+        'stroke-width': `1.5%`,
+        fill: 'hsl( 200 50% 50% / .75)',
         ...options,
     }
     const path_attr = {
@@ -231,46 +253,50 @@ export function newSvgElement( options  = {}, svgPathAttributes = {}, svgRootAtt
     const svgRoot_attr = {
         ...svgRootAttributes,
     }
+    if ( config.path === null ) {
+        throw new Error( 'no path provided!', { cause: { options, svgPathAttributes, svgRootAttributes } } )
+    }
 
     const wrapper_div = document.createElement( 'section' )
-    wrapper_div.classList.add('svg-wrapper')
+    wrapper_div.classList.add( 'svg-wrapper' )
 
     const svgElem = CreateElement_Svg(
-        'svg',  {
-        id     : 'turtle-svg-n',
-        class  : 'svg-root',
+        'svg', {
+        id: 'turtle-svg-n',
+        class: 'svg-root',
         viewBox: '-10 -10 50 50',
-        ...svgRoot_attr,
         // width  : '200px',
         // height : '200px',
-    })
+        ...svgRoot_attr,
+    } )
 
-    const rootStyleElem = document.createElement('style')
+    const rootStyleElem = document.createElement( 'style' )
     // miter | miter-clip | round | bevel | arcs // stroke-linecap: 'arcs';
+    // declare top level style if defined, else omit fields:
     const rootCssTemplate = `
     path {
-        fill: ${ config.fill };
-        stroke: ${ config.stroke };
-        stroke-width: ${ config['stroke-width'] };
+        ${ config.fill ? `fill: ${ config.fill };` : `` }
+        ${ config.stroke ? `stroke: ${ config.stroke };` : `` }
+        ${ config[ 'stroke-width' ] ? `stroke-width: ${ config[ 'stroke-width' ] };` : `` }
     }
     `
     rootStyleElem.textContent = rootCssTemplate
+    const pathElem = config.path.createPathElement(
+        {
+            // fill          : 'hsl( 200 50% 50% / .5)',
 
-    const pathElem = CreateElement_Path({
-        id            : 'turtle-path-n',
-        class         : 'svg-path',
-        d             : config.path.build(),
-        /* moved default styles to style elem */
-        // fill          : 'hsl( 200 50% 50% / .5)',
-        // stroke        : 'hsl( 180 70% 50% / .75)', // currentColor
-        // 'stroke-width': '2.5%',
-        ...path_attr,
+            id: 'turtle-path-n',
+            // d: config.path.buildPathString(),
+            stroke: config.stroke,
 
-    })
+            class: 'svg-path',
+            ...path_attr,
+        }
+    )
 
-    const titleElem = document.createElement('div')
+    const titleElem = document.createElement( 'div' )
 
-    titleElem.classList.add('svg-title')
+    titleElem.classList.add( 'svg-title' )
     titleElem.textContent = config.title
 
     wrapper_div.appendChild( titleElem )
