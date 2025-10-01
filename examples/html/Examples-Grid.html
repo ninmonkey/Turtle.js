@@ -75,13 +75,14 @@
         window.loggerConfig = loggerConfig
 
         let cur
-        const cg = new ColorGenerator()
+        const cg = new ColorGenerator( { stepDegrees: 20, })
         let i = 0
         let deg = 0
         let path // const newPath = new SvgPathBuilder()
         let curSvgSource
         let pathAttrs = {}
         let rootAttrs = {}
+
 
 
         window.cg ??= cg
@@ -93,7 +94,8 @@
             // pathAttrs = {}
             // rootAttrs = {}
 
-            path = new SvgPathBuilder().stroke( cg.Next ).fill( cg.Next )
+            path = new SvgPathBuilder().stroke( cg.Next )
+                // .fill( cg.Next )
                 .addPathString( 'M 10 10 L 30 10 L 20 30' )
                 .closePath()
 
@@ -113,6 +115,8 @@
             rootAttrs = { viewBox: '0 0 100 100' }
 
             path = new SvgPathBuilder()
+                .stroke( cg.Next )
+                    // .fill( cg.Next )
                 .M( 4, 0 ).H( 50 ).v( 20 ).H( 100 )
                 .v( 20 )
                 .H( 20 )
@@ -134,6 +138,8 @@
             rootAttrs = { viewBox: '0 0 100 100' }
 
             path = new SvgPathBuilder()
+                .stroke( cg.Next )
+                    // .fill( cg.Next )
                 .M( 10, 10 )
                 .horizontal( 20 ).vertical( 20 ).horizontal( -20 )
                 .closePath()
@@ -153,8 +159,12 @@
             rootAttrs = { viewBox: '0 0 400 400' }
 
             path = new SvgPathBuilder()
+                .stroke( cg.Next )
+                    // .fill( cg.Next )
             path.addPathString( 'M 100 100 L 300 100 L 200 300 Z' )
             path = new SvgPathBuilder().addPathString( 'M 100 100 L 300 100 L 200 300 Z' )
+                .stroke( cg.Next )
+                    // .fill( cg.Next )
 
             curSvgSource = CreateSvgContainerWithTooltip( {
                     title: `triangle ( from string ) `,
@@ -167,6 +177,8 @@
             pathAttrs = { stroke: cg.Next }
             rootAttrs = { viewBox: '0 0 400 400' }
             path = new SvgPathBuilder()
+                .stroke( cg.Next )
+                    // .fill( cg.Next )
             path.M( 100, 100 )
                 .L( 300, 100 ).L( 200, 300 )
                 .closePath()
@@ -182,6 +194,8 @@
             rootAttrs = { viewBox: '0 0 10 10' }
 
             path = new SvgPathBuilder()
+                .stroke( cg.Next )
+                    // .fill( cg.Next )
             path.M( 2 , 2 )
                 .L( 8, 2 ).L( 8, 8 ).L( 2, 8 )
                 .closePath()
@@ -197,6 +211,8 @@
             pathAttrs = { stroke: cg.Next }
             rootAttrs = { viewBox: '0 0 10 10' }
             path = new SvgPathBuilder()
+                .stroke( cg.Next )
+                    // .fill( cg.Next )
             path.moveAbsolute( 2 , 2 )
                 .lineAbsolute( 8, 2 ).lineAbsolute( 8, 8 ).lineAbsolute( 2, 8 ).closePath()
 

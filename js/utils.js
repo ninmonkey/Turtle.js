@@ -63,40 +63,52 @@ export function simpleFormatHtmlWhitespace( text ) {
 export class ColorGenerator {
     /**
      * @description Every call returns the next color in the defined sequence
+     * @example
+     * new ColorGenerator({ stepDegrees: 10, mode: 'rotateHue' })
+     * @example
+     * new ColorGenerator({ stepDegrees: 10, mode: 'grayscale' })
      */
     #hue = 0.0 // current color
-    #stepDegrees = 137.508 // amount to vary by each step
+    #stepDegrees = 10 // amount to vary by each step
     // #colorList = []
     #mode = 'rotateHue'
 
-    modeNames = [ 'rotateHue' ] // 'grayscale', 'list'
+    modeNames = [ 'rotateHue', 'grayscale' ] // 'grayscale', 'list'
 
-    ColorGenerator( config = {} ) {
+    constructor( config = {} ) {
         /**
          * @description Create ColorGenerator instance
          * @param {Object} config Configuration options
          * @param {number} config.stepDegrees Step in degrees for each color in HSL space
          */
-        const defaults = {
+        const settings = {
             mode: 'rotateHue',
             stepInitial: 0.0,
-            stepDegrees: 30,
+            stepDegrees: 20,
+            ...config,
         }
-        const settings = { ...defaults, ...config  }
-
-
         this.#hue = settings.stepInitial
-        this.#stepDegrees = settings.stepDegrees;
+        this.#stepDegrees = settings.stepDegrees
         this.#mode = settings.mode
 
+        if( ! this.modeNames.includes( this.#mode ) ) {
+            throw new Error( `Unknown color mode: ${this.#mode}` )
+        }
     }
 
     #next () {
         let color
         switch  ( this.#mode ) {
             case 'rotateHue':
+                this.#hue += this.#stepDegrees
+                while( this.#hue >= 360 ) { this.#hue -= 360 }
                 color = `hsl(${this.#hue}, 50%, 60%)`;
-                this.#hue = (this.#hue + this.#stepDegrees) % 360;
+                // this.#hue = (this.#hue + this.#stepDegrees) % 360;
+                return color;
+            case 'grayscale':
+                this.#hue += this.#stepDegrees
+                while( this.#hue >= 256 ) { this.#hue -= 256 }
+                color = `rgb( ${this.#hue}, ${this.#hue}, ${this.#hue} )`;
                 return color;
             default:
                 throw `Unknown color mode: ${this.#mode}`
