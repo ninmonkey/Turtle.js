@@ -271,8 +271,8 @@ export function newSvgElementWithStyle ( options = {}, svgPathAttributes = {}, s
     const config = {
         title: '',
         path: null,
-        'stroke-width': `1.5%`,
-        fill: 'hsl( 200 50% 50% / .75)',
+        // 'stroke-width': `1.5%`,
+        // fill: 'hsl( 200 50% 50% / .75)',
         ...options,
     }
     const path_attr = {
@@ -301,7 +301,12 @@ export function newSvgElementWithStyle ( options = {}, svgPathAttributes = {}, s
 
     const rootStyleElem = document.createElement( 'style' )
     // miter | miter-clip | round | bevel | arcs // stroke-linecap: 'arcs';
-    // declare top level style if defined, else omit fields:
+
+    /*
+    warning: styles for <path> will have higher cascade than attributes for fill on <path> itself.
+
+    declare top level style if defined, else omit fields
+    */
     const rootCssTemplate = `
     path {
         ${ config.fill ? `fill: ${ config.fill };` : `` }
@@ -310,16 +315,16 @@ export function newSvgElementWithStyle ( options = {}, svgPathAttributes = {}, s
     }
     `
     rootStyleElem.textContent = rootCssTemplate
-    const pathElem = config.path.createPathElement(
-        {
+    const pathParams = {
             // fill          : 'hsl( 200 50% 50% / .5)',
             // id: 'turtle-path-n',
             // d: config.path.buildPathString(),
-            class: 'svg-path',
+            'class': 'svg-path',
             ...path_attr,
-            ...config.path.pathAttrs
-        }
-    )
+            ...config.path.pathAttrs,
+
+    }
+    const pathElem = config.path.createPathElement( pathParams)
 
     const titleElem = document.createElement( 'div' )
 

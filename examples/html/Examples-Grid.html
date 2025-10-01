@@ -93,11 +93,8 @@
             // pathAttrs = {}
             // rootAttrs = {}
 
-            path = new SvgPathBuilder()
+            path = new SvgPathBuilder().stroke( cg.Next ).fill( cg.Next )
                 .addPathString( 'M 10 10 L 30 10 L 20 30' )
-                .stroke( cg.Next )
-                .fill( cg.Next )
-                .fill( 'magenta' )
                 .closePath()
 
             curSvgSource = CreateSvgContainerWithTooltip( {
