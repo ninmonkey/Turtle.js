@@ -178,12 +178,13 @@ export function CreateElement_Path ( attributes = {} ) { // , children = []) {
 
 export function CreateElement_Svg ( tag = 'svg', attributes = {}, children = [] ) {
     /**
-     * @description Creates an `<svg>` element with specified Namespace, attributes and children
+     * @description Creates an `<svg>` element with specified Namespace, attributes and children. top level has namespace.
      * @param {string} tag Tag name, default 'svg'
      * @returns {SVGElement} New SVG Element
      */
     const attr = {
         viewBox: "0 0 100 100",
+        // xmlns: "http://www.w3.org/2000/svg",
         ...attributes,
     }
     const rootElem = document.createElementNS( svgNS, tag );

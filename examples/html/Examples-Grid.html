@@ -76,7 +76,7 @@
 
         let cur
         const cg =
-            new ColorGenerator( { stepSize: 20, stepInitial: -180 })
+            new ColorGenerator( { stepSize: 30, stepInitial: -180 })
             // new ColorGenerator({ stepSize: 10, mode: 'grayscale', stepInitial: 50 })
             // new ColorGenerator({ stepSize: 10, mode: 'grayscale', stepInitial: 50 })
         let i = 0
@@ -86,14 +86,56 @@
         let pathAttrs = {}
         let rootAttrs = {}
 
-
-
         window.cg ??= cg
 
         if( true ) { // block mimics the docs
 
-            pathAttrs = { stroke: cg.Next }
-            rootAttrs = { viewBox: '0 0 100 100', id: 'tut1' }
+            pathAttrs = {} // { stroke: cg.Next }
+            rootAttrs = {}
+            rootAttrs = { viewBox: '-1 -1 11 11' }
+
+            const rectSize = 10
+            path = new SvgPathBuilder().stroke( cg.Next )
+                .fill('magenta') // left off: custom verb function rect(), square()
+                .m( 0, 0 )
+                .l( rectSize, 0 )
+                .l( 0, rectSize )
+                .l( -rectSize, 0 )
+                .l( 0, -rectSize )
+                .closePath()
+
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `rect( w, h ) using custom verbs`,
+                    path,
+                    parentElement,
+                }, pathAttrs, rootAttrs )
+
+            pathAttrs = {} // { stroke: cg.Next }
+            rootAttrs = {}
+            rootAttrs = { viewBox: '-1 -1 11 11' }
+
+
+            path = new SvgPathBuilder().stroke( cg.Next )
+                .m( 0, 0 )
+                .l( rectSize, 0 )
+                .l( 0, rectSize )
+                .l( -rectSize, 0 )
+                .l( 0, -rectSize )
+                .closePath()
+
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `rect( w, h ) defined explicitly`,
+                    path,
+                    parentElement,
+                }, pathAttrs, rootAttrs )
+
+
+
+
+
+
+            pathAttrs = {}
+            rootAttrs = { viewBox: '0 0 100 100' }
             // pathAttrs = {}
             // rootAttrs = {}
 
@@ -114,7 +156,7 @@
 
 
 
-            pathAttrs = { stroke: cg.Next }
+            pathAttrs = { }
             rootAttrs = { viewBox: '0 0 100 100' }
 
             path = new SvgPathBuilder()
@@ -137,7 +179,7 @@
 
 
 
-            pathAttrs = { stroke: cg.Next }
+            pathAttrs = {  }
             rootAttrs = { viewBox: '0 0 100 100' }
 
             path = new SvgPathBuilder()
@@ -158,7 +200,7 @@
 
 
 
-            pathAttrs = { stroke: cg.Next }
+            pathAttrs = { }
             rootAttrs = { viewBox: '0 0 400 400' }
 
             path = new SvgPathBuilder()
@@ -177,7 +219,7 @@
 
 
 
-            pathAttrs = { stroke: cg.Next }
+            pathAttrs = {  }
             rootAttrs = { viewBox: '0 0 400 400' }
             path = new SvgPathBuilder()
                 .stroke( cg.Next )
@@ -193,7 +235,7 @@
                 }, pathAttrs, rootAttrs )
 
 
-            pathAttrs = { stroke: cg.Next }
+            pathAttrs = {  }
             rootAttrs = { viewBox: '0 0 10 10' }
 
             path = new SvgPathBuilder()
@@ -211,7 +253,7 @@
 
 
 
-            pathAttrs = { stroke: cg.Next }
+            pathAttrs = {} //  stroke: cg.Next }
             rootAttrs = { viewBox: '0 0 10 10' }
             path = new SvgPathBuilder()
                 .stroke( cg.Next )
