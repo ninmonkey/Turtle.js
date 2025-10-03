@@ -389,3 +389,16 @@ SvgPathBuilder.registerFunc( 'square', function (size) {
     this.applyFunc( 'rect', size, size )
     return this
 } )
+
+ SvgPathBuilder.registerFunc( 'grid', function (tilesX, tilesY, size, paddingSize) {
+    const padding = (paddingSize ?? 0) * .7
+    for( let x = 0; x < tilesX; x++ ) {
+        for( let y = 0; y < tilesY; y++ ) {
+            console.log( { x, y } )
+            this.applyFunc( 'square', size )
+            this.m( size + padding, 0 )
+        }
+        this.m( -( ( size + padding ) * tilesX ), size + padding )
+    }
+    return this
+} )
