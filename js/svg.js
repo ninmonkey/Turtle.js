@@ -374,3 +374,18 @@ export function newSvgElementWithStyle ( options = {}, svgPathAttributes = {}, s
 
     return wrapper_div
 }
+
+// register shared handlers
+SvgPathBuilder.registerFunc( 'rect', function (width, height) {
+    this
+        .l( width, 0 )
+        .l( 0, height )
+        .l( -width, 0 )
+        .l( 0, -height )
+    return this
+} )
+
+SvgPathBuilder.registerFunc( 'square', function (size) {
+    this.applyFunc( 'rect', size, size )
+    return this
+} )

@@ -76,7 +76,7 @@
 
         let cur
         const cg =
-            new ColorGenerator( { stepSize: 30, stepInitial: -180 })
+            new ColorGenerator( { stepSize: 45, stepInitial: -180 })
             // new ColorGenerator({ stepSize: 10, mode: 'grayscale', stepInitial: 50 })
             // new ColorGenerator({ stepSize: 10, mode: 'grayscale', stepInitial: 50 })
         let i = 0
@@ -100,27 +100,54 @@
 
 
             rootAttrs = {}
-            rootAttrs = { viewBox: '-1 -1 11 11' }
+            rootAttrs = { viewBox: '-1 -1 100 100' }
 
-            SvgPathBuilder.registerFunc( 'square', function (size) {
-                this
-                    .l( size, 0 )
-                    .l( 0, size )
-                    .l( -size, 0 )
-                    .l( 0, -size )
-                return this
-            } )
+            function grid( tilesX, tilesY, size ) {
+                // return this
+                // for( const y = 0; y < tilesY; y++ ) {
+                //     for( const x = 0; x < tilesX; x++ ) {
+                //         this
+                //             .applyFunc( 'square', size )
+                //             // .m( x * 2, y * 2 )
+                //     }
+                // }
+                    this
+                        .applyFunc( 'square', size )
+                    return this
+            }
 
             path = new SvgPathBuilder().stroke( cg.Next )
                 .m( 0, 0 )
-                .applyFunc( 'square', 3 )
+                // .applyFunc( grid, 3, 3, 10 )
+                .applyFunc( 'square', 10 )
+                .m( 20, 20 )
+                .applyFunc( 'rect', 4, 10 )
                 .closePath()
+                // .m( 0, 0 )
+                // .applyFunc( 'square', 10 )
+                // .m( 20, 0 )
+                // .applyFunc( 'square', 10 )
+                // .m( 0, 20 )
+                // .applyFunc( 'rect', 10, 5 )
+                // .move( 0, 7 )
+                // .applyFunc( 'square', 3 )
+                // .move( 0, 7 )
+                // .applyFunc( 'rect', 10, 5 )
+                // .move( 0, 7 )
+                // .applyFunc( 'square', 3 )
+                // .move( 0, 7 )
+                // .applyFunc( 'rect', 10, 5 )
+                // .closePath()
 
             curSvgSource = CreateSvgContainerWithTooltip( {
                     title: `square`,
                     path,
                     parentElement,
                 }, pathAttrs, rootAttrs )
+
+            console.trace(curSvgSource)
+
+
 
 
             pathAttrs = {} // { stroke: cg.Next }
@@ -138,6 +165,7 @@
                     path,
                     parentElement,
                 }, pathAttrs, rootAttrs )
+
 
 
 
