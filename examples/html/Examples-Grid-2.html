@@ -104,9 +104,9 @@
 
             path = new SvgPathBuilder().stroke( cg.Next )
                 .m( 0, 0 )
-                .applyFunc( 'grid', 3, 4, 10 )
+                .applyFunc( 'grid', 3, 6, 10, 5 )
                 .M(0, 50)
-                .applyFunc( 'grid', 8,8, 6 )
+                .applyFunc( 'grid', 8,8, 6, 10 )
                 .closePath()
 
             curSvgSource = CreateSvgContainerWithTooltip( {
@@ -115,7 +115,27 @@
                     parentElement,
                 }, pathAttrs, rootAttrs )
 
-            console.trace(curSvgSource)
+
+
+            pathAttrs = {} // { stroke: cg.Next }
+            rootAttrs = {}
+            rootAttrs = { viewBox: '-1 -1 11 11' }
+            path = new SvgPathBuilder().stroke( cg.Next )
+                .m( 0, 0 )
+                .applyFunc( 'square', 10  )
+                .applyFunc( 'square', 6.5  )
+                .applyFunc( 'square', 6  )
+                .applyFunc( 'square', 3.5  )
+                .applyFunc( 'square', 2.5  )
+                .applyFunc( 'square', 2  )
+                .closePath()
+
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `repeat (still 1 path)`,
+                    path,
+                    parentElement,
+                }, pathAttrs, rootAttrs )
+
 
 
             pathAttrs = {} // { stroke: cg.Next }
@@ -134,27 +154,6 @@
                     parentElement,
                 }, pathAttrs, rootAttrs )
 
-
-
-            pathAttrs = {} // { stroke: cg.Next }
-
-            rootAttrs = {}
-            rootAttrs = { viewBox: '-1 -1 11 11' }
-            path = new SvgPathBuilder().stroke( cg.Next )
-                .m( 0, 0 )
-                .applyFunc( 'square', 10  )
-                .applyFunc( 'square', 6.5  )
-                .applyFunc( 'square', 6  )
-                .applyFunc( 'square', 3.5  )
-                .applyFunc( 'square', 2.5  )
-                .applyFunc( 'square', 2  )
-                .closePath()
-
-            curSvgSource = CreateSvgContainerWithTooltip( {
-                    title: `repeat (still 1 path)`,
-                    path,
-                    parentElement,
-                }, pathAttrs, rootAttrs )
         }
 
         /* page specific handlers for `grid-example.html` */

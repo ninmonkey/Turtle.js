@@ -390,16 +390,20 @@ SvgPathBuilder.registerFunc( 'square', function (size) {
     return this
 } )
 
- SvgPathBuilder.registerFunc( 'grid', function (tilesX, tilesY, size, paddingSize) {
+ SvgPathBuilder.registerFunc( 'grid', function (rows, cols, size, paddingSize) {
     const padding = (paddingSize ?? 0) * .7
     let cur_padX = 0
-    for( let x = 0; x < tilesX; x++ ) {
-        for( let y = 0; y < tilesY; y++ ) {
+    for( let y = 0; y < rows; y++ ) {
+        if(cur_padX > 0 ) {
+            this.m( -cur_padX, 0 )
+            this.m( 0,  size + padding )
+            cur_padX = 0
+        }
+        for( let x = 0; x < cols; x++ ) {
             this.applyFunc( 'square', size )
             this.m( size + padding, 0 )
             cur_padX += size + padding
         }
-        this.m( -( ( size + padding ) * tilesX ), size + padding )
     }
     return this
 } )
