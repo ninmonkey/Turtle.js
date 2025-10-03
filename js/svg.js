@@ -157,7 +157,7 @@ export class SvgPathBuilder {
 
         let result
         if( typeof fn === 'string' ) {
-            result = SvgPathBuilder.RegisteredFunctions[ fn ].call(this, ...fnArgs)
+            result = SvgPathBuilder.RegisteredFunctions[ fn.toLowerCase() ].call(this, ...fnArgs)
         }
         else {
             result = fn.call(this, fnArgs)
@@ -177,7 +177,7 @@ export class SvgPathBuilder {
          * @param {string} name Name of the function
          * @param {Function} fn Function to register
          */
-        SvgPathBuilder.RegisteredFunctions[ name ] = fn
+        SvgPathBuilder.RegisteredFunctions[ name.toLowerCase() ] = fn
     }
 }
 

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examples - Turtle.js</title>
+    <link rel="stylesheet" href="./../css/main-grid.css" type="text/css">
+    <link href="./../css/prism.css" rel="stylesheet" />
+    <style>
+        :root {
+            /* --bg-primary-1: #2e353d; */
+        }
+
+        .inline-code-block {
+            display: inline-block;
+            padding: 0.2rem 0.4rem;
+            background-color: var(--section-bg-color);
+            border-radius: 3px;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            color: var(--text-color);
+            max-width: 180ch;
+            margin: min(10vw, 30px) auto;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <nav>
+            <ul>
+                <li><a href="./">Go Back</a></li>
+                <li><a href="#" id="cmd-btn-toggle-grid-large">Large / Small</a></li>
+            </ul>
+        </nav>
+    </section>
+    <section class="parent-context grid-small">
+        <!-- <turtle-svg id="turtle-1" popovertarget="tooltip-1" popovertargetaction="toggle">
+            <span slot="title">First</span>
+        </turtle-svg> -->
+    </section>
+
+    <!-- shown when clicking '#button-bar button' -->
+    <!--
+    <div id="submenu-1" popover="auto">
+        <button>Option A</button><br /><button>Option B</button>
+    </div>
+    -->
+
+    <!-- element shown when hovering the "popovertarget" on "#button-bar button"-->
+    <div id="tooltip-1" class="tooltip" popover="hint">Tooltip A</div>
+    <!--
+    Press the buttons to show the auto popovers. Hover or focus the buttons to show the hint popovers. When an auto popover is shown, you can show the hint popovers without hiding it.
+    ex: https://developer.mozilla.org/en-US/docs/Web/API/Popover_API/Using#using_hint_popover_state
+    -->
+
+    <script type="module">
+        import { Turtle } from './../../js/turtle.js';
+        import { TurtleSvgElement } from './../../js/custom-element/turtle-svg-element.js';
+        import { randomInt, elementFromIdOrValue, simpleFormatHtmlWhitespace, simpleEscapeHtml, ColorGenerator } from './../../js/utils.js'
+        import { GetAllElements } from './../../js/debug_utils.js'
+        import { SvgPathBuilder, CreateElement_Path, CreateElement_Svg, CreateSvgContainerWithTooltip } from './../../js/svg.js'
+
+        window.bag ??= {}
+        const parentElement = document.querySelector( ".parent-context" )
+
+        const loggerConfig = {
+            mouseEventsAll: true,
+            events: {
+                mouseout: false,
+                mouseover: false,
+            }
+        }
+        window.loggerConfig = loggerConfig
+
+        let cur
+        const cg =
+            new ColorGenerator( { stepSize: 30, stepInitial: -180 })
+            // new ColorGenerator({ stepSize: 10, mode: 'grayscale', stepInitial: 50 })
+            // new ColorGenerator({ stepSize: 10, mode: 'grayscale', stepInitial: 50 })
+        let i = 0
+        let deg = 0
+        let path // const newPath = new SvgPathBuilder()
+        let curSvgSource
+        let pathAttrs = {}
+        let rootAttrs = {}
+
+        window.cg ??= cg
+
+        //
+
+        if( true ) {
+            // cur = NewTurtle( 'original' )
+            //     .stroke( cg.Next )
+            //     .polygon( ( 1 + i++ ), 3 )
+            //     .rotate( 90 * Math.PI / 180 )
+
+            pathAttrs = {} // { stroke: cg.Next }
+
+
+            rootAttrs = {}
+            rootAttrs = { viewBox: '-1 -1 11 11' }
+
+            SvgPathBuilder.registerFunc( 'square', function (size) {
+                this
+                    .l( size, 0 )
+                    .l( 0, size )
+                    .l( -size, 0 )
+                    .l( 0, -size )
+                return this
+            } )
+
+            path = new SvgPathBuilder().stroke( cg.Next )
+                .m( 0, 0 )
+                .applyFunc( 'square', 3 )
+                .closePath()
+
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `square`,
+                    path,
+                    parentElement,
+                }, pathAttrs, rootAttrs )
+
+
+            pathAttrs = {} // { stroke: cg.Next }
+            rootAttrs = {}
+            rootAttrs = { viewBox: '-1 -1 400 400' }
+
+            path = new SvgPathBuilder().stroke( cg.Next )
+                .m( 0, 0 )
+                .M( 100, 100 )
+                .L( 300, 100 ).L( 200, 300 )
+                .closePath()
+
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `tri`,
+                    path,
+                    parentElement,
+                }, pathAttrs, rootAttrs )
+
+
+
+
+
+
+          pathAttrs = {} // { stroke: cg.Next }
+
+
+            rootAttrs = {}
+            rootAttrs = { viewBox: '-1 -1 11 11' }
+            function doSquare( size ) {
+                // const size = 10
+                this
+                    .l( size, 0 )
+                    .l( 0, size )
+                    .l( -size, 0 )
+                    .l( 0, -size )
+                return this
+            }
+
+            path = new SvgPathBuilder().stroke( cg.Next )
+                .m( 0, 0 )
+                .applyFunc( 'square', 10  )
+                .applyFunc( 'square', 6.5  )
+                .applyFunc( 'square', 6  )
+                .applyFunc( 'square', 3.5  )
+                .applyFunc( 'square', 2.5  )
+                .applyFunc( 'square', 2  )
+                .closePath()
+
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `repeat (still 1 path)`,
+                    path,
+                    parentElement,
+                }, pathAttrs, rootAttrs )
+        }
+
+        /* page specific handlers for `grid-example.html` */
+        const toggleGridSizeButton = document.getElementById( "cmd-btn-toggle-grid-large" );
+        toggleGridSizeButton.addEventListener( "click", () => {
+            const target = document.querySelector( 'section.parent-context' )
+            if ( target.classList.contains( "grid-large" ) ) {
+                target.classList.replace( "grid-large", 'grid-small' )
+            } else {
+                target.classList.remove( "grid-small" )
+                target.classList.add( "grid-large" )
+            }
+        } );
+        // tooltips
+        const tooltips = document.querySelectorAll( ".tooltip" );
+        const btns = document.querySelectorAll( "#button-bar button" );
+
+        function RegisterTooltipsForTurtleSvgElements ( turtleSvgElements ) {
+            /**
+             * @description Register hover tooltip for each TurtleSvgElement in the NodeList
+             * @param {NodeListOf<TurtleSvgElement>} turtleSvgElements
+             * @link https://developer.mozilla.org/en-US/docs/Web/API/Popover_API/Using#using_hint_popover_state
+             */
+
+            turtleSvgElements.forEach( ( turtleSvgElem ) => {
+                turtleSvgElem.addEventListener( "mouseover", () => {
+                    const cur_tip = tooltips[ 0 ]
+                    if( window.loggerConfig.mouseEventsAll && window.loggerConfig.events.mouseover )  {
+                        console.debug( '🐁 MouseOver:', { turtleSvgElem } );
+                    }
+                    // let cur = turtleSvgElem.shadowRoot.querySelector( 'svg' )
+                    const cur = turtleSvgElem.querySelector( 'svg' )
+                    const formatted_xml = simpleFormatHtmlWhitespace( cur.outerHTML )
+                    const escaped_xml =
+                        simpleEscapeHtml( formatted_xml )
+
+                    const abbr_viewBox =
+                        cur.getAttribute( 'viewBox' )
+                            .split( /\s/ )
+                            .map( ( s ) => new Number( s ).toFixed( 1 ) )
+                            .join( ' ' )
+                    const rawText = `
+                    <p>
+                    Viewbox: ${ abbr_viewBox }
+                    <br/>BaseVal: ${ cur.width.baseVal.value.toFixed( 1 ) } x ${ cur.height.baseVal.value.toFixed( 1 ) }
+                    </p>
+                    <p>Svg:</p><pre class="inline-code-block"><code class="language-xml">${ escaped_xml
+                        }</code></pre>`
+
+                    /* old:
+                        <br/>X, Y: ${ cur.getAttribute( 'x' ) }, ${ cur.getAttribute( 'y' ) }.
+                        <br/>Width, Height (attr):d ${ cur.getAttribute( 'width' ) } x ${ cur.getAttribute( 'height' ) }.
+                    */
+                    cur_tip.innerHTML = rawText
+
+                    window.Prism.highlightAll()
+                    cur_tip.showPopover( { source: turtleSvgElem } );
+                } );
+
+                turtleSvgElem.addEventListener( "mouseout", () => {
+                    const cur_tip = tooltips[ 0 ]
+                    if( window.loggerConfig.mouseEventsAll && window.loggerConfig.events.mouseout )  {
+                        console.debug( '🐁 MouseOut:', { turtleSvgElem } )
+                    }
+                    cur_tip.hidePopover();
+                } );
+
+                turtleSvgElem.addEventListener( "focus", () => {
+                    const cur_tip = tooltips[ 0 ]
+                    if( window.loggerConfig.mouseEventsAll  )  { console.debug( '🐁 focus:', { turtleSvgElem } ) }
+                    cur_tip.showPopover( { source: turtleSvgElem } );
+                } );
+
+                turtleSvgElem.addEventListener( "blur", () => {
+                    const cur_tip = tooltips[ 0 ]
+                    if( window.loggerConfig.mouseEventsAll )  { console.debug( '🐁 blur:', { turtleSvgElem } ) }
+                    cur_tip.hidePopover();
+                } )
+
+                turtleSvgElem.addEventListener( "click", () => {
+                    const cur_tip = tooltips[ 0 ]
+                    if( window.loggerConfig.mouseEventsAll )  { console.debug( '🐁 click:', { turtleSvgElem } ) }
+                    const rawSvgText = turtleSvgElem.querySelector( 'svg' ).outerHTML
+                    console.info( 'copied SVG to clipboard', { rawSvgText } )
+                    navigator.clipboard.writeText( rawSvgText )
+                        .catch( err => {
+                            console.error( 'Failed to copy SVG to clipboard:', err );
+                        } )
+                } )
+            } )
+        }
+        const all_wrappers = document.querySelectorAll( '.svg-wrapper' )
+        RegisterTooltipsForTurtleSvgElements( all_wrappers )
+
+        // globals
+        window.bag ??= {}
+        window.fn ??= {}
+        window.cls ??= {}
+
+        window.Turtle = Turtle
+        window.TurtleSvgElement = TurtleSvgElement
+        window.bag.root_elem = parentElement
+        window.bag.all_wrappers = all_wrappers
+        window.fn.allElements = GetAllElements
+        window.fn.SvgPathBuilder = SvgPathBuilder
+        window.fn.CreateElement_Svg = CreateElement_Svg
+        window.fn.CreateElement_Path = CreateElement_Path
+        window.cls.ColorGenerator =ColorGenerator
+
+
+        console.trace( 'debug enabled globals: ', { Turtle, TurtleSvgElement, bag } )
+
+    </script>
+    <script src="../../js/prism.js"></script>
+
+
+</body>
+
+</html>
