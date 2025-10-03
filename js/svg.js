@@ -145,6 +145,28 @@ export class SvgPathBuilder {
         this.#steps.push( 'Z' )
         return this
     }
+
+    applyFunc ( fn ) {
+        /**
+         * @description Calls the provided function with the current SvgPathBuilder instance
+         * @param {Function} fn Function to call with this SvgPathBuilder instance
+         * @returns {SvgPathBuilder} this
+         * @example
+         * const path = new SvgPathBuilder()
+         *     .move(10, 10)
+         *     .apply(p => p.line(20, 0).line(0, 20))
+         *     .closePath()
+         */
+        let result = fn.call(this)
+        if ( result instanceof SvgPathBuilder === false ) {
+            // console.warn( { result, fn, this } )
+            throw new TypeError( `'.applyFunc()' did not return an instance of SvgPathBuilder!` )
+        }
+        console.log('🦍', result )
+        return result
+        // fn(this)
+        // return this
+    }
 }
 
 export function CreateElement_Path ( attributes = {} ) { // , children = []) {

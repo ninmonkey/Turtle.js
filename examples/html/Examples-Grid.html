@@ -88,6 +88,8 @@
 
         window.cg ??= cg
 
+        //
+
         if( true ) { // block mimics the docs
 
             pathAttrs = {} // { stroke: cg.Next }
@@ -96,13 +98,27 @@
 
             const rectSize = 10
             path = new SvgPathBuilder().stroke( cg.Next )
-                .fill('magenta') // left off: custom verb function rect(), square()
+                // .fill('magenta') // left off: custom verb function rect(), square()
                 .m( 0, 0 )
-                .l( rectSize, 0 )
-                .l( 0, rectSize )
-                .l( -rectSize, 0 )
-                .l( 0, -rectSize )
+                // .l( rectSize, 0 )
+                // .l( 0, rectSize )
+                // .l( -rectSize, 0 )
+                // .l( 0, -rectSize )
                 .closePath()
+
+            path.applyFunc(function () {
+                const size = 10
+                console.log('--- applying rect ---')
+                console.log( this )
+                this
+                    .l( rectSize, 0 )
+                    .l( 0, rectSize )
+                    .l( -rectSize, 0 )
+                    .l( 0, -rectSize )
+                return this
+                // ( pb ) => pb.rect( rectSize, rectSize )
+            } )
+
 
             curSvgSource = CreateSvgContainerWithTooltip( {
                     title: `rect( w, h ) using custom verbs`,
