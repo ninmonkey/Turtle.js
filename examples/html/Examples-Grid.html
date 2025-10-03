@@ -91,12 +91,48 @@
         //
 
         if( true ) { // block mimics the docs
+          pathAttrs = {} // { stroke: cg.Next }
+
+
+            rootAttrs = {}
+            rootAttrs = { viewBox: '-1 -1 11 11' }
+            function doSquare( size ) {
+                // const size = 10
+                this
+                    .l( size, 0 )
+                    .l( 0, size )
+                    .l( -size, 0 )
+                    .l( 0, -size )
+                return this
+            }
+
+            path = new SvgPathBuilder().stroke( cg.Next )
+                .m( 0, 0 )
+                .applyFunc( doSquare, 10  )
+                .applyFunc( doSquare, 6.5  )
+                .applyFunc( doSquare, 6  )
+                .applyFunc( doSquare, 3.5  )
+                .applyFunc( doSquare, 2.5  )
+                .applyFunc( doSquare, 2  )
+                .closePath()
+
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `custom func with params`,
+                    path,
+                    parentElement,
+                }, pathAttrs, rootAttrs )
+
+
+
+
+
 
             pathAttrs = {} // { stroke: cg.Next }
             rootAttrs = {}
             rootAttrs = { viewBox: '-1 -1 11 11' }
 
             const rectSize = 10
+
             path = new SvgPathBuilder().stroke( cg.Next )
                 // .fill('magenta') // left off: custom verb function rect(), square()
                 .m( 0, 0 )
@@ -106,25 +142,28 @@
                 // .l( 0, -rectSize )
                 .closePath()
 
-            path.applyFunc(function () {
-                const size = 10
-                console.log('--- applying rect ---')
-                console.log( this )
+            function doSquare_noParam( ) {
+                // const size = 10
                 this
                     .l( rectSize, 0 )
                     .l( 0, rectSize )
                     .l( -rectSize, 0 )
                     .l( 0, -rectSize )
                 return this
-                // ( pb ) => pb.rect( rectSize, rectSize )
-            } )
+            }
 
+            path.applyFunc( doSquare_noParam )
 
             curSvgSource = CreateSvgContainerWithTooltip( {
                     title: `rect( w, h ) using custom verbs`,
                     path,
                     parentElement,
                 }, pathAttrs, rootAttrs )
+
+
+
+
+
 
             pathAttrs = {} // { stroke: cg.Next }
             rootAttrs = {}

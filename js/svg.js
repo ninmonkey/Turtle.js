@@ -146,7 +146,7 @@ export class SvgPathBuilder {
         return this
     }
 
-    applyFunc ( fn ) {
+    applyFunc ( fn, ...fnArgs ) {
         /**
          * @description Calls the provided function with the current SvgPathBuilder instance
          * @param {Function} fn Function to call with this SvgPathBuilder instance
@@ -157,15 +157,13 @@ export class SvgPathBuilder {
          *     .apply(p => p.line(20, 0).line(0, 20))
          *     .closePath()
          */
-        let result = fn.call(this)
+        let result = fn.call(this, fnArgs)
         if ( result instanceof SvgPathBuilder === false ) {
             // console.warn( { result, fn, this } )
             throw new TypeError( `'.applyFunc()' did not return an instance of SvgPathBuilder!` )
         }
-        console.log('🦍', result )
+        console.info('🦍 applyFunc() result', result )
         return result
-        // fn(this)
-        // return this
     }
 }
 
