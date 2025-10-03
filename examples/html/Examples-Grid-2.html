@@ -104,37 +104,18 @@
 
             path = new SvgPathBuilder().stroke( cg.Next )
                 .m( 0, 0 )
-                // .applyFunc( 'grid', 5, 5, 10, 10 )
-                .applyFunc( 'grid', 5, 5, 10 )
-                // .applyFunc( 'square', 10 )
-                // .m( 20, 20 )
-                // .applyFunc( 'rect', 4, 10 )
+                .applyFunc( 'grid', 3, 4, 10 )
+                .M(0, 50)
+                .applyFunc( 'grid', 8,8, 6 )
                 .closePath()
-                // .m( 0, 0 )
-                // .applyFunc( 'square', 10 )
-                // .m( 20, 0 )
-                // .applyFunc( 'square', 10 )
-                // .m( 0, 20 )
-                // .applyFunc( 'rect', 10, 5 )
-                // .move( 0, 7 )
-                // .applyFunc( 'square', 3 )
-                // .move( 0, 7 )
-                // .applyFunc( 'rect', 10, 5 )
-                // .move( 0, 7 )
-                // .applyFunc( 'square', 3 )
-                // .move( 0, 7 )
-                // .applyFunc( 'rect', 10, 5 )
-                // .closePath()
 
             curSvgSource = CreateSvgContainerWithTooltip( {
-                    title: `square`,
+                    title: `Grids`,
                     path,
                     parentElement,
                 }, pathAttrs, rootAttrs )
 
             console.trace(curSvgSource)
-
-
 
 
             pathAttrs = {} // { stroke: cg.Next }
@@ -155,25 +136,10 @@
 
 
 
-
-
-
-
-          pathAttrs = {} // { stroke: cg.Next }
-
+            pathAttrs = {} // { stroke: cg.Next }
 
             rootAttrs = {}
             rootAttrs = { viewBox: '-1 -1 11 11' }
-            function doSquare( size ) {
-                // const size = 10
-                this
-                    .l( size, 0 )
-                    .l( 0, size )
-                    .l( -size, 0 )
-                    .l( 0, -size )
-                return this
-            }
-
             path = new SvgPathBuilder().stroke( cg.Next )
                 .m( 0, 0 )
                 .applyFunc( 'square', 10  )
