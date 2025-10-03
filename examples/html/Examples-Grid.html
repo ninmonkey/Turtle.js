@@ -91,6 +91,38 @@
         //
 
         if( true ) { // block mimics the docs
+            pathAttrs = {} // { stroke: cg.Next }
+
+
+            rootAttrs = {}
+            rootAttrs = { viewBox: '-1 -1 11 11' }
+
+            SvgPathBuilder.registerFunc( 'Square', function (size) {
+                this
+                    .l( size, 0 )
+                    .l( 0, size )
+                    .l( -size, 0 )
+                    .l( 0, -size )
+                return this
+            } )
+
+            path = new SvgPathBuilder().stroke( cg.Next )
+                .m( 0, 0 )
+                .applyFunc( 'Square', 3 )
+                .applyFunc( 'Square', 9 )
+                .closePath()
+
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `invoke registered functions/verbs: '.applyFunc( 'Square', 3 )`,
+                    path,
+                    parentElement,
+                }, pathAttrs, rootAttrs )
+
+
+
+
+
+
           pathAttrs = {} // { stroke: cg.Next }
 
 
@@ -117,7 +149,7 @@
                 .closePath()
 
             curSvgSource = CreateSvgContainerWithTooltip( {
-                    title: `custom func with params`,
+                    title: `custom func with params: '.applyFunc( fnSquare, 10 )'`,
                     path,
                     parentElement,
                 }, pathAttrs, rootAttrs )

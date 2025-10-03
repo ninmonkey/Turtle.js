@@ -14,6 +14,8 @@ export class SvgPathBuilder {
         // 'stroke-width': `2.5%`,
         // 'fill-opacity': `0.5`,
     }
+    static RegisteredFunctions = {}
+
     constructor() {
         this.clear()
     }
@@ -151,19 +153,31 @@ export class SvgPathBuilder {
          * @description Calls the provided function with the current SvgPathBuilder instance
          * @param {Function} fn Function to call with this SvgPathBuilder instance
          * @returns {SvgPathBuilder} this
-         * @example
-         * const path = new SvgPathBuilder()
-         *     .move(10, 10)
-         *     .apply(p => p.line(20, 0).line(0, 20))
-         *     .closePath()
          */
-        let result = fn.call(this, fnArgs)
+
+        let result
+        if( typeof fn === 'string' ) {
+            result = SvgPathBuilder.RegisteredFunctions[ fn ].call(this, ...fnArgs)
+        }
+        else {
+            result = fn.call(this, fnArgs)
+        }
+
         if ( result instanceof SvgPathBuilder === false ) {
             // console.warn( { result, fn, this } )
             throw new TypeError( `'.applyFunc()' did not return an instance of SvgPathBuilder!` )
         }
         console.info('🦍 applyFunc() result', result )
         return result
+    }
+
+    static registerFunc ( name, fn ) {
+        /**
+         * @description Registers a function with the SvgPathBuilder class
+         * @param {string} name Name of the function
+         * @param {Function} fn Function to register
+         */
+        SvgPathBuilder.RegisteredFunctions[ name ] = fn
     }
 }
 
