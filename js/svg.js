@@ -274,14 +274,6 @@ export function CreateSvgContainerWithTooltip ( options = {}, svgPathAttributes 
     if ( config.path == null ) {
         throw new Error( 'no path provided!' )
     }
-    if( Array.isArray( config.path ) ) {
-        // if( config.path.length === 0 ) {
-        throw new Error( 'WIP: Handle array of <path>' )
-        // }
-    }
-    if ( config.path instanceof SvgPathBuilder === false ) {
-        throw new TypeError( 'path must be an instance of SvgPathBuilder' )
-    }
     const renderSvg = CreateElement_Svg_WithStyle( {
         path: config.path, title: config.title,
     }, path_attr, svgRoot_attr )
@@ -292,7 +284,7 @@ export function CreateSvgContainerWithTooltip ( options = {}, svgPathAttributes 
 
 export function CreateElement_Svg_WithStyle ( options = {}, svgPathAttributes = {}, svgRootAttributes = {} ) {
     /**
-     * @description used by `CreateSvgContainerWithTooltip` to create a top level container <svg> element
+     * @description used by `CreateSvgContainerWithTooltip` to create a top level container `<section>` and <svg> element
      * @param {Object} options Configuration options
      * @param {SvgPathBuilder} options.path An instance of SvgPathBuilder
      * @param {string} options.title Title text for the tooltip
@@ -308,7 +300,7 @@ export function CreateElement_Svg_WithStyle ( options = {}, svgPathAttributes = 
      */
     const config = {
         title: '',
-        path: null,
+        path: [],
         // 'stroke-width': `1.5%`,
         // fill: 'hsl( 200 50% 50% / .75)',
         ...options,
@@ -320,24 +312,16 @@ export function CreateElement_Svg_WithStyle ( options = {}, svgPathAttributes = 
     const svgRoot_attr = {
         ...svgRootAttributes,
     }
+    const pathList = Array.isArray( config.path ) ? config.path : [ config.path ]
 
-    if ( config.path == null ) {
-        throw new Error( 'no path provided!' )
-    }
-    if( Array.isArray( config.path ) ) {
-        // if( config.path.length === 0 ) {
-        throw new Error( 'WIP: Handle array of <path>' )
-        // }
-    }
-
-    if ( config.path === null ) {
+    if ( config.path == null || pathList.length === 0 ) {
         throw new Error( 'no path provided!', { cause: { options, svgPathAttributes, svgRootAttributes } } )
     }
 
     const section_div = document.createElement( 'section' )
     section_div.classList.add( 'svg-wrapper' )
 
-    const svgElem = CreateElement_Svg(
+    const root_svg = CreateElement_Svg(
         'svg', {
         // id: 'turtle-svg-n',
         class: 'svg-root',
@@ -364,16 +348,16 @@ export function CreateElement_Svg_WithStyle ( options = {}, svgPathAttributes = 
     }
     `
     rootStyleElem.textContent = rootCssTemplate
-    const pathParams = {
-            // fill          : 'hsl( 200 50% 50% / .5)',
-            // id: 'turtle-path-n',
-            // d: config.path.buildPathString(),
-            'class': 'svg-path',
-            ...path_attr,
-            ...config.path.pathAttrs,
+    // const pathParams = {
+    //         // fill          : 'hsl( 200 50% 50% / .5)',
+    //         // id: 'turtle-path-n',
+    //         // d: config.path.buildPathString(),
+    //         'class': 'svg-path',
+    //         ...path_attr,
+    //         ...config.path.pathAttrs,
 
-    }
-    const pathElem = config.path.createPathElement( pathParams)
+    // }
+    // const pathElem = config.path.createPathElement( pathParams )
 
     const titleElem = document.createElement( 'div' )
 
@@ -381,11 +365,28 @@ export function CreateElement_Svg_WithStyle ( options = {}, svgPathAttributes = 
     titleElem.textContent = config.title
 
     section_div.appendChild( titleElem )
+    root_svg.appendChild( rootStyleElem )
 
-    svgElem.appendChild( rootStyleElem )
-    svgElem.appendChild( pathElem )
+    for( const p of pathList ) {
+        if ( p instanceof SvgPathBuilder === false ) {
+            throw new TypeError( 'path must be an instance of SvgPathBuilder', { cause: { p } } )
+        }
+        const pathParams = {
+            // fill          : 'hsl( 200 50% 50% / .5)',
+            // id: 'turtle-path-n',
+            // d: config.path.buildPathString(),
+            'class': 'svg-path',
+            ...path_attr,
+            ...p.pathAttrs,
 
-    section_div.appendChild( svgElem )
+        }
+        root_svg.appendChild( p.createPathElement( pathParams ) )
+    }
+
+    // root_svg.appendChild( config.path.createPathElement( pathParams ) )
+    // svgElem.appendChild( pathElem )
+
+    section_div.appendChild( root_svg )
 
 
     return section_div
