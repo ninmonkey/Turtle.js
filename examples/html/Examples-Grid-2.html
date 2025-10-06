@@ -78,11 +78,9 @@
         const cg =
             new ColorGenerator( { stepSize: 45, stepInitial: -180 })
             // new ColorGenerator({ stepSize: 10, mode: 'grayscale', stepInitial: 50 })
-            // new ColorGenerator({ stepSize: 10, mode: 'grayscale', stepInitial: 50 })
         let i = 0
         let deg = 0
         let path // const newPath = new SvgPathBuilder()
-        let path2
         let curSvgSource
         let pathAttrs = {}
         let rootAttrs = {}
@@ -90,7 +88,105 @@
 
         window.cg ??= cg
 
-        //
+        //.fill('hsl( 200 50% 50% / 1.0)')
+        if ( true ) {
+            let p1
+            let p2
+            let p3
+
+            pathList = []
+            rootAttrs = { viewBox: '-1 -1 100 100' }
+            // rootAttrs = {}
+
+            const pad_x = 10
+            const pad_y = 10
+            for (let i = 0; i < 20; i++) {
+                const cur = new SvgPathBuilder()
+                    .stroke( cg.Next )
+                    .m( pad_x * i, pad_y * i )
+                    .applyFunc('grid', 3, 6, 10, 5)
+                pathList.push( cur )
+            }
+
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `fill: alpha`,
+                    path: pathList,
+                    parentElement,
+                }, pathAttrs, rootAttrs )
+        }
+        if ( true ) {
+            pathList = []
+            rootAttrs = { viewBox: '-1 -1 100 100' }
+
+            const pad_x = 10
+            const pad_y = 10
+            cg.Reset
+            for (let i = 0; i < 20; i++) {
+                const cur = new SvgPathBuilder()
+                    .stroke( cg.Next )
+                    .m( pad_x * i, pad_y * i )
+                    .fill('transparent')
+                    .applyFunc('grid', 3, 6, 10, 5)
+                pathList.push( cur )
+            }
+
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `fill: transparent`,
+                    path: pathList,
+                    parentElement,
+                }, pathAttrs, rootAttrs )
+        }
+        if ( true ) {
+            pathList = []
+            const pad_x = 10
+            const pad_y = 10
+            rootAttrs = { viewBox: '-1 -1 100 100' }
+            // rootAttrs = {}
+
+            cg.Reset
+            for (let i = 0; i < 20; i++) {
+                const cur = new SvgPathBuilder()
+                    .stroke( cg.Next )
+                    .m( pad_x * i, pad_y * i )
+                    .fill('hsl( 200 50% 50% / 1.0)')
+                    .applyFunc('grid', 3, 6, 10, 5)
+                pathList.push( cur )
+            }
+
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `fill: solid`,
+                    path: pathList,
+                    parentElement,
+                }, pathAttrs, rootAttrs )
+        }
+        if ( true ) {
+            let p1
+            let p2
+            let p3
+
+            rootAttrs = {}
+            rootAttrs = { viewBox: '-1 -1 100 100' }
+            pathList = []
+            p1 = new SvgPathBuilder().stroke('salmon')
+                .applyFunc( 'grid', 3, 6, 10, 5 )
+
+            p2 = new SvgPathBuilder().stroke('rebeccapurple')
+                .M( 20, 20 )
+                .fill('transparent')
+                .applyFunc( 'grid', 3, 6, 10, 5 )
+
+            p3 = new SvgPathBuilder().stroke('orange')
+                .M( 40, 40 )
+                .fill('hsl( 200 50% 50% / 1.0)')
+                .applyFunc( 'grid', 3, 6, 10, 5 )
+
+            pathList = [ p1, p2, p3 ]
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `grids`,
+                    path: pathList,
+                    parentElement,
+                }, pathAttrs, rootAttrs )
+        }
 
         if( true ) {
             // cur = NewTurtle( 'original' )
@@ -106,11 +202,23 @@
             path = new SvgPathBuilder().stroke( cg.Next )
                 .m( 0, 0 )
                 .applyFunc( 'grid', 3, 6, 10, 5 )
-                .M(0, 50)
-                .applyFunc( 'grid', 8,8, 6, 10 )
+                .closePath()
+
+            let path2 = new SvgPathBuilder().stroke( cg.Next )
+                .M(30, 0)
+                .applyFunc( 'square', 50 )
                 .closePath()
 
             pathList.push( path )
+            pathList.push( path2 )
+            pathList.push( new SvgPathBuilder().stroke( 'red' )
+                .M(0, 0)
+                .applyFunc( 'square', 7 )
+                .M(4, 3)
+                .applyFunc( 'square', 5 )
+                .closePath() )
+
+            // pathList = pathList[1]
 
             curSvgSource = CreateSvgContainerWithTooltip( {
                     title: `Grids`,
@@ -127,9 +235,6 @@
                 .applyFunc( 'square', 2  )
                 .applyFunc( 'square', 4  )
                 .closePath()
-                // .applyFunc( 'square', 3.5  )
-                // .applyFunc( 'square', 2.5  )
-                // .applyFunc( 'square', 2  )
 
             pathList.push( path )
 
@@ -144,34 +249,11 @@
 
 
             curSvgSource = CreateSvgContainerWithTooltip( {
-                    title: `multiple paths`,
+                    title: `shell`,
                     path: pathList,
                     // path: pathList, // verify array test
                     parentElement,
                 }, pathAttrs, rootAttrs )
-
-
-
-            pathAttrs = {} // { stroke: cg.Next }
-            rootAttrs = {}
-            rootAttrs = { viewBox: '-1 -1 11 11' }
-            path = new SvgPathBuilder().stroke( cg.Next )
-                .m( 0, 0 )
-                .applyFunc( 'square', 10  )
-                .applyFunc( 'square', 6.5  )
-                .applyFunc( 'square', 6  )
-                .applyFunc( 'square', 3.5  )
-                .applyFunc( 'square', 2.5  )
-                .applyFunc( 'square', 2  )
-                .closePath()
-
-            curSvgSource = CreateSvgContainerWithTooltip( {
-                    title: `repeat (still 1 path)`,
-                    path,
-                    parentElement,
-                }, pathAttrs, rootAttrs )
-
-
 
             pathAttrs = {} // { stroke: cg.Next }
             rootAttrs = {}

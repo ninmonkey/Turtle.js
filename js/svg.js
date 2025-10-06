@@ -314,7 +314,7 @@ export function CreateElement_Svg_WithStyle ( options = {}, svgPathAttributes = 
     }
     const pathList = Array.isArray( config.path ) ? config.path : [ config.path ]
 
-    if ( config.path == null || pathList.length === 0 ) {
+    if ( config.path === null || pathList.length === 0 ) {
         throw new Error( 'no path provided!', { cause: { options, svgPathAttributes, svgRootAttributes } } )
     }
 
