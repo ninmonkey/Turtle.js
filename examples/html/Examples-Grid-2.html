@@ -82,9 +82,11 @@
         let i = 0
         let deg = 0
         let path // const newPath = new SvgPathBuilder()
+        let path2
         let curSvgSource
         let pathAttrs = {}
         let rootAttrs = {}
+        let pathList = Array.from( [] )
 
         window.cg ??= cg
 
@@ -97,10 +99,9 @@
             //     .rotate( 90 * Math.PI / 180 )
 
             pathAttrs = {} // { stroke: cg.Next }
-
-
             rootAttrs = {}
             rootAttrs = { viewBox: '-1 -1 100 100' }
+            pathList = []
 
             path = new SvgPathBuilder().stroke( cg.Next )
                 .m( 0, 0 )
@@ -109,9 +110,43 @@
                 .applyFunc( 'grid', 8,8, 6, 10 )
                 .closePath()
 
+            pathList.push( path )
+
             curSvgSource = CreateSvgContainerWithTooltip( {
                     title: `Grids`,
-                    path,
+                    path: pathList[0],
+                    parentElement,
+                }, pathAttrs, rootAttrs )
+
+            rootAttrs = {}
+            rootAttrs = { viewBox: '-1 -1 11 11' }
+            pathAttrs = {} // { stroke: cg.Next }
+            pathList = []
+            path = new SvgPathBuilder().stroke( cg.Next )
+                .m( 0, 0 )
+                .applyFunc( 'square', 2  )
+                .applyFunc( 'square', 4  )
+                .closePath()
+                // .applyFunc( 'square', 3.5  )
+                // .applyFunc( 'square', 2.5  )
+                // .applyFunc( 'square', 2  )
+
+            pathList.push( path )
+
+
+            path2 = new SvgPathBuilder()
+                .stroke( cg.Next )
+                .M( 4, 0 )
+                .applyFunc( 'square', 3  )
+                .applyFunc( 'square', 5  )
+                .closePath()
+            pathList.push( path2 )
+
+
+            curSvgSource = CreateSvgContainerWithTooltip( {
+                    title: `multiple paths`,
+                    path: pathList[0],
+                    // path: pathList, // verify array test
                     parentElement,
                 }, pathAttrs, rootAttrs )
 

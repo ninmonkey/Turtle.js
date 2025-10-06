@@ -14,9 +14,14 @@ export class SvgPathBuilder {
         // 'stroke-width': `2.5%`,
         // 'fill-opacity': `0.5`,
     }
+    #config = {
+        AppendNewline: true, // path[d] includes whitespace. Easier for humans to read.
+    }
+    #suffix = `\n`
     static RegisteredFunctions = {}
 
     constructor() {
+        this.#suffix = this.#config.AppendNewline ? `\n` : ``
         this.clear()
     }
 
@@ -83,41 +88,41 @@ export class SvgPathBuilder {
 
 
     moveAbsolute ( x, y ) {
-        this.#steps.push( `M ${ x } ${ y }` )
+        this.#steps.push( `M ${ x } ${ y }${ this.#suffix }` )
         return this
     }
     move ( x, y ) {
-        this.#steps.push( `m ${ x } ${ y }` )
+        this.#steps.push( `m ${ x } ${ y }${ this.#suffix }` )
         return this
     }
     M ( x, y ) { return this.moveAbsolute( x, y ) }
     m ( x, y ) { return this.move( x, y ) }
 
     lineAbsolute ( x, y ) {
-        this.#steps.push( `L ${ x } ${ y }` )
+        this.#steps.push( `L ${ x } ${ y }${ this.#suffix }` )
         return this
     }
     line ( x, y ) {
-        this.#steps.push( `l ${ x } ${ y }` )
+        this.#steps.push( `l ${ x } ${ y }${ this.#suffix }` )
         return this
     }
     L ( x, y ) { return this.lineAbsolute( x, y ) }
     l ( x, y ) { return this.line( x, y ) }
 
     horizontalAbsolute ( x ) {
-        this.#steps.push( `H ${ x }` )
+        this.#steps.push( `H ${ x }${ this.#suffix }` )
         return this
     }
     horizontal ( x ) {
-        this.#steps.push( `h ${ x }` )
+        this.#steps.push( `h ${ x }${ this.#suffix }` )
         return this
     }
     verticalAbsolute ( y ) {
-        this.#steps.push( `V ${ y }` )
+        this.#steps.push( `V ${ y }${ this.#suffix }` )
         return this
     }
     vertical ( y ) {
-        this.#steps.push( `v ${ y }` )
+        this.#steps.push( `v ${ y }${ this.#suffix }` )
         return this
     }
     H ( x ) { return this.horizontalAbsolute( x ) }
@@ -126,20 +131,20 @@ export class SvgPathBuilder {
     v ( y ) { return this.vertical( y ) }
 
     quadraticCurveTo ( cx, cy, x, y ) {
-        this.#steps.push( `q ${ cx } ${ cy } ${ x } ${ y }` )
+        this.#steps.push( `q ${ cx } ${ cy } ${ x } ${ y }${ this.#suffix }` )
         return this
     }
     quadraticCurveToGlobal ( cx, cy, x, y ) {
-        this.#steps.push( `Q ${ cx } ${ cy } ${ x } ${ y }` )
+        this.#steps.push( `Q ${ cx } ${ cy } ${ x } ${ y }${ this.#suffix }` )
         return this
     }
 
     cubicCurveTo ( cx1, cy1, cx2, cy2, x, y ) {
-        this.#steps.push( `c ${ cx1 } ${ cy1 } ${ cx2 } ${ cy2 } ${ x } ${ y }` )
+        this.#steps.push( `c ${ cx1 } ${ cy1 } ${ cx2 } ${ cy2 } ${ x } ${ y }${ this.#suffix }` )
         return this
     }
     cubicCurveToGlobal ( cx1, cy1, cx2, cy2, x, y ) {
-        this.#steps.push( `C ${ cx1 } ${ cy1 } ${ cx2 } ${ cy2 } ${ x } ${ y }` )
+        this.#steps.push( `C ${ cx1 } ${ cy1 } ${ cx2 } ${ cy2 } ${ x } ${ y }${ this.#suffix }` )
         return this
     }
 
@@ -167,7 +172,7 @@ export class SvgPathBuilder {
             // console.warn( { result, fn, this } )
             throw new TypeError( `'.applyFunc()' did not return an instance of SvgPathBuilder!` )
         }
-        console.info('🦍 applyFunc() result', result )
+        // console.info('🦍 applyFunc() result', result )
         return result
     }
 
@@ -238,7 +243,7 @@ export function CreateSvgContainerWithTooltip ( options = {}, svgPathAttributes 
      * @description Wraps an SVG in a grid cell with shadows and tooltips that view the svg's sourcecode
      * @param {Object} options Configuration options
      * @param {string} options.title Title text for the tooltip
-     * @param {SvgPathBuilder} options.path An instance of SvgPathBuilder
+     * @param {SvgPathBuilder} options.path A single `SvgPathBuilder` instance, or as an array
      * @param {HTMLElement} options.parentElement The parent element to append the SVG container to
      * @param {Object} svgPathAttributes Attributes to apply to the SVG <path> element
      * @param {Object} svgRootAttributes Attributes to apply to the SVG <svg> root element
@@ -268,16 +273,16 @@ export function CreateSvgContainerWithTooltip ( options = {}, svgPathAttributes 
 
     if ( config.path == null ) {
         throw new Error( 'no path provided!' )
-        console.warn( 'no path provided, creating a default' )
-        const defaultPath = new SvgPathBuilder()
-            .moveTo( 0, 0 ).lineTo( 10, 0 )
-        config.path = defaultPath
     }
-
+    if( Array.isArray( config.path ) ) {
+        // if( config.path.length === 0 ) {
+        throw new Error( 'WIP: Handle array of <path>' )
+        // }
+    }
     if ( config.path instanceof SvgPathBuilder === false ) {
         throw new TypeError( 'path must be an instance of SvgPathBuilder' )
     }
-    const renderSvg = newSvgElementWithStyle( {
+    const renderSvg = CreateElement_Svg_WithStyle( {
         path: config.path, title: config.title,
     }, path_attr, svgRoot_attr )
 
@@ -285,9 +290,9 @@ export function CreateSvgContainerWithTooltip ( options = {}, svgPathAttributes 
     return elem_root
 }
 
-export function newSvgElementWithStyle ( options = {}, svgPathAttributes = {}, svgRootAttributes = {} ) {
+export function CreateElement_Svg_WithStyle ( options = {}, svgPathAttributes = {}, svgRootAttributes = {} ) {
     /**
-     * @description used by `CreateSvgContainerWithTooltip`
+     * @description used by `CreateSvgContainerWithTooltip` to create a top level container <svg> element
      * @param {Object} options Configuration options
      * @param {SvgPathBuilder} options.path An instance of SvgPathBuilder
      * @param {string} options.title Title text for the tooltip
@@ -315,20 +320,31 @@ export function newSvgElementWithStyle ( options = {}, svgPathAttributes = {}, s
     const svgRoot_attr = {
         ...svgRootAttributes,
     }
+
+    if ( config.path == null ) {
+        throw new Error( 'no path provided!' )
+    }
+    if( Array.isArray( config.path ) ) {
+        // if( config.path.length === 0 ) {
+        throw new Error( 'WIP: Handle array of <path>' )
+        // }
+    }
+
     if ( config.path === null ) {
         throw new Error( 'no path provided!', { cause: { options, svgPathAttributes, svgRootAttributes } } )
     }
 
-    const wrapper_div = document.createElement( 'section' )
-    wrapper_div.classList.add( 'svg-wrapper' )
+    const section_div = document.createElement( 'section' )
+    section_div.classList.add( 'svg-wrapper' )
 
     const svgElem = CreateElement_Svg(
         'svg', {
         // id: 'turtle-svg-n',
         class: 'svg-root',
-        viewBox: '-10 -10 50 50',
-        // width  : '20px',
-        // height : '20px',
+        viewBox: '0 0 100 100',
+        // viewBox: '-10 -10 50 50',
+        // width  : '100px',
+        // height : '100px',
         ...svgRoot_attr,
     } )
 
@@ -364,15 +380,15 @@ export function newSvgElementWithStyle ( options = {}, svgPathAttributes = {}, s
     titleElem.classList.add( 'svg-title' )
     titleElem.textContent = config.title
 
-    wrapper_div.appendChild( titleElem )
+    section_div.appendChild( titleElem )
 
     svgElem.appendChild( rootStyleElem )
     svgElem.appendChild( pathElem )
 
-    wrapper_div.appendChild( svgElem )
+    section_div.appendChild( svgElem )
 
 
-    return wrapper_div
+    return section_div
 }
 
 // register shared handlers
