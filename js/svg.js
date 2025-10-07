@@ -15,7 +15,7 @@ export class SvgPathBuilder {
         // 'fill-opacity': `0.5`,
     }
     #config = {
-        AppendNewline: true, // path[d] includes whitespace. Easier for humans to read.
+        AppendNewline: false, // path[d] includes whitespace. Easier for humans to read.
     }
     #suffix = `\n`
     static RegisteredFunctions = {}
@@ -139,12 +139,30 @@ export class SvgPathBuilder {
         return this
     }
 
+    c ( cx1, cy1, cx2, cy2, x, y ) { return this.cubicCurveTo( cx1, cy1, cx2, cy2, x, y ) }
+    C ( cx1, cy1, cx2, cy2, x, y ) { return this.cubicCurveToGlobal( cx1, cy1, cx2, cy2, x, y ) }
+    s ( x2, y2, x, y  ) { return this.smoothCurveTo( x2, y2, x, y  ) }
+    S ( x2, y2, x, y  ) { return this.smoothCurveToGlobal( x2, y2, x, y  ) }
+
     cubicCurveTo ( cx1, cy1, cx2, cy2, x, y ) {
+        // input pattern: (x1 y1 x2 y2 x y)+
         this.#steps.push( `c ${ cx1 } ${ cy1 } ${ cx2 } ${ cy2 } ${ x } ${ y }${ this.#suffix }` )
         return this
     }
     cubicCurveToGlobal ( cx1, cy1, cx2, cy2, x, y ) {
+        // input pattern: (x1 y1 x2 y2 x y)+
         this.#steps.push( `C ${ cx1 } ${ cy1 } ${ cx2 } ${ cy2 } ${ x } ${ y }${ this.#suffix }` )
+        return this
+    }
+    smoothCurveTo ( x2, y2, x, y  ) {
+        // input pattern: (x2 y2 x y)+
+        // When a relative c or s command is used, each of the relative coordinate pairs is computed as for those in an m command. For example, the final control point of the curve of both commands is (cpx + x cos cb + y sin cb, cpy + x sin cb + y cos cb).
+        this.#steps.push( `s ${ x2 }, ${ y2 } ${ x } ${ y }${ this.#suffix }` )
+        return this
+    }
+    smoothCurveToGlobal ( x2, y2, x, y ) {
+        // input pattern: (x2 y2 x y)+
+        this.#steps.push( `S ${ x2 }, ${ y2 } ${ x } ${ y }${ this.#suffix }` )
         return this
     }
 
