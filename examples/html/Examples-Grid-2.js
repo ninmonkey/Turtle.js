@@ -34,19 +34,29 @@ window.cg ??= cg
 //.fill('hsl( 200 50% 50% / 1.0)')
 if ( true ) {
     pathList = []
-    rootAttrs = { viewBox: '-1 -1 500 500' }
+    rootAttrs = { viewBox: '-1 -1 100 100' }
+    rootAttrs = { viewBox: '0 0 300 100', width: 300, height: 300 }
     pathList = [
         new SvgPathBuilder().stroke( cg.Next )
-            .M( 100, 200 )
-            .C( 100, 100, 250, 100, 250, 200 )
-            .S( 400, 300, 400, 200 )
-            .closePath(),
+            // .M(50, 50 )
+            // .bearing( 45 )
+            // .bearing( 45 )
+            // .addPathString(`B 47 H 30 z`)
+            .addPathString(`M 150,10
+           B 36 h 47
+           b 72 h 47
+           b 72 h 47
+           b 72 h 47 z`)
+            // .h( 47 )
+            // .bearing( 45 ),
+            // .closePath(),
+            ,
 
-        new SvgPathBuilder().stroke( cg.Next )
-            .M( 0, 0 )
-            .M( 250, 250 )
-            .C( 25, 600, 475, 100, 400, 450 )
-            .closePath(),
+        // new SvgPathBuilder().stroke( cg.Next )
+        //     .M( 0, 0 )
+        //     .M( 250, 250 )
+        //     .C( 25, 600, 475, 100, 400, 450 )
+        //     .closePath(),
     ]
 
     curSvgSource = CreateSvgContainerWithTooltip( {

@@ -98,6 +98,28 @@ export class SvgPathBuilder {
     M ( x, y ) { return this.moveAbsolute( x, y ) }
     m ( x, y ) { return this.move( x, y ) }
 
+    bearing( degrees ) {
+        /**
+         *  the angle of the tangent at the end of the preceding path command plus the specified angle
+         * @summary Sets the relative bearing (angle) for the path
+         * @param {number} degrees Angle in degrees
+         * @returns {SvgPathBuilder} this
+         */
+        this.#steps.push( `b ${ degrees }${ this.#suffix }` )
+        throw new Error('bearing not in grammar', { cause: { degrees } } )
+        return this
+    }
+    bearingAbsolute( degrees ) {
+        /**
+         * @summary Sets the absolute bearing (angle) for the path
+         * @param {number} degrees Angle in degrees
+         * @returns {SvgPathBuilder} this
+         */
+        this.#steps.push( `B ${ degrees }${ this.#suffix }` )
+        throw new Error('bearing not in grammar', { cause: { degrees } } )
+        return this
+    }
+
     lineAbsolute ( x, y ) {
         this.#steps.push( `L ${ x } ${ y }${ this.#suffix }` )
         return this
