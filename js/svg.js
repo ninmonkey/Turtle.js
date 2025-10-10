@@ -310,12 +310,14 @@ export function CreateSvgContainerWithTooltip ( options = {}, svgPathAttributes 
     }
     const path_attr = {
         // stroke: 'blue',
+        // 'stroke-dasharray': '4, 7  2 1',
         ...svgPathAttributes,
     }
     const svgRoot_attr = {
         viewBox: '0 0 10 10',
         // width: '200px',
         // height: '200px',
+        // 'stroke-dasharray': '4, 3, 7,12, 2, 5',
         ...svgRootAttributes,
     }
 
@@ -326,9 +328,11 @@ export function CreateSvgContainerWithTooltip ( options = {}, svgPathAttributes 
     if ( config.path == null ) {
         throw new Error( 'no path provided!' )
     }
-    const renderSvg = CreateElement_Svg_WithStyle( {
-        path: config.path, title: config.title,
-    }, path_attr, svgRoot_attr )
+    const renderSvg = CreateElement_Svg_WithStyle(
+        { path: config.path, title: config.title, },
+        path_attr,
+        svgRoot_attr
+    )
 
     config.parentElement.appendChild( renderSvg )
     return elem_root
@@ -355,6 +359,11 @@ export function CreateElement_Svg_WithStyle ( options = {}, svgPathAttributes = 
         path: [],
         // 'stroke-width': `1.5%`,
         // fill: 'hsl( 200 50% 50% / .75)',
+        // 'stroke-dasharray': svgPathAttributes['stroke-dasharray'] ?? '4, 12, 3',
+        'stroke-dasharray': (
+            svgPathAttributes['stroke-dasharray'] ??
+            svgRootAttributes['stroke-dasharray']
+        ),
         ...options,
     }
     const path_attr = {
@@ -378,6 +387,7 @@ export function CreateElement_Svg_WithStyle ( options = {}, svgPathAttributes = 
         // id: 'turtle-svg-n',
         class: 'svg-root',
         viewBox: '0 0 100 100',
+        // 'stroke-dasharray': '4, 5, 7, 2',
         // viewBox: '-10 -10 50 50',
         // width  : '100px',
         // height : '100px',
@@ -397,6 +407,7 @@ export function CreateElement_Svg_WithStyle ( options = {}, svgPathAttributes = 
         ${ config.fill ? `fill: ${ config.fill };` : `` }
         ${ config.stroke ? `stroke: ${ config.stroke };` : `` }
         ${ config[ 'stroke-width' ] ? `stroke-width: ${ config[ 'stroke-width' ] };` : `` }
+        ${ config[ 'stroke-dasharray' ] ? `stroke-dasharray: ${ config[ 'stroke-dasharray' ] };` : `` }
     }
     `
     rootStyleElem.textContent = rootCssTemplate

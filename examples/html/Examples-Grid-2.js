@@ -71,6 +71,50 @@ if ( true ) {
     rootAttrs = { viewBox: '-50 -50 100 100'}
     rootAttrs = { viewBox: '-1 -1 100 100' }
     // rootAttrs = { viewBox: '0 0 100 100' }
+    pathAttrs = {
+        // 'stroke-dasharray': '4, 7  2 1'
+    }
+
+    const distance = 25
+    const num_sides = 5;
+    const angle = 360 / num_sides;
+    const shade =
+        // new ColorGenerator( { stepSize: 10, mode: 'grayscale', stepInitial: 20 } )
+        new ColorGenerator( { stepSize: 20, stepInitial: -180 } )
+
+    pathList = []
+    for ( let i = 0; i < 10; i++ ) {
+        const x = randomInt( 0, 100 )
+        const y = randomInt( 0, 100 )
+        pathList.push(
+        new SvgPathBuilder().stroke( shade.Next )
+            .M( x, y )
+            .rotate( randomInt( 0, 360 ) )
+            .applyFunc( 'polygon', randomInt( 5, 15), randomInt( 5, 12 ))
+            .closePath()
+        )
+    }
+
+    curSvgSource = CreateSvgContainerWithTooltip( {
+        title: `polygon`,
+        path: pathList,
+        parentElement,
+    }, pathAttrs, rootAttrs )
+
+}
+if ( true ) {
+    pathList = []
+    // rootAttrs = { viewBox: '0 0 100 100', width: 300, height: 300 }
+    rootAttrs = { viewBox: '-50 -50 100 100'}
+    // rootAttrs = { viewBox: '0 0 100 100', width: 300, height: 300 }
+    rootAttrs = {
+        // viewBox: '-1 -1 100 100',
+        // 'stroke-dasharray': '4, 7  2 1',
+    }
+    pathAttrs = {
+        // 'stroke-dasharray': '4, 7  2 1'
+    }
+    // rootAttrs = { viewBox: '0 0 100 100' }
 
     const distance = 25
     const num_sides = 5;
@@ -95,6 +139,8 @@ if ( true ) {
         path: pathList,
         parentElement,
     }, pathAttrs, rootAttrs )
+
+
 }
 
 if ( true ) {
