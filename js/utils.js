@@ -1,3 +1,5 @@
+// export Angle
+
 export function elementFromIdOrValue ( idOrElement, rootElement = document ) {
     /**
      * @description Resolves name or elements, or css selector query to element[s]
@@ -58,6 +60,33 @@ export function simpleFormatHtmlWhitespace( text ) {
         .replaceAll( /["]\s+/g, `"\n  `)
         .replaceAll( /\n{2,}/g, '\n') // collapse newlines
         // .replaceAll( /\w"\s+/g, '\n'  )
+}
+
+export function randomAngle() {
+    /**
+     * @description Returns a random angle in radians
+     * @returns {number} Random angle in radians
+     */
+    return Math.random() * 2 * Math.PI;
+}
+
+export function toDegrees ( radians ) {
+    /**
+     * @description Converts degrees to radians
+     * @param {number} radians Angle in radians
+     * @return {number} Angle in degrees
+     */
+    return radians * ( 180 / Math.PI );
+}
+
+export function toRadians ( degrees ) {
+    /**
+     * @description Converts degrees to radians
+     * @param {number} degrees Angle in degrees
+     * @return {number} Angle in radians
+     */
+    // aliased name: degreesToRadians
+    return degrees * ( Math.PI / 180 );
 }
 
 export class ColorGenerator {

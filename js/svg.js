@@ -1,3 +1,5 @@
+import { toDegrees, toRadians  } from "./utils.js"
+
 const svgNS = 'http://www.w3.org/2000/svg'
 
 export class SvgPathBuilder {
@@ -8,6 +10,7 @@ export class SvgPathBuilder {
      * @link https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorials/SVG_from_scratch/Paths
      */
     #steps = []
+    #bearing = 0 // degrees
     #pathAttrs = { // for the `<oath>` element
         // stroke: "black",
         // fill: "green",
@@ -39,6 +42,7 @@ export class SvgPathBuilder {
 
     clear () {
         this.#steps = Array.from( [] )
+        this.#bearing = 0 // radians
         this.move( 0, 0 ) // relative move prevents errors when missing the M/m prefix
     }
 
@@ -86,7 +90,6 @@ export class SvgPathBuilder {
     }
     get pathAttrs() { return this.#pathAttrs }
 
-
     moveAbsolute ( x, y ) {
         this.#steps.push( `M ${ x } ${ y }${ this.#suffix }` )
         return this
@@ -98,25 +101,34 @@ export class SvgPathBuilder {
     M ( x, y ) { return this.moveAbsolute( x, y ) }
     m ( x, y ) { return this.move( x, y ) }
 
-    bearing( degrees ) {
+    forward( distance = 10 ) {
         /**
-         *  the angle of the tangent at the end of the preceding path command plus the specified angle
-         * @summary Sets the relative bearing (angle) for the path
-         * @param {number} degrees Angle in degrees
+         * @summary Moves the path forward by the specified distance in the current bearing direction
+         * @param {number} distance Distance to move forward
          * @returns {SvgPathBuilder} this
          */
-        this.#steps.push( `b ${ degrees }${ this.#suffix }` )
-        throw new Error('bearing not in grammar', { cause: { degrees } } )
+        const dx = distance * Math.cos( this.#bearing )
+        const dy = distance * Math.sin( this.#bearing )
+        this.line( dx, dy )
         return this
     }
-    bearingAbsolute( degrees ) {
+
+    rotate ( degrees ) { // bearing( degrees ) {
         /**
-         * @summary Sets the absolute bearing (angle) for the path
+         * @summary rotate relative current bearing
          * @param {number} degrees Angle in degrees
          * @returns {SvgPathBuilder} this
          */
-        this.#steps.push( `B ${ degrees }${ this.#suffix }` )
-        throw new Error('bearing not in grammar', { cause: { degrees } } )
+        this.#bearing += toRadians( degrees )
+        return this
+    }
+    setRotation( degrees ) {
+        /**
+         * @summary Sets the absolute rotation / bearing
+         * @param {number} degrees Angle in degrees
+         * @returns {SvgPathBuilder} this
+         */
+        this.#bearing = toRadians( degrees )
         return this
     }
 
