@@ -102,7 +102,7 @@ if ( true ) {
     }, pathAttrs, rootAttrs )
 
 }
-if ( true ) {
+if ( false ) {
     pathList = []
     // rootAttrs = { viewBox: '0 0 100 100', width: 300, height: 300 }
     rootAttrs = { viewBox: '-50 -50 100 100'}
