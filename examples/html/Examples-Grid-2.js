@@ -46,12 +46,7 @@ if ( true ) {
         // new ColorGenerator( { stepSize: 10, mode: 'grayscale', stepInitial: 20 } )
         new ColorGenerator( { stepSize: 20, stepInitial: -180 } )
 
-    pathList = [
-        // new SvgPathBuilder().stroke( cg.Next )
-        //     .M(25,25 )
-        //     .applyFunc( 'polygon', distance, num_sides )
-        //     .closePath(),
-    ]
+    pathList = []
     for ( let i = 0; i < 10; i++ ) {
         const x = randomInt( 0, 100 )
         const y = randomInt( 0, 100 )
@@ -59,7 +54,7 @@ if ( true ) {
         new SvgPathBuilder().stroke( shade.Next )
             .M( x, y )
             .rotate( randomInt( 0, 360 ) )
-            .applyFunc( 'polygon', randomInt( 5, 20), num_sides )
+            .applyFunc( 'polygon', randomInt( 5, 15), randomInt( 5, 12 ))
             .closePath()
         )
     }
@@ -82,12 +77,7 @@ if ( true ) {
     const angle = 360 / num_sides;
     const shade = new ColorGenerator( { stepSize: 10, mode: 'grayscale', stepInitial: 20 } )
 
-    pathList = [
-        new SvgPathBuilder().stroke( cg.Next )
-            .M(25,25 )
-            .applyFunc( 'polygon', distance, num_sides )
-            .closePath(),
-    ]
+    pathList = []
     for ( let i = 0; i < 10; i++ ) {
         const x = randomInt( 0, 100 )
         const y = randomInt( 0, 100 )
@@ -101,59 +91,12 @@ if ( true ) {
     }
 
     curSvgSource = CreateSvgContainerWithTooltip( {
-        title: `polygon`,
+        title: `bearing: hexagon`,
         path: pathList,
         parentElement,
     }, pathAttrs, rootAttrs )
 }
-if ( true ) {
-    pathList = []
-    // rootAttrs = { viewBox: '0 0 100 100', width: 300, height: 300 }
-    rootAttrs = { viewBox: '-1 -1 100 100' }
-    rootAttrs = { viewBox: '-1 -1 100 100' }
 
-    const distance = 25
-    const sides = 5; // Change this number for different polygons (5 for pentagon)
-    const angle = 360 / sides; // Calculate angle based on number of sides
-
-    pathList = [
-        new SvgPathBuilder().stroke( cg.Next )
-            .M(25,25 )
-            .forward(distance)
-            .rotate(angle)
-            .forward(distance)
-            .rotate(angle)
-            .forward(distance)
-            .rotate(angle)
-            .forward(distance)
-            .rotate(angle)
-            .forward(distance)
-            // .forward( 15 )
-            // .rotate( 45 )
-            // .forward( 15 )
-            // .rotate( 45 )
-            // .forward( 15 )
-            // .rotate( 45 )
-            // .forward( 15 )
-            .closePath()
-            ,
-                    //     .addPathString(`M 150,10
-        //    B 36 h 47
-        //    b 72 h 47
-        //    b 72 h 47
-        //    b 72 h 47 z`)
-        //     // .h( 47 )
-        //     // .bearing( 45 ),
-        //     // .closePath(),
-
-    ]
-
-    curSvgSource = CreateSvgContainerWithTooltip( {
-        title: `bearing`,
-        path: pathList,
-        parentElement,
-    }, pathAttrs, rootAttrs )
-}
 if ( true ) {
     let p1
     let p2
@@ -281,42 +224,7 @@ if ( true ) {
 }
 
 if ( true ) {
-    // cur = NewTurtle( 'original' )
-    //     .stroke( cg.Next )
-    //     .polygon( ( 1 + i++ ), 3 )
-    //     .rotate( 90 * Math.PI / 180 )
-
-    pathAttrs = {} // { stroke: cg.Next }
-    rootAttrs = {}
-    rootAttrs = { viewBox: '-1 -1 100 100' }
-    pathList = []
-
-    path = new SvgPathBuilder().stroke( cg.Next )
-        .m( 0, 0 )
-        .applyFunc( 'grid', 3, 6, 10, 5 )
-        .closePath()
-
-    let path2 = new SvgPathBuilder().stroke( cg.Next )
-        .M( 30, 0 )
-        .applyFunc( 'square', 50 )
-        .closePath()
-
-    pathList.push( path )
-    pathList.push( path2 )
-    pathList.push( new SvgPathBuilder().stroke( 'red' )
-        .M( 0, 0 )
-        .applyFunc( 'square', 7 )
-        .M( 4, 3 )
-        .applyFunc( 'square', 5 )
-        .closePath() )
-
-    // pathList = pathList[1]
-
-    curSvgSource = CreateSvgContainerWithTooltip( {
-        title: `Grids`,
-        path: pathList[ 0 ],
-        parentElement,
-    }, pathAttrs, rootAttrs )
+    let path2
 
     rootAttrs = {}
     rootAttrs = { viewBox: '-1 -1 11 11' }
@@ -346,23 +254,6 @@ if ( true ) {
         // path: pathList, // verify array test
         parentElement,
     }, pathAttrs, rootAttrs )
-
-    pathAttrs = {} // { stroke: cg.Next }
-    rootAttrs = {}
-    rootAttrs = { viewBox: '-1 -1 400 400' }
-
-    path = new SvgPathBuilder().stroke( cg.Next )
-        .m( 0, 0 )
-        .M( 100, 100 )
-        .L( 300, 100 ).L( 200, 300 )
-        .closePath()
-
-    curSvgSource = CreateSvgContainerWithTooltip( {
-        title: `tri`,
-        path,
-        parentElement,
-    }, pathAttrs, rootAttrs )
-
 }
 
 /* page specific handlers for `grid-example.html` */
