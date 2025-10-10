@@ -1,4 +1,4 @@
-import { toDegrees, toRadians  } from "./utils.js"
+import { toDegrees, toRadians } from "./utils.js"
 
 const svgNS = 'http://www.w3.org/2000/svg'
 
@@ -80,15 +80,15 @@ export class SvgPathBuilder {
         return pathElem
     }
 
-    stroke( color ) {
+    stroke ( color ) {
         this.#pathAttrs.stroke = color
         return this
     }
-    fill( color ) {
+    fill ( color ) {
         this.#pathAttrs.fill = color
         return this
     }
-    get pathAttrs() { return this.#pathAttrs }
+    get pathAttrs () { return this.#pathAttrs }
 
     moveAbsolute ( x, y ) {
         this.#steps.push( `M ${ x } ${ y }${ this.#suffix }` )
@@ -101,7 +101,7 @@ export class SvgPathBuilder {
     M ( x, y ) { return this.moveAbsolute( x, y ) }
     m ( x, y ) { return this.move( x, y ) }
 
-    forward( distance = 10 ) {
+    forward ( distance = 10 ) {
         /**
          * @summary Moves the path forward by the specified distance in the current bearing direction
          * @param {number} distance Distance to move forward
@@ -122,7 +122,7 @@ export class SvgPathBuilder {
         this.#bearing += toRadians( degrees )
         return this
     }
-    setRotation( degrees ) {
+    setRotation ( degrees ) {
         /**
          * @summary Sets the absolute rotation / bearing
          * @param {number} degrees Angle in degrees
@@ -175,8 +175,8 @@ export class SvgPathBuilder {
 
     c ( cx1, cy1, cx2, cy2, x, y ) { return this.cubicCurveTo( cx1, cy1, cx2, cy2, x, y ) }
     C ( cx1, cy1, cx2, cy2, x, y ) { return this.cubicCurveToGlobal( cx1, cy1, cx2, cy2, x, y ) }
-    s ( x2, y2, x, y  ) { return this.smoothCurveTo( x2, y2, x, y  ) }
-    S ( x2, y2, x, y  ) { return this.smoothCurveToGlobal( x2, y2, x, y  ) }
+    s ( x2, y2, x, y ) { return this.smoothCurveTo( x2, y2, x, y ) }
+    S ( x2, y2, x, y ) { return this.smoothCurveToGlobal( x2, y2, x, y ) }
 
     cubicCurveTo ( cx1, cy1, cx2, cy2, x, y ) {
         // input pattern: (x1 y1 x2 y2 x y)+
@@ -188,7 +188,7 @@ export class SvgPathBuilder {
         this.#steps.push( `C ${ cx1 } ${ cy1 } ${ cx2 } ${ cy2 } ${ x } ${ y }${ this.#suffix }` )
         return this
     }
-    smoothCurveTo ( x2, y2, x, y  ) {
+    smoothCurveTo ( x2, y2, x, y ) {
         // input pattern: (x2 y2 x y)+
         // When a relative c or s command is used, each of the relative coordinate pairs is computed as for those in an m command. For example, the final control point of the curve of both commands is (cpx + x cos cb + y sin cb, cpy + x sin cb + y cos cb).
         this.#steps.push( `s ${ x2 }, ${ y2 } ${ x } ${ y }${ this.#suffix }` )
@@ -213,11 +213,11 @@ export class SvgPathBuilder {
          */
 
         let result
-        if( typeof fn === 'string' ) {
-            result = SvgPathBuilder.RegisteredFunctions[ fn.toLowerCase() ].call(this, ...fnArgs)
+        if ( typeof fn === 'string' ) {
+            result = SvgPathBuilder.RegisteredFunctions[ fn.toLowerCase() ].call( this, ...fnArgs )
         }
         else {
-            result = fn.call(this, fnArgs)
+            result = fn.call( this, fnArgs )
         }
 
         if ( result instanceof SvgPathBuilder === false ) {
@@ -419,7 +419,7 @@ export function CreateElement_Svg_WithStyle ( options = {}, svgPathAttributes = 
     section_div.appendChild( titleElem )
     root_svg.appendChild( rootStyleElem )
 
-    for( const p of pathList ) {
+    for ( const p of pathList ) {
         if ( p instanceof SvgPathBuilder === false ) {
             throw new TypeError( 'path must be an instance of SvgPathBuilder', { cause: { p } } )
         }
@@ -445,7 +445,7 @@ export function CreateElement_Svg_WithStyle ( options = {}, svgPathAttributes = 
 }
 
 // register shared handlers
-SvgPathBuilder.registerFunc( 'rect', function (width, height) {
+SvgPathBuilder.registerFunc( 'rect', function ( width, height ) {
     this
         .l( width, 0 )
         .l( 0, height )
@@ -454,21 +454,21 @@ SvgPathBuilder.registerFunc( 'rect', function (width, height) {
     return this
 } )
 
-SvgPathBuilder.registerFunc( 'square', function (size) {
+SvgPathBuilder.registerFunc( 'square', function ( size ) {
     this.applyFunc( 'rect', size, size )
     return this
 } )
 
- SvgPathBuilder.registerFunc( 'grid', function (rows, cols, size, paddingSize) {
-    const padding = (paddingSize ?? 0) * .7
+SvgPathBuilder.registerFunc( 'grid', function ( rows, cols, size, paddingSize ) {
+    const padding = ( paddingSize ?? 0 ) * .7
     let cur_padX = 0
-    for( let y = 0; y < rows; y++ ) {
-        if(cur_padX > 0 ) {
+    for ( let y = 0; y < rows; y++ ) {
+        if ( cur_padX > 0 ) {
             this.m( -cur_padX, 0 )
-            this.m( 0,  size + padding )
+            this.m( 0, size + padding )
             cur_padX = 0
         }
-        for( let x = 0; x < cols; x++ ) {
+        for ( let x = 0; x < cols; x++ ) {
             this.applyFunc( 'square', size )
             this.m( size + padding, 0 )
             cur_padX += size + padding
@@ -476,3 +476,34 @@ SvgPathBuilder.registerFunc( 'square', function (size) {
     }
     return this
 } )
+
+SvgPathBuilder.registerFunc( 'polygon', function ( length = 10, sides = 6 ) {
+    const angle = 360 / sides;
+    for ( let side = 0; side < sides; side++ ) {
+        this.forward( length ).rotate( angle );
+    }
+    return this;
+} )
+
+/*
+    const distance = 25
+    const num_sides = 6; // Change this number for different polygons (5 for pentagon)
+    const angle = 360 / num_sides; // Calculate angle based on number of sides
+    /*
+        polygon ( size, sides = 6 ) {
+        for ( let side = 0; side < sides; side++ ) {
+            this.forward( size ).rotate( 360 / sides );
+        }
+    }
+
+   const path = new SvgPathBuilder().stroke( cg.Next )
+            // .h( 20)
+            // .forward(distance)
+            // .rotate(angle)
+            // .forward(distance)
+            // .closePath()
+    for( let side = 0; side < num_sides; side++ ) {
+        path.forward( distance ).rotate( angle )
+    }
+    //
+    */

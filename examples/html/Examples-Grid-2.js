@@ -35,20 +35,117 @@ window.cg ??= cg
 if ( true ) {
     pathList = []
     // rootAttrs = { viewBox: '0 0 100 100', width: 300, height: 300 }
+    rootAttrs = { viewBox: '-50 -50 100 100'}
     rootAttrs = { viewBox: '-1 -1 100 100' }
+    // rootAttrs = { viewBox: '0 0 100 100' }
+
+    const distance = 25
+    const num_sides = 5;
+    const angle = 360 / num_sides;
+    const shade =
+        // new ColorGenerator( { stepSize: 10, mode: 'grayscale', stepInitial: 20 } )
+        new ColorGenerator( { stepSize: 20, stepInitial: -180 } )
+
+    pathList = [
+        // new SvgPathBuilder().stroke( cg.Next )
+        //     .M(25,25 )
+        //     .applyFunc( 'polygon', distance, num_sides )
+        //     .closePath(),
+    ]
+    for ( let i = 0; i < 10; i++ ) {
+        const x = randomInt( 0, 100 )
+        const y = randomInt( 0, 100 )
+        pathList.push(
+        new SvgPathBuilder().stroke( shade.Next )
+            .M( x, y )
+            .rotate( randomInt( 0, 360 ) )
+            .applyFunc( 'polygon', randomInt( 5, 20), num_sides )
+            .closePath()
+        )
+    }
+
+    curSvgSource = CreateSvgContainerWithTooltip( {
+        title: `polygon`,
+        path: pathList,
+        parentElement,
+    }, pathAttrs, rootAttrs )
+}
+if ( true ) {
+    pathList = []
+    // rootAttrs = { viewBox: '0 0 100 100', width: 300, height: 300 }
+    rootAttrs = { viewBox: '-50 -50 100 100'}
     rootAttrs = { viewBox: '-1 -1 100 100' }
+    // rootAttrs = { viewBox: '0 0 100 100' }
+
+    const distance = 25
+    const num_sides = 5;
+    const angle = 360 / num_sides;
+    const shade = new ColorGenerator( { stepSize: 10, mode: 'grayscale', stepInitial: 20 } )
+
     pathList = [
         new SvgPathBuilder().stroke( cg.Next )
             .M(25,25 )
-            .forward( 15 )
-            .rotate( 45 )
-            .forward( 15 )
-            .rotate( 45 )
-            .forward( 15 )
-            .rotate( 45 )
-            .forward( 15 )
+            .applyFunc( 'polygon', distance, num_sides )
+            .closePath(),
+    ]
+    for ( let i = 0; i < 10; i++ ) {
+        const x = randomInt( 0, 100 )
+        const y = randomInt( 0, 100 )
+        pathList.push(
+        new SvgPathBuilder().stroke( shade.Next )
+            .M( x, y )
+            .rotate( randomInt( 0, 360 ) )
+            .applyFunc( 'polygon', randomInt( 5, 20), num_sides )
+            .closePath()
+        )
+    }
+
+    curSvgSource = CreateSvgContainerWithTooltip( {
+        title: `polygon`,
+        path: pathList,
+        parentElement,
+    }, pathAttrs, rootAttrs )
+}
+if ( true ) {
+    pathList = []
+    // rootAttrs = { viewBox: '0 0 100 100', width: 300, height: 300 }
+    rootAttrs = { viewBox: '-1 -1 100 100' }
+    rootAttrs = { viewBox: '-1 -1 100 100' }
+
+    const distance = 25
+    const sides = 5; // Change this number for different polygons (5 for pentagon)
+    const angle = 360 / sides; // Calculate angle based on number of sides
+
+    pathList = [
+        new SvgPathBuilder().stroke( cg.Next )
+            .M(25,25 )
+            .forward(distance)
+            .rotate(angle)
+            .forward(distance)
+            .rotate(angle)
+            .forward(distance)
+            .rotate(angle)
+            .forward(distance)
+            .rotate(angle)
+            .forward(distance)
+            // .forward( 15 )
+            // .rotate( 45 )
+            // .forward( 15 )
+            // .rotate( 45 )
+            // .forward( 15 )
+            // .rotate( 45 )
+            // .forward( 15 )
             .closePath()
             ,
+                    //     .addPathString(`M 150,10
+        //    B 36 h 47
+        //    b 72 h 47
+        //    b 72 h 47
+        //    b 72 h 47 z`)
+        //     // .h( 47 )
+        //     // .bearing( 45 ),
+        //     // .closePath(),
+
     ]
 
     curSvgSource = CreateSvgContainerWithTooltip( {
